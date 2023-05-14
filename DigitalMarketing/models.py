@@ -18,4 +18,4 @@ class video_details(models.Model):
     complaintcommand=models.CharField(max_length=100)
     transcribe=models.CharField(max_length=1000)
     def __str__(self):
-        return self.quality
+        return self.Title
