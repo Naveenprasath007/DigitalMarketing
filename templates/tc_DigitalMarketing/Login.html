@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" >
+	{% load static %}
+<head>
+  <meta charset="UTF-8">
+  <title>Truecoverage </title>
+  <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css'><link rel="stylesheet" href="./style.css">
+</head>
+<style>
+body, html {
+	height: 100%;
+	background-repeat: no-repeat;    /*background-image: linear-gradient(rgb(12, 97, 33),rgb(104, 145, 162));*/
+	background:rgb(196, 201, 209);
+	position: relative;
+}
+#login-box {
+	position: absolute;
+	top: 25%;
+	left: 50%;
+	transform: translateX(-50%);
+	min-width: 350px;
+	margin: 0 auto;
+	border: 1px solid rgb(255, 255, 255);
+	background: rgb(255, 255, 255);
+	min-height: 250px;
+	padding: 20px;
+	z-index: 9999;
+}
+#login-box .logo .logo-caption {
+	font-family: 'Poiret One', cursive;
+	color: white;
+	text-align: center;
+	margin-bottom: 0px;
+}
+#login-box .logo .tweak {
+	color: #075bf8;
+}
+#login-box .controls {
+	padding-top: 30px;
+}
+#login-box .controls input {
+	border-radius: 0px;
+	background: rgb(230, 223, 223);
+	border: 0px;
+	color: rgb(0, 0, 0);
+}
+#login-box .controls input:focus {
+	box-shadow: none;
+}
+#login-box .controls input:first-child {
+	border-top-left-radius: 2px;
+	border-top-right-radius: 2px;
+}
+#login-box .controls input:last-child {
+	border-bottom-left-radius: 2px;
+	border-bottom-right-radius: 2px;
+}
+#login-box button.btn-custom {
+	border-radius: 2px;
+	margin-top: 8px;
+	background:#047dee;
+	border-color: rgb(228, 224, 222);
+	color: white;
+}
+#login-box button.btn-custom:hover{
+	-webkit-transition: all 500ms ease;
+	-moz-transition: all 500ms ease;
+	-ms-transition: all 500ms ease;
+	-o-transition: all 500ms ease;
+	transition: all 500ms ease;
+	background: rgb(81, 148, 224);
+	border-color: #587aeb;
+}
+#particles-js{
+  	width: 100%;
+  	height: 100%;
+  	background-size: cover;
+  	background-position: 50% 50%;
+  	position: fixed;
+  	top: 0px;
+  	z-index:1;
+}
+</style>
+
+
+<body>
+<!-- partial:index.partial.html -->
+<div class="container">
+	<form method="post">
+	<div id="login-box">
+		{% csrf_token %}  
+		<div class="logo">
+			<img src="{% static 'images/tc.png' %}"height="70",width="20"class='center-block'/>
+		</div><!-- /.logo -->
+		<div class="controls">
+			<input type="text" name="username" placeholder="Username" class="form-control" />
+			<input type="password" name="pass" placeholder="Password" class="form-control" />
+			<button type="submit" class="btn btn-default btn-block btn-custom">Login</button>
+		</div>
+	</div>
+</form>
+</div>
+<div id="particles-js"></div>
+<!-- partial -->
+  <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css'></script>
+<!-- <script src='https://code.jquery.com/jquery-1.11.1.min.js'></script><script  src="./script.js"></script> -->
+
+{% if messages %}
+<div class="messages">
+{% for message in messages %}
+
+	<div class="alert alert-danger">{{ message }}</div>
+{% endfor %}
+</div>
+{% endif %}
+	{% block content %} {% endblock %}
+
+</div>
+
+
+</body>
+</html>
