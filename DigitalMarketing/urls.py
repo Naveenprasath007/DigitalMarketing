@@ -21,5 +21,6 @@ from DigitalMarketing import views
 urlpatterns = [
     path("admin/", admin.site.urls), 
     path("createrupload", views.createrupload),
+    path("approver", views.approver),
 ]
 

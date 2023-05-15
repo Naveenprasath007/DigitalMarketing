@@ -16,10 +16,6 @@ def createrupload(request):
             qc = request.POST.get('qc')
             c = request.POST.get('co')
             cc = request.POST.get('cc')
-            print(q)
-            print(qc)
-            print(c)
-            print(cc)
             if videoform:
                 if videoform.is_valid():
                     videoform.save()
@@ -51,6 +47,13 @@ def createrupload(request):
         videoform=Video_form()
         return render(request,'tc_DigitalMarketing/createrupload.html',{"form":videoform})
     
+def approver(request):
+    if request.method == "POST":
+        return render(request,'tc_DigitalMarketing/createrupload.html')
+    else:
+        data = video_details.objects.all()
+        return render(request,'tc_DigitalMarketing/approver.html',{"data":data})
+
 
 
 def videotranscribe(url):
