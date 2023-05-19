@@ -1,4 +1,4 @@
-from .models import Video,video_details
+from .models import Video,TbQuestion
 from django import forms
 
 class Video_form(forms.ModelForm):
@@ -19,3 +19,9 @@ class Video_form(forms.ModelForm):
 #             "quality":forms.TextInput(attrs={'class':'form-control'}),
 #             "complaint":forms.TextInput(attrs={'class':'form-control'}),
 #         }
+
+class Question(forms.ModelForm):
+    class Meta:
+        model=TbQuestion
+        fields='__all__'
+        

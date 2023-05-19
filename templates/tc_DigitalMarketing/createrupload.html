@@ -25,39 +25,76 @@
       <div class="col-md-2"></div>
       <div class="col-md-4">
       <form action="" method="post">
-        {% csrf_token %}
-          
-            <label for="age3">Video Quality ?</label>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="qo"  value=1>
-              <label for="age3">Yes</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="qo"  value=0>
-              <label for="age3">No</label>
-              </div>
-              <textarea class="form-control"  name="qc" rows="4" cols="50"></textarea>
+        {% csrf_token %}        
+              {% if qT.q0 %}
+              <label>{{qT.q0}}</label>
+              {% endif %}
+              {% if qR.k0 %}
+              <select required aria-label="Select usage" class="form-select"
+                  name="q1" onchange="set_sub_usage_list()" >
+                  <option selected>----</option>
+                  {% for usage in qR.k0 %}
+                      <option value="{{ usage}}">{{ usage }}</option>
+                  {% endfor %}
+              </select>
+              {% endif %}
               <br>
-            <label for="age3">Video complaint ?</label>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="co" value=1>
-              <label for="age3">Yes</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="co" value=0>
-              <label for="age3">No</label>
-              </div>
-              <textarea class="form-control" name="cc" rows="4" cols="50"></textarea>
+              {% if qT.q1 %}
+              <label>{{qT.q1}}</label>
+              {% endif %}
+              {% if qR.k1 %}
+              <select required aria-label="Select usage" class="form-select"
+                  name="q2" onchange="set_sub_usage_list()" >
+                  <option selected>----</option>
+                  {% for usage in qR.k1 %}
+                      <option value="{{ usage}}">{{ usage }}</option>
+                  {% endfor %}
+              </select>
+              {% endif %}
               <br>
+              {% if qT.q2 %}
+              <label>{{qT.q2}}</label>
+              {% endif %}
+              {% if qR.k2 %}
+              <select required aria-label="Select usage" class="form-select"
+                  name="q3" onchange="set_sub_usage_list()" >
+                  <option selected>----</option>
+                  {% for usage in qR.k2 %}
+                      <option value="{{ usage}}">{{ usage }}</option>
+                  {% endfor %}
+              </select>
+              {% endif %}
+              <br>
+              {% if qT.q3 %}
+              <label>{{qT.q3}}</label>
+              {% endif %}
+              {% if qR.k3 %}
+              <select required aria-label="Select usage" class="form-select"
+                  name="q4" onchange="set_sub_usage_list()" >
+                  <option selected>----</option>
+                  {% for usage in qR.k3 %}
+                      <option value="{{ usage}}">{{ usage }}</option>
+                  {% endfor %}
+              </select>
+              {% endif %}
+              <br>
+              {% if qT.q4 %}
+              <label>{{qT.q4}}</label>
+              {% endif %}
+              {% if qR.k4 %}
+              <select required aria-label="Select usage" class="form-select"
+                  name="q5" onchange="set_sub_usage_list()" >
+                  <option selected>----</option>
+                  {% for usage in qR.k3 %}
+                      <option value="{{ usage}}">{{ usage }}</option>
+                  {% endfor %}
+              </select>
+              {% endif %}
               <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                 <button class="btn btn-success btn">submit</button>
               </div>
-
             </div>
-
-            
           </form>
-
       </div>
     </div>
 
