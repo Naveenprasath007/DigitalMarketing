@@ -32,7 +32,34 @@ def createrupload(request):
                     # print(text)
                     # return url,text
                     data=TbQuestion.objects.all()
-                    return render(request,'tc_DigitalMarketing/createrupload.html',{"form":videoform,"video":url,"text":text,"data":data})
+
+                    lenOfList=len(data)
+                    listOfQuestion=[]
+                    for i in data:
+                        output=i.questiontext
+                        listOfQuestion.append(output)
+                    questionsText = {}
+                    for i in range(0,lenOfList):
+                        QT=listOfQuestion[i]
+                        questionsText["q"+str(i)] = QT
+                    print(questionsText)
+
+                    listOfQuestionResponse=[]
+                    for i in data:
+                        output=i.questionresponse.split("|")
+                        listOfQuestionResponse.append(output)
+
+                    QuestionResponse = {}
+                    for i in range(0,lenOfList):
+                        lQR=listOfQuestionResponse[i]
+                        QuestionResponse["k"+str(i)] = lQR
+                    print(QuestionResponse)
+
+                    return render(request,'tc_DigitalMarketing/createrupload.html',{"form":videoform,
+                                                                                    "video":url,"text":text,
+                                                                                    'qT':questionsText,
+                                                                                    'qR':QuestionResponse,
+                                                                                    "data":data})
             all_video=Video.objects.all()
             for i in all_video:
                 url=i.video.url
@@ -73,7 +100,6 @@ def createrupload(request):
         data=TbQuestion.objects.all()
         
         lenOfList=len(data)
-
         listOfQuestion=[]
         for i in data:
             output=i.questiontext
@@ -101,7 +127,8 @@ def createrupload(request):
         arr = []
         arr = json.loads(json_records)    
 
-        return render(request,'tc_DigitalMarketing/createrupload.html',{"form":videoform,"data":data,'qT':questionsText,'qR':QuestionResponse,
+        return render(request,'tc_DigitalMarketing/createrupload.html',{"form":videoform,"data":data,
+                                                                        'qT':questionsText,'qR':QuestionResponse,
                                                                         'd':arr,})
     
 def approver(request):
