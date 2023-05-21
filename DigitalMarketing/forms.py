@@ -1,4 +1,4 @@
-from .models import Video,TbQuestion
+from .models import Video,TbQuestion,TbUserrole,TbUser
 from django import forms
 
 class Video_form(forms.ModelForm):
@@ -23,5 +23,16 @@ class Video_form(forms.ModelForm):
 class Question(forms.ModelForm):
     class Meta:
         model=TbQuestion
+        fields='__all__'
+
+class userRole(forms.ModelForm):
+    class Meta:
+        model=TbUserrole
+        fields='__all__'
+        
+
+class User(forms.ModelForm):
+    class Meta:
+        model=TbUser
         fields='__all__'
         

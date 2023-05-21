@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect,HttpResponse
 from django.core.files.storage import FileSystemStorage
-from .forms import Video_form,Question
+from .forms import Video_form,Question,userRole,User
 from .models import Video,TbVideo,Campaignvideo,TbCampaignquestion,TbQuestion,Campaignquestionresponse
 import pandas as pd
 import json
@@ -23,7 +23,6 @@ def createrupload(request):
             Qlist=[q0,q1,q2,q3,q4]
             Qlist=list(filter(None,Qlist))
             print(Qlist)
-
 
             if videoform:
                 if videoform.is_valid():
@@ -60,8 +59,6 @@ def createrupload(request):
                         lQR=listOfQuestionResponse[i]
                         QuestionResponse["k"+str(i)] = lQR
                     print(QuestionResponse)
-
-
 
                     return render(request,'tc_DigitalMarketing/createrupload.html',{"form":videoform,
                                                                                     "video":url,"text":text,
@@ -115,7 +112,8 @@ def createrupload(request):
 
             return HttpResponse("submitted succesfully")
     else:
-        Qlist=["q0","q1","q2","q3"]
+
+        #_______Render Question Page______  #
         videoform=Video_form()
         data=TbQuestion.objects.all()
         dataQ=TbCampaignquestion.objects.all()
@@ -141,25 +139,12 @@ def createrupload(request):
             QuestionResponse["k"+str(i)] = lQR
         print(QuestionResponse)
 
-
         cQresponse=Campaignquestionresponse.objects.all()
         lenOfList=len(cQresponse)
         listOfcQresponse=[]
         for i in cQresponse:
             output=i.campaignquestionid
             listOfcQresponse.append(output)
-
-        # print(listOfcQresponse)
-        # for i in listOfcQresponse:
-        #     print(i)
-        # for i in Qlist:
-        #     print(i)
-
-        i=0
-        while i<lenOfList:
-            print(listOfcQresponse[i])
-            i = i+1
-
 
         df = pd.DataFrame(list(TbQuestion.objects.all().values()))
         df['questionresponse']=df['questionresponse'].str.split("|", n = 5, expand = False)
@@ -170,6 +155,13 @@ def createrupload(request):
         return render(request,'tc_DigitalMarketing/createrupload.html',{"form":videoform,"data":data,
                                                                         'qT':questionsText,'qR':QuestionResponse,
                                                                         'd':arr,'dataQ':dataQ})
+
+        
+        
+def UserIndexpage(request):
+        form=User()
+        return render(request,'tc_DigitalMarketing/UserindexPage.html',{'form':form})
+
     
 def approver(request):
     if request.method == "POST":

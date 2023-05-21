@@ -68,7 +68,7 @@ class TbQuestion(models.Model):
 class TbCampaignquestion(models.Model):
     campaignquestionid = models.CharField(db_column='CampaignQuestionID',max_length=100, primary_key=True)  # Field name made lowercase.
     campaignvideoid = models.ForeignKey(Campaignvideo, models.DO_NOTHING, db_column='CampaignVideoID')  # Field name made lowercase.
-    userroleid = models.IntegerField(db_column='UserRoleID')  # Field name made lowercase.
+    userroleid = models.CharField(db_column='UserRoleID',max_length=100)  # Field name made lowercase.
     # questionid = models.IntegerField(db_column='QuestionID')  # Field name made lowercase.
     questionid = models.ForeignKey(TbQuestion, models.DO_NOTHING, db_column='QuestionID')
 
@@ -90,3 +90,29 @@ class Campaignquestionresponse(models.Model):
 
     def __int__(self):
         return self.userid
+
+
+class TbUser(models.Model):
+    userid = models.CharField(db_column='UserID',max_length=250, primary_key=True)  # Field name made lowercase.
+    username = models.CharField(db_column='UserName', max_length=250, db_collation='SQL_Latin1_General_CP1_CI_AS')  # Field name made lowercase.
+    userroleid = models.ForeignKey('TbUserrole', models.DO_NOTHING, db_column='UserRoleID')  # Field name made lowercase.
+    password = models.CharField(db_column='Password', max_length=250, db_collation='SQL_Latin1_General_CP1_CI_AS')  # Field name made lowercase.
+    class Meta:
+        managed = False
+        db_table = 'tb_User'
+
+    def __int__(self):
+        return self.userid
+
+
+
+class TbUserrole(models.Model):
+    userroleid = models.CharField(db_column='UserRoleID',max_length=250, primary_key=True)  # Field name made lowercase.
+    userrolename = models.CharField(db_column='UserRoleName', max_length=250, db_collation='SQL_Latin1_General_CP1_CI_AS')  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'tb_UserRole'
+
+    def __str__(self):
+        return self.userrolename
