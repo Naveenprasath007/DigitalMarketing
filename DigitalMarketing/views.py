@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect,HttpResponse
 from django.core.files.storage import FileSystemStorage
 from .forms import Video_form,Question
-from .models import Video,TbVideo,Campaignvideo,TbCampaignquestion,TbQuestion
+from .models import Video,TbVideo,Campaignvideo,TbCampaignquestion,TbQuestion,Campaignquestionresponse
 import pandas as pd
 import json
 
@@ -15,11 +15,16 @@ import uuid
 def createrupload(request):
     if request.method == "POST":
             videoform=Video_form(data=request.POST,files=request.FILES)
+            q0 = request.POST.get('q0')
             q1 = request.POST.get('q1')
             q2 = request.POST.get('q2')
             q3 = request.POST.get('q3')
             q4 = request.POST.get('q4')
-            q5 = request.POST.get('q5')
+            Qlist=[q0,q1,q2,q3,q4]
+            Qlist=list(filter(None,Qlist))
+            print(Qlist)
+
+
             if videoform:
                 if videoform.is_valid():
                     videoform.save()
@@ -32,6 +37,7 @@ def createrupload(request):
                     # print(text)
                     # return url,text
                     data=TbQuestion.objects.all()
+                    dataQ=TbCampaignquestion.objects.all()
 
                     lenOfList=len(data)
                     listOfQuestion=[]
@@ -55,12 +61,15 @@ def createrupload(request):
                         QuestionResponse["k"+str(i)] = lQR
                     print(QuestionResponse)
 
+
+
                     return render(request,'tc_DigitalMarketing/createrupload.html',{"form":videoform,
                                                                                     "video":url,"text":text,
                                                                                     'qT':questionsText,
                                                                                     'qR':QuestionResponse,
-                                                                                    "data":data})
+                                                                                    "data":data,'dataQ':dataQ})
             all_video=Video.objects.all()
+            
             for i in all_video:
                 url=i.video.url
                 Title1=i.Title
@@ -70,35 +79,46 @@ def createrupload(request):
             print(text)
             print(url)
             print(Title1)
-            print(q1,q2,q3,q4,q5)
+            print(q0,q1,q2,q3)
 
             # Generate a new UUID
             new_id = uuid.uuid4()
             str(new_id)
 
             T=Title1
-            video_details2 = TbVideo(videoid=new_id,videoname=T,videopath=url1,
-                                     previousvideoid=0,videotranscription=text)
-            video_details2.save()
-            video_details3 = Campaignvideo(campaignvideoid=new_id,
-                                           videoid=TbVideo.objects.get(videoname = T)
-                                           ,campaignid=1,previousvideoid=0)
-            video_details3.save()
-            video_details4 = TbCampaignquestion(campaignquestionid=new_id,
-                                           campaignvideoid=Campaignvideo.objects.get(campaignvideoid = new_id)
-                                           ,userroleid=1,questionid=1)
-            video_details4.save()   
+            # video_details2 = TbVideo(videoid=new_id,videoname=T,videopath=url1,
+            #                          previousvideoid=0,videotranscription=text)
+            # video_details2.save()
+            # video_details3 = Campaignvideo(campaignvideoid=new_id,
+            #                                videoid=TbVideo.objects.get(videoname = T)
+            #                                ,campaignid=1,previousvideoid=0)
+            # video_details3.save()
 
+            # video_details4 = TbCampaignquestion(campaignquestionid='AA',
+            #                                campaignvideoid=Campaignvideo.objects.get(campaignvideoid = new_id)
+            #                                ,userroleid=1,questionid=TbQuestion.objects.get(questionid=1))
+            # video_details4.save()   
 
-            # video_details5 = TbQuestion.objects.get(questionid=1)
-            # video_details5.questionresponse='Not okay' 
-            # video_details5.save() 
+            cQresponse=TbCampaignquestion.objects.all()
+            lenOfList=len(cQresponse)
+            listOfcQresponse=[]
+            for i in cQresponse:
+                output=i.campaignquestionid
+                listOfcQresponse.append(output)
+
+            import itertools
+
+            for (a, b) in itertools.zip_longest(listOfcQresponse,Qlist):
+                    video_details5 = Campaignquestionresponse(campaignquestionid=TbCampaignquestion.objects.get(campaignquestionid = a),
+                                            userid=1,response= b)
+                    video_details5.save()  
 
             return HttpResponse("submitted succesfully")
     else:
+        Qlist=["q0","q1","q2","q3"]
         videoform=Video_form()
         data=TbQuestion.objects.all()
-        
+        dataQ=TbCampaignquestion.objects.all()
         lenOfList=len(data)
         listOfQuestion=[]
         for i in data:
@@ -121,6 +141,26 @@ def createrupload(request):
             QuestionResponse["k"+str(i)] = lQR
         print(QuestionResponse)
 
+
+        cQresponse=Campaignquestionresponse.objects.all()
+        lenOfList=len(cQresponse)
+        listOfcQresponse=[]
+        for i in cQresponse:
+            output=i.campaignquestionid
+            listOfcQresponse.append(output)
+
+        # print(listOfcQresponse)
+        # for i in listOfcQresponse:
+        #     print(i)
+        # for i in Qlist:
+        #     print(i)
+
+        i=0
+        while i<lenOfList:
+            print(listOfcQresponse[i])
+            i = i+1
+
+
         df = pd.DataFrame(list(TbQuestion.objects.all().values()))
         df['questionresponse']=df['questionresponse'].str.split("|", n = 5, expand = False)
         json_records = df.reset_index().to_json(orient ='records')
@@ -129,7 +169,7 @@ def createrupload(request):
 
         return render(request,'tc_DigitalMarketing/createrupload.html',{"form":videoform,"data":data,
                                                                         'qT':questionsText,'qR':QuestionResponse,
-                                                                        'd':arr,})
+                                                                        'd':arr,'dataQ':dataQ})
     
 def approver(request):
     if request.method == "POST":

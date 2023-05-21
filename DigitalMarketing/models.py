@@ -49,17 +49,7 @@ class Campaignvideo(models.Model):
         return self.campaignvideoid
 
 
-class TbCampaignquestion(models.Model):
-    campaignquestionid = models.CharField(db_column='CampaignQuestionID',max_length=100, primary_key=True)  # Field name made lowercase.
-    campaignvideoid = models.ForeignKey(Campaignvideo, models.DO_NOTHING, db_column='CampaignVideoID')  # Field name made lowercase.
-    userroleid = models.IntegerField(db_column='UserRoleID')  # Field name made lowercase.
-    questionid = models.IntegerField(db_column='QuestionID')  # Field name made lowercase.
 
-    class Meta:
-        managed = False
-        db_table = 'tb_CampaignQuestion'
-    def __str__(self):
-        return self.campaignquestionid
 
 
 class TbQuestion(models.Model):
@@ -71,5 +61,32 @@ class TbQuestion(models.Model):
         managed = False
         db_table = 'tb_Question'
 
+    def __int__(self):
+        return self.questionid
+    
+
+class TbCampaignquestion(models.Model):
+    campaignquestionid = models.CharField(db_column='CampaignQuestionID',max_length=100, primary_key=True)  # Field name made lowercase.
+    campaignvideoid = models.ForeignKey(Campaignvideo, models.DO_NOTHING, db_column='CampaignVideoID')  # Field name made lowercase.
+    userroleid = models.IntegerField(db_column='UserRoleID')  # Field name made lowercase.
+    # questionid = models.IntegerField(db_column='QuestionID')  # Field name made lowercase.
+    questionid = models.ForeignKey(TbQuestion, models.DO_NOTHING, db_column='QuestionID')
+
+    class Meta:
+        managed = False
+        db_table = 'tb_CampaignQuestion'
     def __str__(self):
-        return self.questiontext
+        return self.campaignquestionid
+    
+
+class Campaignquestionresponse(models.Model):
+    campaignquestionid = models.ForeignKey('TbCampaignquestion', models.DO_NOTHING, db_column='CampaignQuestionID',primary_key=True)  # Field name made lowercase.
+    userid = models.IntegerField(db_column='UserID')  # Field name made lowercase.
+    response = models.CharField(db_column='Response', max_length=2000, db_collation='SQL_Latin1_General_CP1_CI_AS')  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'CampaignQuestionResponse'
+
+    def __int__(self):
+        return self.userid

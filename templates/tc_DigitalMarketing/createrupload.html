@@ -25,17 +25,20 @@
       <div class="col-md-2"></div>
       <div class="col-md-4">
       <form action="" method="post"enctype="multipart/form-data">
-        {% csrf_token %}        
+        {% csrf_token %}   
+
               {% if qT.q0 %}
               <label>{{qT.q0}}</label>
               {% endif %}
               {% if qR.k0 %}
               <select required aria-label="Select usage" class="form-select"
-                  name="q1" onchange="set_sub_usage_list()" >
+                  name="q0" onchange="set_sub_usage_list()" >
                   <option selected>----</option>
-                  {% for usage in qR.k0 %}
-                      <option value="{{ usage}}">{{ usage }}</option>
-                  {% endfor %}
+
+                    {% for usage in qR.k0 %}
+                        <option value="{{ usage }}">{{ usage }}</option>
+                    {% endfor %}
+
               </select>
               {% endif %}
               <br>
@@ -44,11 +47,13 @@
               {% endif %}
               {% if qR.k1 %}
               <select required aria-label="Select usage" class="form-select"
-                  name="q2" onchange="set_sub_usage_list()" >
+                  name="q1" onchange="set_sub_usage_list()" >
                   <option selected>----</option>
+
                   {% for usage in qR.k1 %}
-                      <option value="{{ usage}}">{{ usage }}</option>
+                      <option value="{{ usage }}">{{ usage }}</option>
                   {% endfor %}
+
               </select>
               {% endif %}
               <br>
@@ -57,11 +62,13 @@
               {% endif %}
               {% if qR.k2 %}
               <select required aria-label="Select usage" class="form-select"
-                  name="q3" onchange="set_sub_usage_list()" >
+                  name="q2" onchange="set_sub_usage_list()" >
                   <option selected>----</option>
+
                   {% for usage in qR.k2 %}
                       <option value="{{ usage}}">{{ usage }}</option>
                   {% endfor %}
+
               </select>
               {% endif %}
               <br>
@@ -70,7 +77,7 @@
               {% endif %}
               {% if qR.k3 %}
               <select required aria-label="Select usage" class="form-select"
-                  name="q4" onchange="set_sub_usage_list()" >
+                  name="q3" onchange="set_sub_usage_list()" >
                   <option selected>----</option>
                   {% for usage in qR.k3 %}
                       <option value="{{ usage}}">{{ usage }}</option>
@@ -83,13 +90,14 @@
               {% endif %}
               {% if qR.k4 %}
               <select required aria-label="Select usage" class="form-select"
-                  name="q5" onchange="set_sub_usage_list()" >
+                  name="q4" onchange="set_sub_usage_list()" >
                   <option selected>----</option>
-                  {% for usage in qR.k3 %}
+                  {% for usage in qR.k4 %}
                       <option value="{{ usage}}">{{ usage }}</option>
                   {% endfor %}
               </select>
               {% endif %}
+
               <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                 <button class="btn btn-success btn">submit</button>
               </div>
