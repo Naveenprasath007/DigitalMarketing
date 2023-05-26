@@ -35,19 +35,32 @@ class TbVideo(models.Model):
         return self.videoname
     
 
+# class Campaignvideo(models.Model):
+#     campaignvideoid = models.CharField(db_column='CampaignVideoID',max_length=100, primary_key=True)  # Field name made lowercase.
+#     videoid = models.ForeignKey('TbVideo', models.DO_NOTHING, db_column='VideoID')  # Field name made lowercase.
+#     campaignid = models.CharField(db_column='CampaignID',max_length=100)  # Field name made lowercase.
+#     previousvideoid = models.CharField(db_column='PreviousVideoID',max_length=100,)  # Field name made lowercase.
+
+#     class Meta:
+#         managed = False
+#         db_table = 'CampaignVideo'
+    
+#     def __str__(self):
+#         return self.campaignvideoid
+
+
 class Campaignvideo(models.Model):
-    campaignvideoid = models.CharField(db_column='CampaignVideoID',max_length=100, primary_key=True)  # Field name made lowercase.
+    campaignvideoid = models.CharField(db_column='CampaignVideoID', primary_key=True, max_length=255, db_collation='SQL_Latin1_General_CP1_CI_AS')  # Field name made lowercase.
     videoid = models.ForeignKey('TbVideo', models.DO_NOTHING, db_column='VideoID')  # Field name made lowercase.
-    campaignid = models.CharField(db_column='CampaignID',max_length=100)  # Field name made lowercase.
-    previousvideoid = models.CharField(db_column='PreviousVideoID',max_length=100,)  # Field name made lowercase.
+    campaignid = models.CharField(db_column='CampaignID', max_length=255, db_collation='SQL_Latin1_General_CP1_CI_AS')  # Field name made lowercase.
+    previousvideoid = models.CharField(db_column='PreviousVideoID', max_length=255, db_collation='SQL_Latin1_General_CP1_CI_AS')  # Field name made lowercase.
 
     class Meta:
         managed = False
         db_table = 'CampaignVideo'
-    
+
     def __str__(self):
         return self.campaignvideoid
-
 
 
 
@@ -65,31 +78,32 @@ class TbQuestion(models.Model):
         return self.questionid
     
 
+# class TbCampaignquestion(models.Model):
+#     campaignquestionid = models.CharField(db_column='CampaignQuestionID',max_length=100, primary_key=True)  # Field name made lowercase.
+#     campaignvideoid = models.CharField(Campaignvideo,db_column='CampaignVideoID',max_length=100,)  # Field name made lowercase.
+#     userroleid = models.CharField(models.DO_NOTHING,db_column='UserRoleID',max_length=100)  # Field name made lowercase.
+#     # questionid = models.IntegerField(db_column='QuestionID')  # Field name made lowercase.
+#     questionid = models.ForeignKey(TbQuestion, models.DO_NOTHING, db_column='QuestionID')
+
+#     class Meta:
+#         managed = False
+#         db_table = 'tb_CampaignQuestion'
+#     def __str__(self):
+#         return self.campaignquestionid
+    
 class TbCampaignquestion(models.Model):
-    campaignquestionid = models.CharField(db_column='CampaignQuestionID',max_length=100, primary_key=True)  # Field name made lowercase.
+    campaignquestionid = models.CharField(db_column='CampaignQuestionID', primary_key=True, max_length=255, db_collation='SQL_Latin1_General_CP1_CI_AS')  # Field name made lowercase.
     campaignvideoid = models.ForeignKey(Campaignvideo, models.DO_NOTHING, db_column='CampaignVideoID')  # Field name made lowercase.
-    userroleid = models.CharField(db_column='UserRoleID',max_length=100)  # Field name made lowercase.
-    # questionid = models.IntegerField(db_column='QuestionID')  # Field name made lowercase.
-    questionid = models.ForeignKey(TbQuestion, models.DO_NOTHING, db_column='QuestionID')
+    userroleid = models.ForeignKey('TbUserrole', models.DO_NOTHING, db_column='UserRoleID', blank=True, null=True)  # Field name made lowercase.
+    questionid = models.ForeignKey('TbQuestion', models.DO_NOTHING, db_column='QuestionID')  # Field name made lowercase.
 
     class Meta:
         managed = False
         db_table = 'tb_CampaignQuestion'
-    def __str__(self):
-        return self.campaignquestionid
-    
-
-class Campaignquestionresponse(models.Model):
-    campaignquestionid = models.ForeignKey('TbCampaignquestion', models.DO_NOTHING, db_column='CampaignQuestionID',primary_key=True)  # Field name made lowercase.
-    userid = models.IntegerField(db_column='UserID')  # Field name made lowercase.
-    response = models.CharField(db_column='Response', max_length=2000, db_collation='SQL_Latin1_General_CP1_CI_AS')  # Field name made lowercase.
-
-    class Meta:
-        managed = False
-        db_table = 'CampaignQuestionResponse'
 
     def __int__(self):
-        return self.userid
+        return self.campaignquestionid
+    
 
 
 class TbUser(models.Model):
@@ -104,6 +118,19 @@ class TbUser(models.Model):
     def __int__(self):
         return self.userid
 
+class Campaignquestionresponse(models.Model):
+    campaignquestionid = models.ForeignKey('TbCampaignquestion', models.DO_NOTHING, db_column='CampaignQuestionID')  # Field name made lowercase.
+    userid = models.ForeignKey('TbUser',models.DO_NOTHING, db_column='UserID')  # Field name made lowercase.
+    response = models.CharField(db_column='Response', max_length=2000, db_collation='SQL_Latin1_General_CP1_CI_AS')  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'CampaignQuestionResponse'
+
+    def __int__(self):
+        return self.response
+
+
 
 
 class TbUserrole(models.Model):
@@ -116,3 +143,11 @@ class TbUserrole(models.Model):
 
     def __str__(self):
         return self.userrolename
+    
+
+
+class cVideoId(models.Model):
+    VideoID = models.CharField(db_column='videoID', max_length=250, db_collation='SQL_Latin1_General_CP1_CI_AS') 
+
+    def __str__(self):
+        return self.VideoID

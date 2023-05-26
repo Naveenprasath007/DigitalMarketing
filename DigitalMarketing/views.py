@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect,HttpResponse
 from django.core.files.storage import FileSystemStorage
-from .forms import Video_form,Question,userRole,User
-from .models import Video,TbVideo,Campaignvideo,TbCampaignquestion,TbQuestion,Campaignquestionresponse
+from .forms import Video_form,Question,userRole,TbUser
+from .models import Video,TbVideo,Campaignvideo,TbCampaignquestion,TbQuestion,Campaignquestionresponse,TbUserrole,cVideoId
 import pandas as pd
 import json
 
@@ -10,19 +10,27 @@ import moviepy.editor as mp
 from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
 
 import uuid
+from django.contrib import messages
 
+from django.db import connection
 
-def createrupload(request):
-    if request.method == "POST":
+def createrupload(request,id):
+        if request.method == "POST":
             videoform=Video_form(data=request.POST,files=request.FILES)
             q0 = request.POST.get('q0')
             q1 = request.POST.get('q1')
             q2 = request.POST.get('q2')
             q3 = request.POST.get('q3')
             q4 = request.POST.get('q4')
-            Qlist=[q0,q1,q2,q3,q4]
+            q5 = request.POST.get('q5')
+            q6 = request.POST.get('q6')
+            Campaignvideoid=request.POST.get('campaign')
+            Qlist=[q0,q1,q2,q3,q4,q5,q6]
             Qlist=list(filter(None,Qlist))
             print(Qlist)
+            print(Campaignvideoid)
+            CVID=Campaignvideoid
+            print(CVID)
 
             if videoform:
                 if videoform.is_valid():
@@ -30,27 +38,131 @@ def createrupload(request):
                     all_video=Video.objects.all()
                     for i in all_video:
                         url=i.video.url
+                        Title1=i.Title
                     url1=url[1:]
                     print(url1)
                     text=videotranscribe(url1)
-                    # print(text)
-                    # return url,text
-                    data=TbQuestion.objects.all()
-                    dataQ=TbCampaignquestion.objects.all()
 
-                    lenOfList=len(data)
+                    data=TbQuestion.objects.all()
+
+                    # dataQ = TbCampaignquestion.objects.filter(campaignvideoid=CVID)
+                    # listOfDataQ=[]
+                    # for i in dataQ:
+                    #     output=i.questionid
+                    #     listOfDataQ.append(output)
+                    # lenOfList=len(listOfDataQ)
+
+                    # listOfQuestion=[]
+                    # for i in listOfDataQ:
+                    #     output=i.questiontext
+                    #     listOfQuestion.append(output)
+                    # questionsText = {}
+                    # for i in range(0,lenOfList):
+                    #     QT=listOfQuestion[i]
+                    #     questionsText["q"+str(i)] = QT
+
+
+                    # listOfQuestionResponse=[]
+                    # for i in listOfDataQ:
+                    #     output=i.questionresponse.split("|")
+                    #     listOfQuestionResponse.append(output)
+
+                    # QuestionResponse = {}
+                    # for i in range(0,lenOfList):
+                    #     lQR=listOfQuestionResponse[i]
+                    #     QuestionResponse["k"+str(i)] = lQR
+
+
+                    # Generate a new UUID
+                    new_id = uuid.uuid4()
+                    str(new_id)
+                    print(str(new_id))
+
+                    
+                    video_id = cVideoId(VideoID=new_id)
+                    video_id.save()
+
+                    T=Title1
+                    video_details2 = TbVideo(videoid=new_id,videoname=T,videopath=url1,
+                                            previousvideoid=0,videotranscription=text)
+                    video_details2.save()
+
+                    video_details3 = Campaignvideo(campaignvideoid=new_id,
+                                                videoid=TbVideo.objects.get(videoname = T)
+                                                ,campaignid=1,previousvideoid=0)
+                    video_details3.save()
+
+                    if CVID == 'ABCD':    
+                        video_details4 = TbCampaignquestion(campaignquestionid=str(new_id)+str(1),
+                                                    campaignvideoid=Campaignvideo.objects.get(campaignvideoid=new_id)
+                                                    ,userroleid=TbUserrole.objects.get(userroleid='U1'),
+                                                    questionid=TbQuestion.objects.get(questionid='1'))
+                        video_details4.save()
+
+                        video_details4 = TbCampaignquestion(campaignquestionid=str(new_id)+str(2),
+                                                    campaignvideoid=Campaignvideo.objects.get(campaignvideoid=new_id)
+                                                    ,userroleid=TbUserrole.objects.get(userroleid='U1'),
+                                                    questionid=TbQuestion.objects.get(questionid='2'))
+                        video_details4.save()
+
+                        video_details4 = TbCampaignquestion(campaignquestionid=str(new_id)+str(3),
+                                                    campaignvideoid=Campaignvideo.objects.get(campaignvideoid=new_id)
+                                                    ,userroleid=TbUserrole.objects.get(userroleid='U1'),
+                                                    questionid=TbQuestion.objects.get(questionid='3'))
+                        video_details4.save()
+
+                        video_details4 = TbCampaignquestion(campaignquestionid=str(new_id)+str(4),
+                                                    campaignvideoid=Campaignvideo.objects.get(campaignvideoid=new_id)
+                                                    ,userroleid=TbUserrole.objects.get(userroleid='U1'),
+                                                    questionid=TbQuestion.objects.get(questionid='4'))
+                        video_details4.save()
+                        
+                        # video_details4 = TbCampaignquestion(campaignquestionid=new_id,
+                        #                             campaignvideoid=Campaignvideo.objects.get(previousvideoid=0)
+                        #                             ,userroleid='U1',questionid='2')
+                        # video_details4.save()
+                        
+                        # video_details4 = TbCampaignquestion(campaignquestionid=new_id,
+                        #                             campaignvideoid=Campaignvideo.objects.get(previousvideoid=0)
+                        #                             ,userroleid='U1',questionid='3')
+                        # video_details4.save()
+
+                        # video_details4 = TbCampaignquestion(campaignquestionid=new_id,
+                        #                             campaignvideoid=Campaignvideo.objects.get(previousvideoid=0)
+                        #                             ,userroleid='U1',questionid='4')
+                        # video_details4.save()
+
+                        # video_details4 = TbCampaignquestion(campaignquestionid=new_id,
+                        #                             campaignvideoid=Campaignvideo.objects.get(previousvideoid=0)
+                        #                             ,userroleid='U1',questionid='5')
+                        # video_details4.save()
+
+
+                        # video_details4 = TbCampaignquestion(campaignquestionid=new_id,
+                        #                             campaignvideoid=Campaignvideo.objects.get(previousvideoid=0)
+                        #                             ,userroleid='U1',questionid='6')
+                        # video_details4.save()
+                    
+
+                    dataQ = TbCampaignquestion.objects.filter(campaignvideoid=new_id)
+                    listOfDataQ=[]
+                    for i in dataQ:
+                        output=i.questionid
+                        listOfDataQ.append(output)
+                    lenOfList=len(listOfDataQ)
+
                     listOfQuestion=[]
-                    for i in data:
+                    for i in listOfDataQ:
                         output=i.questiontext
                         listOfQuestion.append(output)
                     questionsText = {}
                     for i in range(0,lenOfList):
                         QT=listOfQuestion[i]
                         questionsText["q"+str(i)] = QT
-                    print(questionsText)
+
 
                     listOfQuestionResponse=[]
-                    for i in data:
+                    for i in listOfDataQ:
                         output=i.questionresponse.split("|")
                         listOfQuestionResponse.append(output)
 
@@ -58,14 +170,25 @@ def createrupload(request):
                     for i in range(0,lenOfList):
                         lQR=listOfQuestionResponse[i]
                         QuestionResponse["k"+str(i)] = lQR
-                    print(QuestionResponse)
 
+                    # return render(request,'tc_DigitalMarketing/createrupload.html',{"form":videoform,
+                    #                                                                 "video":url,"text":text,})
                     return render(request,'tc_DigitalMarketing/createrupload.html',{"form":videoform,
                                                                                     "video":url,"text":text,
                                                                                     'qT':questionsText,
                                                                                     'qR':QuestionResponse,
                                                                                     "data":data,'dataQ':dataQ})
             all_video=Video.objects.all()
+            # cV=Campaignvideo.objects.all()
+            
+            # for i in cV:
+            #     CVID=i.campaignvideoid
+
+            cursor=connection.cursor()
+            cursor.execute("SELECT TOP 1 VideoID FROM DigitalMarketing_cvideoid ORDER BY id DESC;")
+            result=cursor.fetchall()
+            print(result)
+            CVID=result[0][0]
             
             for i in all_video:
                 url=i.video.url
@@ -76,99 +199,30 @@ def createrupload(request):
             print(text)
             print(url)
             print(Title1)
+            print(CVID)
             print(q0,q1,q2,q3)
-
-            # Generate a new UUID
-            new_id = uuid.uuid4()
-            str(new_id)
-
-            T=Title1
-            # video_details2 = TbVideo(videoid=new_id,videoname=T,videopath=url1,
-            #                          previousvideoid=0,videotranscription=text)
-            # video_details2.save()
-            # video_details3 = Campaignvideo(campaignvideoid=new_id,
-            #                                videoid=TbVideo.objects.get(videoname = T)
-            #                                ,campaignid=1,previousvideoid=0)
-            # video_details3.save()
-
-            # video_details4 = TbCampaignquestion(campaignquestionid='AA',
-            #                                campaignvideoid=Campaignvideo.objects.get(campaignvideoid = new_id)
-            #                                ,userroleid=1,questionid=TbQuestion.objects.get(questionid=1))
-            # video_details4.save()   
-
-            cQresponse=TbCampaignquestion.objects.all()
+            print(id)
+  
+# ___problem is in CVID___#
+            cQresponse=TbCampaignquestion.objects.filter(campaignvideoid=CVID)
             lenOfList=len(cQresponse)
             listOfcQresponse=[]
             for i in cQresponse:
                 output=i.campaignquestionid
                 listOfcQresponse.append(output)
-
+            print(listOfcQresponse)
             import itertools
 
             for (a, b) in itertools.zip_longest(listOfcQresponse,Qlist):
                     video_details5 = Campaignquestionresponse(campaignquestionid=TbCampaignquestion.objects.get(campaignquestionid = a),
-                                            userid=1,response= b)
+                                            userid=TbUser.objects.get(userid = str(id)),response= b)
                     video_details5.save()  
 
             return HttpResponse("submitted succesfully")
-    else:
-
-        #_______Render Question Page______  #
-        videoform=Video_form()
-        data=TbQuestion.objects.all()
-        dataQ=TbCampaignquestion.objects.all()
-        lenOfList=len(data)
-        listOfQuestion=[]
-        for i in data:
-            output=i.questiontext
-            listOfQuestion.append(output)
-        questionsText = {}
-        for i in range(0,lenOfList):
-            QT=listOfQuestion[i]
-            questionsText["q"+str(i)] = QT
-        print(questionsText)
-
-        listOfQuestionResponse=[]
-        for i in data:
-            output=i.questionresponse.split("|")
-            listOfQuestionResponse.append(output)
-
-        QuestionResponse = {}
-        for i in range(0,lenOfList):
-            lQR=listOfQuestionResponse[i]
-            QuestionResponse["k"+str(i)] = lQR
-        print(QuestionResponse)
-
-        cQresponse=Campaignquestionresponse.objects.all()
-        lenOfList=len(cQresponse)
-        listOfcQresponse=[]
-        for i in cQresponse:
-            output=i.campaignquestionid
-            listOfcQresponse.append(output)
-
-        df = pd.DataFrame(list(TbQuestion.objects.all().values()))
-        df['questionresponse']=df['questionresponse'].str.split("|", n = 5, expand = False)
-        json_records = df.reset_index().to_json(orient ='records')
-        arr = []
-        arr = json.loads(json_records)    
-
-        return render(request,'tc_DigitalMarketing/createrupload.html',{"form":videoform,"data":data,
-                                                                        'qT':questionsText,'qR':QuestionResponse,
-                                                                        'd':arr,'dataQ':dataQ})
-
-        
-        
-def UserIndexpage(request):
-        form=User()
-        return render(request,'tc_DigitalMarketing/UserindexPage.html',{'form':form})
-
-    
-def approver(request):
-    if request.method == "POST":
-        return render(request,'tc_DigitalMarketing/createrupload.html')
-    else:
-        data = video_details.objects.all()
-        return render(request,'tc_DigitalMarketing/approver.html',{"data":data})
+        else:
+  
+            videoform=Video_form()
+            return render(request,'tc_DigitalMarketing/createrupload.html',{"form":videoform})
 
 
 
@@ -194,3 +248,112 @@ def videotranscribe(url):
         text='\n'.join(l_chunks)
 
         return text
+
+
+
+        
+    
+def UserIndexpage(request):
+        if request.method == 'POST':
+            userName = request.POST.get('username')
+            Password = request.POST.get('pass')
+            data = TbUser.objects.filter(username=userName,password=Password).values()
+            for i in data:
+                print(i)
+                a=i
+            if data:
+                value=a.get('userroleid_id')
+                print(value)
+                if value == "U1":
+                    val=a.get('userid')
+                    return redirect('/dm/createrupload/'+str(val)) 
+                if value == "R1":
+                    return redirect('/dm/approver')
+
+            return redirect('/dm/UserIndexpage')    
+        else:
+            return render(request, 'tc_DigitalMarketing/UserindexPage.html')
+
+
+    
+def approver(request):
+    if request.method == "POST":
+        return render(request,'tc_DigitalMarketing/createrupload.html')
+    else:
+        # cursor=connection.cursor()
+        # cursor.execute("select UserName from tb_User WHERE UserRoleID='U1';")
+        # result=cursor.fetchall()
+        # print(result)
+
+        cursor1=connection.cursor()
+        cursor1.execute("select CampaignVideoID from tb_User u inner join CampaignQuestionResponse cqr on u.UserID = cqr.UserID inner join tb_CampaignQuestion cq on cq.CampaignQuestionID=cqr.CampaignQuestionID;")
+        result1=cursor1.fetchall()
+        print(result1)
+        listOfVid=[]
+        uniresult=unique_numbers(result1)
+        for i in uniresult:
+            OUTPUT=i[0]
+            listOfVid.append(OUTPUT)
+        print(listOfVid)
+
+        listOfuserName=[]
+        for i in listOfVid:
+            cursor=connection.cursor()
+            cursor.execute("select UserName,CampaignVideoID from tb_User u inner join CampaignQuestionResponse cqr on u.UserID = cqr.UserID inner join tb_CampaignQuestion cq on cq.CampaignQuestionID=cqr.CampaignQuestionID AND cq.CampaignVideoID='{val}';".format(val=i))
+            result=cursor.fetchall()
+            result=unique_numbers(result)
+            listOfuserName.append(result)
+            
+        
+        print(listOfuserName)
+        return render(request,'tc_DigitalMarketing/approver.html',{"r":listOfuserName})
+
+
+
+def approverview(request,id):
+    if request.method == "POST":
+        return render(request,'tc_DigitalMarketing/approverview.html',{})
+    else:
+        CVID=id
+        dataQ = TbCampaignquestion.objects.filter(campaignvideoid=CVID)
+        listOfDataQ=[]
+        for i in dataQ:
+            output=i.questionid
+            listOfDataQ.append(output)
+        lenOfList=len(listOfDataQ)
+
+        listOfQuestion=[]
+        for i in listOfDataQ:
+            output=i.questiontext
+            listOfQuestion.append(output)
+        questionsText = {}
+        for i in range(0,lenOfList):
+            QT=listOfQuestion[i]
+            questionsText["q"+str(i)] = QT
+
+
+        listOfQuestionResponse=[]
+        for i in listOfDataQ:
+            output=i.questionresponse.split("|")
+            listOfQuestionResponse.append(output)
+
+        QuestionResponse = {}
+        for i in range(0,lenOfList):
+            lQR=listOfQuestionResponse[i]
+            QuestionResponse["k"+str(i)] = lQR
+
+        cursor=connection.cursor()
+        # cursor.execute('select* from tb_UserRole')
+        # ___This for get question and responces__
+        cursor.execute("select QuestionText,Response from CampaignQuestionResponse cqr inner join tb_CampaignQuestion cquestion on cqr.CampaignQuestionID = cquestion.CampaignQuestionID AND cquestion.CampaignVideoID ='{value}' inner join tb_Question question on cquestion.QuestionID = question.QuestionID;".format(value=CVID))
+        # cursor.execute("select QuestionText,Response from CampaignQuestionResponse cqr inner join tb_CampaignQuestion cquestion on cqr.CampaignQuestionID = cquestion.CampaignQuestionID AND cqr.UserID = 1 inner join tb_Question question on cquestion.QuestionID = question.QuestionID;")
+        result=cursor.fetchall()
+        print(result)
+        return render(request,'tc_DigitalMarketing/approverview.html',{'qT':questionsText,'qR':QuestionResponse,'R':result})
+    
+
+
+
+def unique_numbers(numbers):
+    # this will take only unique numbers from the tuple
+    return tuple(set(numbers))
