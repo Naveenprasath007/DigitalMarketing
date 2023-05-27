@@ -151,3 +151,12 @@ class cVideoId(models.Model):
 
     def __str__(self):
         return self.VideoID
+    
+
+class Status(models.Model):
+    userid = models.ForeignKey(TbUser,models.DO_NOTHING, db_column='userid') 
+    VideoID = models.CharField(db_column='videoID', max_length=250, db_collation='SQL_Latin1_General_CP1_CI_AS')
+    status = models.CharField(db_column='Status', max_length=250, db_collation='SQL_Latin1_General_CP1_CI_AS')
+    reason = models.CharField(db_column='Reason',max_length=250,null=True,blank=True, db_collation='SQL_Latin1_General_CP1_CI_AS')
+    def __str__(self):
+        return self.VideoID

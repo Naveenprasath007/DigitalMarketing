@@ -25,5 +25,7 @@ urlpatterns = [
     path("UserIndexpage", views.UserIndexpage),
     path("approver", views.approver),
     path("approverview/<str:id>", views.approverview),
+    path("status/<str:id>", views.status),
+    
 ]
 

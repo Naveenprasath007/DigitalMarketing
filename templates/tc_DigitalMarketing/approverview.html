@@ -12,45 +12,38 @@
             <source src="{{ video }}" type="video/ogg">
         Your browser does not support the video tag.
         </video>
-          <textarea class="form-control"  rows="3">{{ text }}</textarea>
+          <textarea class="form-control"  rows="3">{{ Transcribe }}</textarea>
       </div>
       <div class="col-md-2"></div>
       <div class="col-md-4">
       <form action="" method="post"enctype="multipart/form-data">
         {% csrf_token %}   
-        
-        
-        
               {% if qT.q0 %}
-              <label>{{qT.q0}}</label>
-              {% endif %}
+              <label><h6>{{qT.q0}}</h6></label>
               <br>
-              {% for usage in R.0.1 %}
-              {{usage}}
-              {% endfor %}
+              {% endif %}
               
               {% if qR.k0 %}
+              <label>User Selected : {{R.0.1}}</label>
               <select required aria-label="Select usage" class="form-select"
                   name="q0" onchange="set_sub_usage_list()" >
                   <option selected>----</option>
-
                     {% for usage in qR.k0 %}
                         <option value="{{ usage }}">{{ usage }}</option>
                     {% endfor %}
+                   
               </select>
               <br>
               {% endif %}
              
 
               {% if qT.q1 %}
-              <label>{{qT.q1}}</label>
-              {% endif %}
+              <label><h6>{{qT.q1}}</h6></label>
               <br>
-              {% for usage in R.1.1 %}
-              {{usage}}
-              {% endfor %}
-
+              {% endif %}
+              
               {% if qR.k1 %}
+              <label>User Selected : {{R.1.1}}</label>
               <select required aria-label="Select usage" class="form-select"
                   name="q1" onchange="set_sub_usage_list()" >
                   <option selected>----</option>
@@ -63,14 +56,12 @@
               {% endif %}
               
               {% if qT.q2 %}
-              <label>{{qT.q2}}</label>
-              {% endif %}
+              <label><h6>{{qT.q2}}</h6></label>
               <br>
-              {% for usage in R.2.1 %}
-              {{usage}}
-              {% endfor %}
-
+              {% endif %}
+              
               {% if qR.k2 %}
+              <label>User Selected : {{R.2.1}}</label>
               <select required aria-label="Select usage" class="form-select"
                   name="q2" onchange="set_sub_usage_list()" >
                   <option selected>----</option>
@@ -81,16 +72,13 @@
               <br>
               {% endif %}
               
-
               {% if qT.q3 %}
-              <label>{{qT.q3}}</label>
-              {% endif %}
+              <label><h6>{{qT.q3}}</h6></label>
               <br>
-              {% for usage in R.3.1 %}
-              {{usage}}
-              {% endfor %}
-
+              {% endif %}
+              
               {% if qR.k3 %}
+              <label>User Selected : {{R.3.1}}</label>
               <select required aria-label="Select usage" class="form-select"
                   name="q3" onchange="set_sub_usage_list()" >
                   <option selected>----</option>
@@ -103,14 +91,12 @@
               
 
               {% if qT.q4 %}
-              <label>{{qT.q4}}</label>
+              <label><h6>{{qT.q4}}</h6></label>
+              <br>
               {% endif %}
-
-              {% for usage in R.4.1 %}
-              {{usage}}
-              {% endfor %}
-
+              
               {% if qR.k4 %}
+              <label>User Selected : {{R.4.1}}</label>
               <select required aria-label="Select usage" class="form-select"
                   name="q4" onchange="set_sub_usage_list()" >
                   <option selected>----</option>
@@ -122,14 +108,12 @@
               {% endif %}
               
               {% if qT.q5 %}
-              <label>{{qT.q5}}</label>
+              <label><h6>{{qT.q5}}</h6></label>
+              <br> 
               {% endif %}
-
-              {% for usage in R.5.1 %}
-              {{usage}}
-              {% endfor %}
-
+              
               {% if qR.k5 %}
+              <label>User Selected : {{R.5.1}}</label>
               <select required aria-label="Select usage" class="form-select"
                   name="q5" onchange="set_sub_usage_list()" >
                   <option selected>----</option>
@@ -140,15 +124,8 @@
               <br>
               {% endif %}
               
-              {% if qT.q6 %}
-              <label>{{qT.q6}}</label>
-              {% endif %}
-
-              {% for usage in R.6.1 %}
-              {{usage}}
-              {% endfor %}
-
               {% if qR.k6 %}
+              <label>User Selected : {{R.6.1}}</label>
               <select required aria-label="Select usage" class="form-select"
               name="q6" onchange="set_sub_usage_list()" >
               <option selected>----</option>
@@ -156,10 +133,15 @@
                   <option value="{{ usage}}">{{ usage }}</option>
               {% endfor %}
               </select>
+              <br>
               {% endif %}
+              <label><h6>Reason</h6></label>
+              <textarea class="form-control" name="Textbox" rows="3"></textarea>
+              <br>
+
               <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                <button type="button" class="btn btn-danger">Reject</button>
-                <button type="button" class="btn btn-success">Approve</button>
+                
+                <button type="submit" class="btn btn-danger">Reject</button>
               </div>
             </div>
           </form>
@@ -167,3 +149,4 @@
     </div>
 
 {% endblock content %}
+<button type="button" class="btn btn-danger">Reject</button>

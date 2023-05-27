@@ -1,7 +1,34 @@
 {% extends 'tc_DigitalMarketing/index.html' %}
-
+{% load static %}
 
 {% block content %}
+
+<nav class="navbar navbar-expand-sm hd">    
+    <a href="/dm/createrupload"class="navbar-brand" >
+    <img src="{% static 'images/tc.png' %}"height="60",width="20" alt="Speridian">
+    </a>
+    <!--navbar toggler for smaller screen expand menu-->
+    <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarMenu">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarMenu">
+     <ul class="navbar-nav ms-auto">
+       <li class="nav-item" >
+            <!-- <a  href="/tc/date"class="nav-link"> -->
+            <!--The below <svg> for bootstap predefine icon -->
+            <!-- <svg xmlns="http://www.w3.org/2000/svg" width="25" height="30" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M2 13.5V7h1v6.5a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5V7h1v6.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5zm11-11V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"/>
+                <path fill-rule="evenodd" d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z"/>
+            </svg> -->
+             </a>
+             <a class="nav-item nav-link" href="/dm/status/{{ k }}">Status</a>
+        </li>
+
+     </ul>
+    </div> 
+</nav>
+
+
 
 <div class="container">
     <!-- Stack the columns on mobile by making one full-width and the other half-width -->
@@ -33,22 +60,23 @@
         {% csrf_token %}   
 
               {% if qT.q0 %}
-              <label>{{qT.q0}}</label>
+              <label><h6>{{qT.q0}}</h6></label>
               {% endif %}
+              
               {% if qR.k0 %}
               <select required aria-label="Select usage" class="form-select"
                   name="q0" onchange="set_sub_usage_list()" >
                   <option selected>----</option>
-
                     {% for usage in qR.k0 %}
                         <option value="{{ usage }}">{{ usage }}</option>
                     {% endfor %}
 
               </select>
-              {% endif %}
               <br>
+              {% endif %}
+              
               {% if qT.q1 %}
-              <label>{{qT.q1}}</label>
+              <label><h6>{{qT.q1}}</h6></label>
               {% endif %}
               {% if qR.k1 %}
               <select required aria-label="Select usage" class="form-select"
@@ -60,10 +88,11 @@
                   {% endfor %}
 
               </select>
-              {% endif %}
               <br>
+              {% endif %}
+              
               {% if qT.q2 %}
-              <label>{{qT.q2}}</label>
+              <label><h6>{{qT.q2}}</h6></label>
               {% endif %}
               {% if qR.k2 %}
               <select required aria-label="Select usage" class="form-select"
@@ -75,10 +104,11 @@
                   {% endfor %}
 
               </select>
-              {% endif %}
               <br>
+              {% endif %}
+              
               {% if qT.q3 %}
-              <label>{{qT.q3}}</label>
+              <label><h6>{{qT.q3}}</h6></label>
               {% endif %}
               {% if qR.k3 %}
               <select required aria-label="Select usage" class="form-select"
@@ -88,10 +118,11 @@
                       <option value="{{ usage}}">{{ usage }}</option>
                   {% endfor %}
               </select>
-              {% endif %}
               <br>
+              {% endif %}
+              
               {% if qT.q4 %}
-              <label>{{qT.q4}}</label>
+              <label><h6>{{qT.q4}}</h6></label>
               {% endif %}
               {% if qR.k4 %}
               <select required aria-label="Select usage" class="form-select"
@@ -101,10 +132,11 @@
                       <option value="{{ usage}}">{{ usage }}</option>
                   {% endfor %}
               </select>
-              {% endif %}
               <br>
+              {% endif %}
+              
               {% if qT.q5 %}
-              <label>{{qT.q5}}</label>
+              <label><h6>{{qT.q5}}</h6></label>
               {% endif %}
               {% if qR.k5 %}
               <select required aria-label="Select usage" class="form-select"
@@ -114,10 +146,11 @@
                       <option value="{{ usage}}">{{ usage }}</option>
                   {% endfor %}
               </select>
-              {% endif %}
               <br>
+              {% endif %}
+              
               {% if qT.q6 %}
-              <label>{{qT.q6}}</label>
+              <label><h6>{{qT.q6}}</h6></label>
               {% endif %}
               {% if qR.k6 %}
               <select required aria-label="Select usage" class="form-select"
@@ -127,13 +160,15 @@
                   <option value="{{ usage}}">{{ usage }}</option>
               {% endfor %}
               </select>
+              <br>
               {% endif %}
-               <br>
+               
 
-
+              {% if qT%}
               <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                 <button class="btn btn-success btn">submit</button>
               </div>
+              {% endif %}
             </div>
           </form>
       </div>

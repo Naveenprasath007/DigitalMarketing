@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect,HttpResponse
 from django.core.files.storage import FileSystemStorage
-from .forms import Video_form,Question,userRole,TbUser
-from .models import Video,TbVideo,Campaignvideo,TbCampaignquestion,TbQuestion,Campaignquestionresponse,TbUserrole,cVideoId
+from .forms import Video_form,Question,userRole
+from .models import Video,TbVideo,Campaignvideo,TbCampaignquestion,TbQuestion,Campaignquestionresponse,TbUserrole,cVideoId,Status,TbUser
 import pandas as pd
 import json
 
@@ -78,6 +78,9 @@ def createrupload(request,id):
                     str(new_id)
                     print(str(new_id))
 
+
+                    status = Status(userid=TbUser.objects.get(userid=id),VideoID=new_id,status='pending')
+                    status.save()
                     
                     video_id = cVideoId(VideoID=new_id)
                     video_id.save()
@@ -117,32 +120,6 @@ def createrupload(request,id):
                                                     questionid=TbQuestion.objects.get(questionid='4'))
                         video_details4.save()
                         
-                        # video_details4 = TbCampaignquestion(campaignquestionid=new_id,
-                        #                             campaignvideoid=Campaignvideo.objects.get(previousvideoid=0)
-                        #                             ,userroleid='U1',questionid='2')
-                        # video_details4.save()
-                        
-                        # video_details4 = TbCampaignquestion(campaignquestionid=new_id,
-                        #                             campaignvideoid=Campaignvideo.objects.get(previousvideoid=0)
-                        #                             ,userroleid='U1',questionid='3')
-                        # video_details4.save()
-
-                        # video_details4 = TbCampaignquestion(campaignquestionid=new_id,
-                        #                             campaignvideoid=Campaignvideo.objects.get(previousvideoid=0)
-                        #                             ,userroleid='U1',questionid='4')
-                        # video_details4.save()
-
-                        # video_details4 = TbCampaignquestion(campaignquestionid=new_id,
-                        #                             campaignvideoid=Campaignvideo.objects.get(previousvideoid=0)
-                        #                             ,userroleid='U1',questionid='5')
-                        # video_details4.save()
-
-
-                        # video_details4 = TbCampaignquestion(campaignquestionid=new_id,
-                        #                             campaignvideoid=Campaignvideo.objects.get(previousvideoid=0)
-                        #                             ,userroleid='U1',questionid='6')
-                        # video_details4.save()
-                    
 
                     dataQ = TbCampaignquestion.objects.filter(campaignvideoid=new_id)
                     listOfDataQ=[]
@@ -171,18 +148,12 @@ def createrupload(request,id):
                         lQR=listOfQuestionResponse[i]
                         QuestionResponse["k"+str(i)] = lQR
 
-                    # return render(request,'tc_DigitalMarketing/createrupload.html',{"form":videoform,
-                    #                                                                 "video":url,"text":text,})
                     return render(request,'tc_DigitalMarketing/createrupload.html',{"form":videoform,
                                                                                     "video":url,"text":text,
                                                                                     'qT':questionsText,
                                                                                     'qR':QuestionResponse,
                                                                                     "data":data,'dataQ':dataQ})
             all_video=Video.objects.all()
-            # cV=Campaignvideo.objects.all()
-            
-            # for i in cV:
-            #     CVID=i.campaignvideoid
 
             cursor=connection.cursor()
             cursor.execute("SELECT TOP 1 VideoID FROM DigitalMarketing_cvideoid ORDER BY id DESC;")
@@ -203,7 +174,6 @@ def createrupload(request,id):
             print(q0,q1,q2,q3)
             print(id)
   
-# ___problem is in CVID___#
             cQresponse=TbCampaignquestion.objects.filter(campaignvideoid=CVID)
             lenOfList=len(cQresponse)
             listOfcQresponse=[]
@@ -222,7 +192,8 @@ def createrupload(request,id):
         else:
   
             videoform=Video_form()
-            return render(request,'tc_DigitalMarketing/createrupload.html',{"form":videoform})
+            a=id
+            return render(request,'tc_DigitalMarketing/createrupload.html',{"form":videoform,'k':a})
 
 
 
@@ -312,7 +283,56 @@ def approver(request):
 
 def approverview(request,id):
     if request.method == "POST":
-        return render(request,'tc_DigitalMarketing/approverview.html',{})
+            q0 = request.POST.get('q0')
+            q1 = request.POST.get('q1')
+            q2 = request.POST.get('q2')
+            q3 = request.POST.get('q3')
+            q4 = request.POST.get('q4')
+            q5 = request.POST.get('q5')
+            q6 = request.POST.get('q6')
+            tb= request.POST.get('Textbox')
+            Qlist=[q0,q1,q2,q3,q4,q5,q6]
+            Qlist=list(filter(None,Qlist))
+            print(Qlist)
+            cQresponse=TbCampaignquestion.objects.filter(campaignvideoid=id)
+            lenOfList=len(cQresponse)
+            listOfcQresponse=[]
+            for i in cQresponse:
+                output=i.questionid
+                listOfcQresponse.append(output)
+            print(listOfcQresponse)
+
+            deletestatus=connection.cursor()
+            deletestatus.execute("DELETE FROM DigitalMarketing_status WHERE videoID='{value}';".format(value=id))
+            
+            cursor=connection.cursor()
+            # ___This for get question and responces__
+            cursor.execute("select QuestionText,Response from CampaignQuestionResponse cqr inner join tb_CampaignQuestion cquestion on cqr.CampaignQuestionID = cquestion.CampaignQuestionID AND cquestion.CampaignVideoID ='{value}' inner join tb_Question question on cquestion.QuestionID = question.QuestionID;".format(value=id))
+            result=cursor.fetchall()
+            # print(result)
+            l=[]
+            d={}
+            q=len(Qlist)
+            import itertools
+            for (a, b) in itertools.zip_longest(result,range(0,q)):
+                d = {a[0]: Qlist[b]}
+                l.append(d)
+            l.append(tb)
+            print(l)
+
+            video = Status(userid=TbUser.objects.get(userid='1'),VideoID=id,status='Approve',reason=l)
+            video.save()  
+
+
+            # import itertools
+
+            # for (a, b) in itertools.zip_longest(listOfcQresponse,Qlist):
+            #         video_details5 = Campaignquestionresponse(campaignquestionid=TbCampaignquestion.objects.get(campaignquestionid = a),
+            #                                 userid=TbUser.objects.get(userid = str(1)),response= b)
+            #         video_details5.save()  
+
+            return HttpResponse("submitted succesfully")
+        # return render(request,'tc_DigitalMarketing/approverview.html',{})
     else:
         CVID=id
         dataQ = TbCampaignquestion.objects.filter(campaignvideoid=CVID)
@@ -346,10 +366,15 @@ def approverview(request,id):
         # cursor.execute('select* from tb_UserRole')
         # ___This for get question and responces__
         cursor.execute("select QuestionText,Response from CampaignQuestionResponse cqr inner join tb_CampaignQuestion cquestion on cqr.CampaignQuestionID = cquestion.CampaignQuestionID AND cquestion.CampaignVideoID ='{value}' inner join tb_Question question on cquestion.QuestionID = question.QuestionID;".format(value=CVID))
-        # cursor.execute("select QuestionText,Response from CampaignQuestionResponse cqr inner join tb_CampaignQuestion cquestion on cqr.CampaignQuestionID = cquestion.CampaignQuestionID AND cqr.UserID = 1 inner join tb_Question question on cquestion.QuestionID = question.QuestionID;")
         result=cursor.fetchall()
         print(result)
-        return render(request,'tc_DigitalMarketing/approverview.html',{'qT':questionsText,'qR':QuestionResponse,'R':result})
+
+        cursor1=connection.cursor()
+        cursor1.execute("select VideoPath,VideoTranscription from CampaignVideo cv inner join tb_Video v on v.VideoID=cv.VideoID AND cv.CampaignVideoID='{val}'".format(val=CVID))
+        VideoDeatails=cursor1.fetchall()
+        vP='/'+VideoDeatails[0][0]
+        vT=VideoDeatails[0][1]
+        return render(request,'tc_DigitalMarketing/approverview.html',{'qT':questionsText,'qR':QuestionResponse,'R':result,'video':vP,'Transcribe':vT})
     
 
 
@@ -357,3 +382,11 @@ def approverview(request,id):
 def unique_numbers(numbers):
     # this will take only unique numbers from the tuple
     return tuple(set(numbers))
+
+
+def status(request,id):
+    if request.method == "POST":
+        return render(request,'tc_DigitalMarketing/createrupload.html')
+    else:
+        status=Status.objects.filter(userid=id)
+        return render(request,'tc_DigitalMarketing/status.html',{'status':status})
