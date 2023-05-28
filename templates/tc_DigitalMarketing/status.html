@@ -33,6 +33,7 @@
       <table class="table table-striped">
         <thead>
           <tr>
+            <th scope="col">Date</th>
             <th scope="col">Status</th>
             <th scope="col">Reason</th>
           </tr>
@@ -40,9 +41,10 @@
         <tbody>
           {% for i in status %}
           <tr>
+            <td>{{i.date}}</td>
             <!-- <th scope="row">1</th> -->
             <td>{{i.status}}</td>
-            <td>{{i.reason}}</td>
+            <td><a href="/dm/statusview/{{id}}/{{i.VideoID}}">view</a></td>
           </tr>
           {% endfor %}
         </tbody>

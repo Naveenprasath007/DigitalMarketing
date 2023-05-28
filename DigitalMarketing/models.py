@@ -1,5 +1,6 @@
 from django.db import models
 from .validators import file_size
+from datetime import datetime
 # Create your models here.
 
 
@@ -158,5 +159,6 @@ class Status(models.Model):
     VideoID = models.CharField(db_column='videoID', max_length=250, db_collation='SQL_Latin1_General_CP1_CI_AS')
     status = models.CharField(db_column='Status', max_length=250, db_collation='SQL_Latin1_General_CP1_CI_AS')
     reason = models.CharField(db_column='Reason',max_length=250,null=True,blank=True, db_collation='SQL_Latin1_General_CP1_CI_AS')
+    date =  models.DateField(default=datetime.now)
     def __str__(self):
         return self.VideoID

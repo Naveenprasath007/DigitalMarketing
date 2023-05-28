@@ -26,6 +26,7 @@ urlpatterns = [
     path("approver", views.approver),
     path("approverview/<str:id>", views.approverview),
     path("status/<str:id>", views.status),
+    path("statusview/<int:id>/<str:id1>", views.statusview),
     
 ]
 

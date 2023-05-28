@@ -13,3 +13,4 @@ admin.site.register(TbUser)
 admin.site.register(TbUserrole)
 admin.site.register(cVideoId)
 admin.site.register(Status)
+

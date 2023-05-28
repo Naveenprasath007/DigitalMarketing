@@ -3,7 +3,7 @@ from django.core.files.storage import FileSystemStorage
 from .forms import Video_form,Question,userRole
 from .models import Video,TbVideo,Campaignvideo,TbCampaignquestion,TbQuestion,Campaignquestionresponse,TbUserrole,cVideoId,Status,TbUser
 import pandas as pd
-import json
+
 
 import speech_recognition as sr 
 import moviepy.editor as mp
@@ -220,6 +220,9 @@ def videotranscribe(url):
 
         return text
 
+def unique_numbers(numbers):
+    # this will take only unique numbers from the tuple
+    return tuple(set(numbers))
 
 
         
@@ -270,7 +273,8 @@ def approver(request):
         listOfuserName=[]
         for i in listOfVid:
             cursor=connection.cursor()
-            cursor.execute("select UserName,CampaignVideoID from tb_User u inner join CampaignQuestionResponse cqr on u.UserID = cqr.UserID inner join tb_CampaignQuestion cq on cq.CampaignQuestionID=cqr.CampaignQuestionID AND cq.CampaignVideoID='{val}';".format(val=i))
+            # cursor.execute("select UserName,CampaignVideoID from tb_User u inner join CampaignQuestionResponse cqr on u.UserID = cqr.UserID inner join tb_CampaignQuestion cq on cq.CampaignQuestionID=cqr.CampaignQuestionID AND cq.CampaignVideoID='{val}';".format(val=i))
+            cursor.execute("select date,UserName,CampaignVideoID from DigitalMarketing_status status inner join tb_User u on u.UserID = status.UserID inner join CampaignQuestionResponse cqr on u.UserID = cqr.UserID inner join tb_CampaignQuestion cq on cq.CampaignQuestionID=cqr.CampaignQuestionID AND cq.CampaignVideoID='{val}';".format(val=i))
             result=cursor.fetchall()
             result=unique_numbers(result)
             listOfuserName.append(result)
@@ -293,45 +297,53 @@ def approverview(request,id):
             tb= request.POST.get('Textbox')
             Qlist=[q0,q1,q2,q3,q4,q5,q6]
             Qlist=list(filter(None,Qlist))
-            print(Qlist)
-            cQresponse=TbCampaignquestion.objects.filter(campaignvideoid=id)
-            lenOfList=len(cQresponse)
-            listOfcQresponse=[]
-            for i in cQresponse:
-                output=i.questionid
-                listOfcQresponse.append(output)
-            print(listOfcQresponse)
-
-            deletestatus=connection.cursor()
-            deletestatus.execute("DELETE FROM DigitalMarketing_status WHERE videoID='{value}';".format(value=id))
-            
-            cursor=connection.cursor()
-            # ___This for get question and responces__
-            cursor.execute("select QuestionText,Response from CampaignQuestionResponse cqr inner join tb_CampaignQuestion cquestion on cqr.CampaignQuestionID = cquestion.CampaignQuestionID AND cquestion.CampaignVideoID ='{value}' inner join tb_Question question on cquestion.QuestionID = question.QuestionID;".format(value=id))
-            result=cursor.fetchall()
-            # print(result)
-            l=[]
-            d={}
-            q=len(Qlist)
-            import itertools
-            for (a, b) in itertools.zip_longest(result,range(0,q)):
-                d = {a[0]: Qlist[b]}
-                l.append(d)
-            l.append(tb)
-            print(l)
-
-            video = Status(userid=TbUser.objects.get(userid='1'),VideoID=id,status='Approve',reason=l)
-            video.save()  
+            btn=request.POST.get('btn')
+            if btn =='Approve':  
+                return HttpResponse("submitted succesfully")
+            if btn =='Reject':
+                deletestatus=connection.cursor()
+                deletestatus.execute("DELETE FROM DigitalMarketing_status WHERE videoID='{value}';".format(value=id))
+                
+                # ___This for get question and responces__
+                cursor=connection.cursor()
+                cursor.execute("select QuestionText,Response from CampaignQuestionResponse cqr inner join tb_CampaignQuestion cquestion on cqr.CampaignQuestionID = cquestion.CampaignQuestionID AND cquestion.CampaignVideoID ='{value}' inner join tb_Question question on cquestion.QuestionID = question.QuestionID;".format(value=id))
+                result=cursor.fetchall()
+                print(result)
+                l=[]
+                res = {}
+                for key in result:
+                    for value in Qlist:
+                        res[key[0]] = value
+                        Qlist.remove(value)
+                        break       
+                l.append(res)
+                l.append(tb)
 
 
-            # import itertools
+                # l=[]
+                # d={}
+                # q=len(Qlist)
+                # import itertools
+                # for (a, b) in itertools.zip_longest(result,range(0,q)):
+                #     d = {a[0]: Qlist[b]}
+                #     l.append(d)
+                # l.append(tb)
+                # print(l)
 
-            # for (a, b) in itertools.zip_longest(listOfcQresponse,Qlist):
-            #         video_details5 = Campaignquestionresponse(campaignquestionid=TbCampaignquestion.objects.get(campaignquestionid = a),
-            #                                 userid=TbUser.objects.get(userid = str(1)),response= b)
-            #         video_details5.save()  
+                video = Status(userid=TbUser.objects.get(userid='1'),VideoID=id,status='Rejected',reason=l)
+                video.save() 
 
-            return HttpResponse("submitted succesfully")
+# ____new lines added here__
+                deleteQuestionsres=connection.cursor()
+                # deleteQuestions.execute("DELETE FROM CampaignQuestionResponse CQR inner join tb_CampaignQuestion CQ on CQ.CampaignQuestionID = CQR.CampaignQuestionID WHERE CQ.CampaignVideoID='{value}';".format(value=id))
+                deleteQuestionsres.execute("DELETE CampaignQuestionResponse FROM CampaignQuestionResponse inner join tb_CampaignQuestion on CampaignQuestionResponse.CampaignQuestionID = tb_CampaignQuestion.CampaignQuestionID WHERE tb_CampaignQuestion.CampaignVideoID='{value}';".format(value=id))
+                
+                deleteQuestions=connection.cursor()
+                deleteQuestions.execute("DELETE tb_CampaignQuestion WHERE CampaignVideoID='{value}';".format(value=id))
+
+                deleteCampVideo=connection.cursor()
+                deleteCampVideo.execute("DELETE tb_CampaignVideo WHERE CampaignVideoID='{value}';".format(value=id))
+                return HttpResponse("rejected succesfully")
         # return render(request,'tc_DigitalMarketing/approverview.html',{})
     else:
         CVID=id
@@ -362,9 +374,8 @@ def approverview(request,id):
             lQR=listOfQuestionResponse[i]
             QuestionResponse["k"+str(i)] = lQR
 
-        cursor=connection.cursor()
-        # cursor.execute('select* from tb_UserRole')
         # ___This for get question and responces__
+        cursor=connection.cursor()
         cursor.execute("select QuestionText,Response from CampaignQuestionResponse cqr inner join tb_CampaignQuestion cquestion on cqr.CampaignQuestionID = cquestion.CampaignQuestionID AND cquestion.CampaignVideoID ='{value}' inner join tb_Question question on cquestion.QuestionID = question.QuestionID;".format(value=CVID))
         result=cursor.fetchall()
         print(result)
@@ -377,16 +388,23 @@ def approverview(request,id):
         return render(request,'tc_DigitalMarketing/approverview.html',{'qT':questionsText,'qR':QuestionResponse,'R':result,'video':vP,'Transcribe':vT})
     
 
-
-
-def unique_numbers(numbers):
-    # this will take only unique numbers from the tuple
-    return tuple(set(numbers))
-
-
 def status(request,id):
     if request.method == "POST":
         return render(request,'tc_DigitalMarketing/createrupload.html')
     else:
         status=Status.objects.filter(userid=id)
-        return render(request,'tc_DigitalMarketing/status.html',{'status':status})
+        return render(request,'tc_DigitalMarketing/status.html',{'status':status,'id':id})
+    
+def statusview(request,id,id1):
+    if request.method == "POST":
+        return render(request,'tc_DigitalMarketing/createrupload.html')
+    else:
+        # status=Status.objects.filter(userid=id)
+        print(id1)
+        status=connection.cursor()
+        status.execute("select reason FROM DigitalMarketing_status WHERE userid='{value}' AND VideoID='{value1}';".format(value=id,value1=id1))
+        response=status.fetchall()
+
+        import ast
+        res = ast.literal_eval(response[0][0])
+        return render(request,'tc_DigitalMarketing/statusview.html',{'approverres':res[0],'reason':res[1]})
