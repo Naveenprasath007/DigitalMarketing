@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect,HttpResponse
 from django.core.files.storage import FileSystemStorage
 from .forms import Video_form,Question,userRole
-from .models import Video,TbVideo,Campaignvideo,TbCampaignquestion,TbQuestion,Campaignquestionresponse,TbUserrole,cVideoId,Status,TbUser
+from .models import Video,TbVideo,Campaignvideo,TbCampaignquestion,TbQuestion,Campaignquestionresponse,TbUserrole,cVideoId,Status,TbUser,Approve
 import pandas as pd
 
 
@@ -24,13 +24,12 @@ def createrupload(request,id):
             q4 = request.POST.get('q4')
             q5 = request.POST.get('q5')
             q6 = request.POST.get('q6')
-            Campaignvideoid=request.POST.get('campaign')
+            Campaign=request.POST.get('campaign')
             Qlist=[q0,q1,q2,q3,q4,q5,q6]
             Qlist=list(filter(None,Qlist))
             print(Qlist)
-            print(Campaignvideoid)
-            CVID=Campaignvideoid
-            print(CVID)
+            print(Campaign)
+
 
             if videoform:
                 if videoform.is_valid():
@@ -78,10 +77,6 @@ def createrupload(request,id):
                     str(new_id)
                     print(str(new_id))
 
-
-                    status = Status(userid=TbUser.objects.get(userid=id),VideoID=new_id,status='pending')
-                    status.save()
-                    
                     video_id = cVideoId(VideoID=new_id)
                     video_id.save()
 
@@ -95,7 +90,7 @@ def createrupload(request,id):
                                                 ,campaignid=1,previousvideoid=0)
                     video_details3.save()
 
-                    if CVID == 'ABCD':    
+                    if Campaign == 'ACA':    
                         video_details4 = TbCampaignquestion(campaignquestionid=str(new_id)+str(1),
                                                     campaignvideoid=Campaignvideo.objects.get(campaignvideoid=new_id)
                                                     ,userroleid=TbUserrole.objects.get(userroleid='U1'),
@@ -119,6 +114,22 @@ def createrupload(request,id):
                                                     ,userroleid=TbUserrole.objects.get(userroleid='U1'),
                                                     questionid=TbQuestion.objects.get(questionid='4'))
                         video_details4.save()
+                    
+                    if Campaign == 'ACA1':    
+
+                        video_details4 = TbCampaignquestion(campaignquestionid=str(new_id)+str(3),
+                                                    campaignvideoid=Campaignvideo.objects.get(campaignvideoid=new_id)
+                                                    ,userroleid=TbUserrole.objects.get(userroleid='U1'),
+                                                    questionid=TbQuestion.objects.get(questionid='5'))
+                        video_details4.save()
+
+                        video_details4 = TbCampaignquestion(campaignquestionid=str(new_id)+str(4),
+                                                    campaignvideoid=Campaignvideo.objects.get(campaignvideoid=new_id)
+                                                    ,userroleid=TbUserrole.objects.get(userroleid='U1'),
+                                                    questionid=TbQuestion.objects.get(questionid='6'))
+                        video_details4.save()
+
+
                         
 
                     dataQ = TbCampaignquestion.objects.filter(campaignvideoid=new_id)
@@ -173,6 +184,9 @@ def createrupload(request,id):
             print(CVID)
             print(q0,q1,q2,q3)
             print(id)
+
+            status = Status(userid=TbUser.objects.get(userid=id),VideoID=CVID,status='pending')
+            status.save()
   
             cQresponse=TbCampaignquestion.objects.filter(campaignvideoid=CVID)
             lenOfList=len(cQresponse)
@@ -187,8 +201,8 @@ def createrupload(request,id):
                     video_details5 = Campaignquestionresponse(campaignquestionid=TbCampaignquestion.objects.get(campaignquestionid = a),
                                             userid=TbUser.objects.get(userid = str(id)),response= b)
                     video_details5.save()  
-
-            return HttpResponse("submitted succesfully")
+            messages.success(request, 'submitted succesfully')
+            return redirect('/dm/createrupload/'+id)
         else:
   
             videoform=Video_form()
@@ -240,8 +254,10 @@ def UserIndexpage(request):
                 print(value)
                 if value == "U1":
                     val=a.get('userid')
+                    messages.success(request, 'Login successfully.')
                     return redirect('/dm/createrupload/'+str(val)) 
                 if value == "R1":
+                    messages.success(request, 'Login successfully.')
                     return redirect('/dm/approver')
 
             return redirect('/dm/UserIndexpage')    
@@ -299,7 +315,16 @@ def approverview(request,id):
             Qlist=list(filter(None,Qlist))
             btn=request.POST.get('btn')
             if btn =='Approve':  
-                return HttpResponse("submitted succesfully")
+                getuid=connection.cursor()
+                getuid.execute("select UserName from tb_User u inner join CampaignQuestionResponse cqr on cqr.userID=u.userID inner join tb_CampaignQuestion cq on cq.CampaignQuestionID=cqr.CampaignQuestionID AND cq.CampaignVideoID ='{value}';".format(value=id))  
+                getuid=getuid.fetchall() 
+                getuserid=connection.cursor()
+                getuserid.execute("select UserID from tb_User WHERE UserName='{value}';".format(value=getuid[0][0]))  
+                getuserid=getuserid.fetchall()  
+                approve = Approve(userid=TbUser.objects.get(userid=getuserid[0][0]),VideoID=id,)
+                approve.save()
+                messages.success(request, 'Approved succesfully')
+                return redirect('/dm/approver')
             if btn =='Reject':
                 deletestatus=connection.cursor()
                 deletestatus.execute("DELETE FROM DigitalMarketing_status WHERE videoID='{value}';".format(value=id))
@@ -329,21 +354,30 @@ def approverview(request,id):
                 #     l.append(d)
                 # l.append(tb)
                 # print(l)
+                getuid=connection.cursor()
+                getuid.execute("select UserName from tb_User u inner join CampaignQuestionResponse cqr on cqr.userID=u.userID inner join tb_CampaignQuestion cq on cq.CampaignQuestionID=cqr.CampaignQuestionID AND cq.CampaignVideoID ='{value}';".format(value=id))  
+                getuid=getuid.fetchall() 
+                getuserid=connection.cursor()
+                getuserid.execute("select UserID from tb_User WHERE UserName='{value}';".format(value=getuid[0][0]))  
+                getuserid=getuserid.fetchall() 
 
-                video = Status(userid=TbUser.objects.get(userid='1'),VideoID=id,status='Rejected',reason=l)
+                video = Status(userid=TbUser.objects.get(userid=getuserid[0][0]),VideoID=id,status='Rejected',reason=l)
                 video.save() 
 
-# ____new lines added here__
+                # ____new Delete lines added here__
                 deleteQuestionsres=connection.cursor()
-                # deleteQuestions.execute("DELETE FROM CampaignQuestionResponse CQR inner join tb_CampaignQuestion CQ on CQ.CampaignQuestionID = CQR.CampaignQuestionID WHERE CQ.CampaignVideoID='{value}';".format(value=id))
                 deleteQuestionsres.execute("DELETE CampaignQuestionResponse FROM CampaignQuestionResponse inner join tb_CampaignQuestion on CampaignQuestionResponse.CampaignQuestionID = tb_CampaignQuestion.CampaignQuestionID WHERE tb_CampaignQuestion.CampaignVideoID='{value}';".format(value=id))
+                # deleteQuestions.execute("DELETE FROM CampaignQuestionResponse CQR inner join tb_CampaignQuestion CQ on CQ.CampaignQuestionID = CQR.CampaignQuestionID WHERE CQ.CampaignVideoID='{value}';".format(value=id))
                 
-                deleteQuestions=connection.cursor()
-                deleteQuestions.execute("DELETE tb_CampaignQuestion WHERE CampaignVideoID='{value}';".format(value=id))
+                
+                # This for deleting videoID
+                # deleteQuestions=connection.cursor()
+                # deleteQuestions.execute("DELETE tb_CampaignQuestion WHERE CampaignVideoID='{value}';".format(value=id))
 
-                deleteCampVideo=connection.cursor()
-                deleteCampVideo.execute("DELETE tb_CampaignVideo WHERE CampaignVideoID='{value}';".format(value=id))
-                return HttpResponse("rejected succesfully")
+                # deleteCampVideo=connection.cursor()
+                # deleteCampVideo.execute("DELETE tb_CampaignVideo WHERE CampaignVideoID='{value}';".format(value=id))
+                messages.error(request, 'rejected succesfully')
+                return redirect('/dm/approver')
         # return render(request,'tc_DigitalMarketing/approverview.html',{})
     else:
         CVID=id
@@ -407,4 +441,4 @@ def statusview(request,id,id1):
 
         import ast
         res = ast.literal_eval(response[0][0])
-        return render(request,'tc_DigitalMarketing/statusview.html',{'approverres':res[0],'reason':res[1]})
+        return render(request,'tc_DigitalMarketing/statusview.html',{'approverres':res[0],'reason':res[1],'id':id})
