@@ -480,8 +480,6 @@ def Downloadvideo(request,id):
         cursor1.execute("select VideoPath,VideoTranscription,VideoName from CampaignVideo cv inner join tb_Video v on v.VideoID=cv.VideoID AND cv.CampaignVideoID='{val}'".format(val=id))
         VideoDeatails=cursor1.fetchall()
         vP='/'+VideoDeatails[0][0]
-        vT=VideoDeatails[0][1]
-        vN=VideoDeatails[0][2]
         BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         file_path = BASE_DIR+vP
         with open(file_path,'rb')as fh:
