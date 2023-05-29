@@ -14,6 +14,9 @@ from django.contrib import messages
 
 from django.db import connection
 
+import mimetypes
+import os
+
 def createrupload(request,id):
         if request.method == "POST":
             videoform=Video_form(data=request.POST,files=request.FILES)
@@ -315,14 +318,28 @@ def approverview(request,id):
             Qlist=list(filter(None,Qlist))
             btn=request.POST.get('btn')
             if btn =='Approve':  
+                cursor1=connection.cursor()
+                cursor1.execute("select VideoPath,VideoTranscription,VideoName from CampaignVideo cv inner join tb_Video v on v.VideoID=cv.VideoID AND cv.CampaignVideoID='{val}'".format(val=CVID))
+                VideoDeatails=cursor1.fetchall()
+                vP='/'+VideoDeatails[0][0]
+                vN=VideoDeatails[0][2]
+    
                 getuid=connection.cursor()
                 getuid.execute("select UserName from tb_User u inner join CampaignQuestionResponse cqr on cqr.userID=u.userID inner join tb_CampaignQuestion cq on cq.CampaignQuestionID=cqr.CampaignQuestionID AND cq.CampaignVideoID ='{value}';".format(value=id))  
                 getuid=getuid.fetchall() 
                 getuserid=connection.cursor()
                 getuserid.execute("select UserID from tb_User WHERE UserName='{value}';".format(value=getuid[0][0]))  
                 getuserid=getuserid.fetchall()  
-                approve = Approve(userid=TbUser.objects.get(userid=getuserid[0][0]),VideoID=id,)
+                print(getuserid[0][0])
+                approve = Approve(userid=TbUser.objects.get(userid=getuserid[0][0]),VideoID=id,VideoTitle=vN,VideoPath=vP)
                 approve.save()
+                deletestatus=connection.cursor()
+                deletestatus.execute("DELETE FROM DigitalMarketing_status WHERE videoID='{value}';".format(value=id))
+
+                video = Status(userid=TbUser.objects.get(userid=getuserid[0][0]),VideoID=id,status='Approved',reason='Video is Correct')
+                video.save() 
+                deleteQuestionsres=connection.cursor()
+                deleteQuestionsres.execute("DELETE CampaignQuestionResponse FROM CampaignQuestionResponse inner join tb_CampaignQuestion on CampaignQuestionResponse.CampaignQuestionID = tb_CampaignQuestion.CampaignQuestionID WHERE tb_CampaignQuestion.CampaignVideoID='{value}';".format(value=id))
                 messages.success(request, 'Approved succesfully')
                 return redirect('/dm/approver')
             if btn =='Reject':
@@ -415,11 +432,12 @@ def approverview(request,id):
         print(result)
 
         cursor1=connection.cursor()
-        cursor1.execute("select VideoPath,VideoTranscription from CampaignVideo cv inner join tb_Video v on v.VideoID=cv.VideoID AND cv.CampaignVideoID='{val}'".format(val=CVID))
+        cursor1.execute("select VideoPath,VideoTranscription,VideoName from CampaignVideo cv inner join tb_Video v on v.VideoID=cv.VideoID AND cv.CampaignVideoID='{val}'".format(val=CVID))
         VideoDeatails=cursor1.fetchall()
         vP='/'+VideoDeatails[0][0]
         vT=VideoDeatails[0][1]
-        return render(request,'tc_DigitalMarketing/approverview.html',{'qT':questionsText,'qR':QuestionResponse,'R':result,'video':vP,'Transcribe':vT})
+        vN=VideoDeatails[0][2]
+        return render(request,'tc_DigitalMarketing/approverview.html',{'qT':questionsText,'qR':QuestionResponse,'R':result,'video':vP,'Transcribe':vT,'vname':vN})
     
 
 def status(request,id):
@@ -439,6 +457,39 @@ def statusview(request,id,id1):
         status.execute("select reason FROM DigitalMarketing_status WHERE userid='{value}' AND VideoID='{value1}';".format(value=id,value1=id1))
         response=status.fetchall()
 
+        cursor1=connection.cursor()
+        cursor1.execute("select VideoPath,VideoName from CampaignVideo cv inner join tb_Video v on v.VideoID=cv.VideoID AND cv.CampaignVideoID='{val}'".format(val=id1))
+        VideoDeatails=cursor1.fetchall()
+        vP='/'+VideoDeatails[0][0]
+        vName=VideoDeatails[0][1]
+
         import ast
         res = ast.literal_eval(response[0][0])
-        return render(request,'tc_DigitalMarketing/statusview.html',{'approverres':res[0],'reason':res[1],'id':id})
+        return render(request,'tc_DigitalMarketing/statusview.html',{'approverres':res[0],'reason':res[1],'id':id,'video':vP,'vname':vName})
+    
+
+def Download(request):
+    if request.method == "POST":
+        return render(request,'tc_DigitalMarketing/Download.html',{'approvedvid':approvedvid,})
+    else:
+        approvedvid=Approve.objects.all()
+        return render(request,'tc_DigitalMarketing/Download.html',{'approvedvid':approvedvid,})
+    
+def Downloadvideo(request,id):
+        cursor1=connection.cursor()
+        cursor1.execute("select VideoPath,VideoTranscription,VideoName from CampaignVideo cv inner join tb_Video v on v.VideoID=cv.VideoID AND cv.CampaignVideoID='{val}'".format(val=id))
+        VideoDeatails=cursor1.fetchall()
+        vP='/'+VideoDeatails[0][0]
+        vT=VideoDeatails[0][1]
+        vN=VideoDeatails[0][2]
+        BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        file_path = BASE_DIR+vP
+        with open(file_path,'rb')as fh:
+            response=HttpResponse(fh.read(),content_type="application/adminupload")
+            response['Content-Disposition']='inline;filename='+os.path.basename(file_path)
+            return response
+
+
+
+
+

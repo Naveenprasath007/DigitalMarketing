@@ -166,6 +166,8 @@ class Status(models.Model):
 class Approve(models.Model):
     userid = models.ForeignKey(TbUser,models.DO_NOTHING, db_column='userid') 
     VideoID = models.CharField(db_column='videoID', max_length=250, db_collation='SQL_Latin1_General_CP1_CI_AS')
+    VideoTitle = models.CharField(db_column='videoTitle', max_length=250, db_collation='SQL_Latin1_General_CP1_CI_AS')
+    VideoPath = models.CharField(db_column='videoPath', max_length=250, db_collation='SQL_Latin1_General_CP1_CI_AS')
     approvedDate =  models.DateField(default=datetime.now)
     def __str__(self):
         return self.VideoID

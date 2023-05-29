@@ -27,6 +27,8 @@ urlpatterns = [
     path("approverview/<str:id>", views.approverview),
     path("status/<str:id>", views.status),
     path("statusview/<int:id>/<str:id1>", views.statusview),
+    path("Download", views.Download),
+    path("Downloadvideo/<str:id>", views.Downloadvideo),
     
 ]
 
