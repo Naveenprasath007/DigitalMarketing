@@ -31,9 +31,10 @@
 <div>
   <div class="container">
     {% include 'tc_DigitalMarketing/messages.html' %}
-    <table class="table table-striped">
+    <table class="table table-striped text-center">
       <thead>
         <tr>
+          <th scope="col">Video</th>
           <th scope="col">DateApproved</th>
           <th scope="col">VideoName</th>
           <th scope="col">Download</th>
@@ -43,6 +44,13 @@
         {% for i in approvedvid %}
         <tr>
           <!-- <th scope="row">1</th> -->
+          <td>        
+            <video width="100%" height="100" controls>
+              <source src="{{ i.VideoPath }}" type="video/mp4">
+              <source src="{{ i.VideoPath }}" type="video/ogg">
+          Your browser does not support the video tag.
+          </video>
+          </td>
           <td>{{i.approvedDate}}</td>
           <td>{{i.VideoTitle }}</td>
           

@@ -188,7 +188,7 @@ def createrupload(request,id):
             print(q0,q1,q2,q3)
             print(id)
 
-            status = Status(userid=TbUser.objects.get(userid=id),VideoID=CVID,status='pending')
+            status = Status(userid=TbUser.objects.get(userid=id),VideoID=CVID,status='Pending')
             status.save()
   
             cQresponse=TbCampaignquestion.objects.filter(campaignvideoid=CVID)
@@ -319,7 +319,7 @@ def approverview(request,id):
             btn=request.POST.get('btn')
             if btn =='Approve':  
                 cursor1=connection.cursor()
-                cursor1.execute("select VideoPath,VideoTranscription,VideoName from CampaignVideo cv inner join tb_Video v on v.VideoID=cv.VideoID AND cv.CampaignVideoID='{val}'".format(val=CVID))
+                cursor1.execute("select VideoPath,VideoTranscription,VideoName from CampaignVideo cv inner join tb_Video v on v.VideoID=cv.VideoID AND cv.CampaignVideoID='{val}'".format(val=id))
                 VideoDeatails=cursor1.fetchall()
                 vP='/'+VideoDeatails[0][0]
                 vN=VideoDeatails[0][2]
