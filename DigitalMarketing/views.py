@@ -14,8 +14,8 @@ from django.contrib import messages
 
 from django.db import connection
 
-import mimetypes
 import os
+from datetime import datetime
 
 def createrupload(request,id):
         if request.method == "POST":
@@ -169,11 +169,20 @@ def createrupload(request,id):
                                                                                     "data":data,'dataQ':dataQ})
             all_video=Video.objects.all()
 
+
+
             cursor=connection.cursor()
             cursor.execute("SELECT TOP 1 VideoID FROM DigitalMarketing_cvideoid ORDER BY id DESC;")
             result=cursor.fetchall()
             print(result)
             CVID=result[0][0]
+            
+
+            cursor1=connection.cursor()
+            cursor1.execute("select VideoPath,VideoTranscription,VideoName from CampaignVideo cv inner join tb_Video v on v.VideoID=cv.VideoID AND cv.CampaignVideoID='{val}'".format(val=CVID))
+            VideoDeatails=cursor1.fetchall()
+            vP='/'+VideoDeatails[0][0]
+            vN=VideoDeatails[0][2]
             
             for i in all_video:
                 url=i.video.url
@@ -187,8 +196,12 @@ def createrupload(request,id):
             print(CVID)
             print(q0,q1,q2,q3)
             print(id)
+            from datetime import datetime
 
-            status = Status(userid=TbUser.objects.get(userid=id),VideoID=CVID,status='Pending')
+            now = datetime.now()
+            dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+
+            status = Status(userid=TbUser.objects.get(userid=id),VideoID=CVID,status='Pending',VideoName=vN,ApproverName='---')
             status.save()
   
             cQresponse=TbCampaignquestion.objects.filter(campaignvideoid=CVID)
@@ -257,11 +270,12 @@ def UserIndexpage(request):
                 print(value)
                 if value == "U1":
                     val=a.get('userid')
-                    messages.success(request, 'Login successfully.')
+                    
                     return redirect('/dm/createrupload/'+str(val)) 
                 if value == "R1":
-                    messages.success(request, 'Login successfully.')
-                    return redirect('/dm/approver')
+                    val=a.get('userid')
+                    
+                    return redirect('/dm/approver/'+str(val))
 
             return redirect('/dm/UserIndexpage')    
         else:
@@ -269,7 +283,7 @@ def UserIndexpage(request):
 
 
     
-def approver(request):
+def approver(request,id):
     if request.method == "POST":
         return render(request,'tc_DigitalMarketing/createrupload.html')
     else:
@@ -281,30 +295,42 @@ def approver(request):
         cursor1=connection.cursor()
         cursor1.execute("select CampaignVideoID from tb_User u inner join CampaignQuestionResponse cqr on u.UserID = cqr.UserID inner join tb_CampaignQuestion cq on cq.CampaignQuestionID=cqr.CampaignQuestionID;")
         result1=cursor1.fetchall()
-        print(result1)
-        listOfVid=[]
+        
+        
         uniresult=unique_numbers(result1)
+        print(uniresult)
+
+        listOfVid=[]
         for i in uniresult:
             OUTPUT=i[0]
             listOfVid.append(OUTPUT)
         print(listOfVid)
 
         listOfuserName=[]
+        # for i in listOfVid:
+        #     cursor=connection.cursor()
+        #     # cursor.execute("select UserName,CampaignVideoID from tb_User u inner join CampaignQuestionResponse cqr on u.UserID = cqr.UserID inner join tb_CampaignQuestion cq on cq.CampaignQuestionID=cqr.CampaignQuestionID AND cq.CampaignVideoID='{val}';".format(val=i))
+        #     cursor.execute("select date,UserName,CampaignVideoID,videoName from DigitalMarketing_status status inner join tb_User u on u.UserID = status.UserID inner join CampaignQuestionResponse cqr on u.UserID = cqr.UserID inner join tb_CampaignQuestion cq on cq.CampaignQuestionID=cqr.CampaignQuestionID AND cq.CampaignVideoID='{val}';".format(val=i))
+        #     result=cursor.fetchall()
+        #     result=unique_numbers(result)
+        #     listOfuserName.append(result)
+        # print(listOfuserName)
+
         for i in listOfVid:
             cursor=connection.cursor()
             # cursor.execute("select UserName,CampaignVideoID from tb_User u inner join CampaignQuestionResponse cqr on u.UserID = cqr.UserID inner join tb_CampaignQuestion cq on cq.CampaignQuestionID=cqr.CampaignQuestionID AND cq.CampaignVideoID='{val}';".format(val=i))
-            cursor.execute("select date,UserName,CampaignVideoID from DigitalMarketing_status status inner join tb_User u on u.UserID = status.UserID inner join CampaignQuestionResponse cqr on u.UserID = cqr.UserID inner join tb_CampaignQuestion cq on cq.CampaignQuestionID=cqr.CampaignQuestionID AND cq.CampaignVideoID='{val}';".format(val=i))
+            cursor.execute("select date,UserName,videoName,VideoID from DigitalMarketing_status status inner join tb_User u on u.UserID=status.UserID  Where VideoID='{val}';".format(val=i))
             result=cursor.fetchall()
             result=unique_numbers(result)
             listOfuserName.append(result)
-            
-        
         print(listOfuserName)
-        return render(request,'tc_DigitalMarketing/approver.html',{"r":listOfuserName})
+    
+
+        return render(request,'tc_DigitalMarketing/approver.html',{"r":listOfuserName,'id':id,})
 
 
 
-def approverview(request,id):
+def approverview(request,id,uid):
     if request.method == "POST":
             q0 = request.POST.get('q0')
             q1 = request.POST.get('q1')
@@ -323,6 +349,11 @@ def approverview(request,id):
                 VideoDeatails=cursor1.fetchall()
                 vP='/'+VideoDeatails[0][0]
                 vN=VideoDeatails[0][2]
+
+                getApproverName=connection.cursor()
+                getApproverName.execute("select UserName from tb_User  WHERE UserID='{value}';".format(value=uid) )
+                getApproverName=getApproverName.fetchall() 
+                print(getApproverName[0][0])
     
                 getuid=connection.cursor()
                 getuid.execute("select UserName from tb_User u inner join CampaignQuestionResponse cqr on cqr.userID=u.userID inner join tb_CampaignQuestion cq on cq.CampaignQuestionID=cqr.CampaignQuestionID AND cq.CampaignVideoID ='{value}';".format(value=id))  
@@ -331,17 +362,18 @@ def approverview(request,id):
                 getuserid.execute("select UserID from tb_User WHERE UserName='{value}';".format(value=getuid[0][0]))  
                 getuserid=getuserid.fetchall()  
                 print(getuserid[0][0])
+                
                 approve = Approve(userid=TbUser.objects.get(userid=getuserid[0][0]),VideoID=id,VideoTitle=vN,VideoPath=vP)
                 approve.save()
                 deletestatus=connection.cursor()
                 deletestatus.execute("DELETE FROM DigitalMarketing_status WHERE videoID='{value}';".format(value=id))
 
-                video = Status(userid=TbUser.objects.get(userid=getuserid[0][0]),VideoID=id,status='Approved',reason='Video is Correct')
+                video = Status(userid=TbUser.objects.get(userid=getuserid[0][0]),VideoID=id,status='Approved',reason='Video is Correct',VideoName=vN,ApproverName=getApproverName[0][0])
                 video.save() 
                 deleteQuestionsres=connection.cursor()
                 deleteQuestionsres.execute("DELETE CampaignQuestionResponse FROM CampaignQuestionResponse inner join tb_CampaignQuestion on CampaignQuestionResponse.CampaignQuestionID = tb_CampaignQuestion.CampaignQuestionID WHERE tb_CampaignQuestion.CampaignVideoID='{value}';".format(value=id))
                 messages.success(request, 'Approved succesfully')
-                return redirect('/dm/approver')
+                return redirect('/dm/approver/'+str(uid))
             if btn =='Reject':
                 deletestatus=connection.cursor()
                 deletestatus.execute("DELETE FROM DigitalMarketing_status WHERE videoID='{value}';".format(value=id))
@@ -371,6 +403,12 @@ def approverview(request,id):
                 #     l.append(d)
                 # l.append(tb)
                 # print(l)
+                cursor1=connection.cursor()
+                cursor1.execute("select VideoPath,VideoTranscription,VideoName from CampaignVideo cv inner join tb_Video v on v.VideoID=cv.VideoID AND cv.CampaignVideoID='{val}'".format(val=id))
+                VideoDeatails=cursor1.fetchall()
+                vP='/'+VideoDeatails[0][0]
+                vN=VideoDeatails[0][2]
+
                 getuid=connection.cursor()
                 getuid.execute("select UserName from tb_User u inner join CampaignQuestionResponse cqr on cqr.userID=u.userID inner join tb_CampaignQuestion cq on cq.CampaignQuestionID=cqr.CampaignQuestionID AND cq.CampaignVideoID ='{value}';".format(value=id))  
                 getuid=getuid.fetchall() 
@@ -378,7 +416,12 @@ def approverview(request,id):
                 getuserid.execute("select UserID from tb_User WHERE UserName='{value}';".format(value=getuid[0][0]))  
                 getuserid=getuserid.fetchall() 
 
-                video = Status(userid=TbUser.objects.get(userid=getuserid[0][0]),VideoID=id,status='Rejected',reason=l)
+                getApproverName=connection.cursor()
+                getApproverName.execute("select UserName from tb_User  WHERE UserID='{value}';".format(value=uid) )
+                getApproverName=getApproverName.fetchall() 
+                print(getApproverName)
+
+                video = Status(userid=TbUser.objects.get(userid=getuserid[0][0]),VideoID=id,status='Rejected',reason=l,VideoName=vN,ApproverName=getApproverName[0][0])
                 video.save() 
 
                 # ____new Delete lines added here__
@@ -394,7 +437,7 @@ def approverview(request,id):
                 # deleteCampVideo=connection.cursor()
                 # deleteCampVideo.execute("DELETE tb_CampaignVideo WHERE CampaignVideoID='{value}';".format(value=id))
                 messages.error(request, 'rejected succesfully')
-                return redirect('/dm/approver')
+                return redirect('/dm/approver/'+str(uid))
         # return render(request,'tc_DigitalMarketing/approverview.html',{})
     else:
         CVID=id
@@ -437,7 +480,7 @@ def approverview(request,id):
         vP='/'+VideoDeatails[0][0]
         vT=VideoDeatails[0][1]
         vN=VideoDeatails[0][2]
-        return render(request,'tc_DigitalMarketing/approverview.html',{'qT':questionsText,'qR':QuestionResponse,'R':result,'video':vP,'Transcribe':vT,'vname':vN})
+        return render(request,'tc_DigitalMarketing/approverview.html',{'qT':questionsText,'qR':QuestionResponse,'R':result,'video':vP,'Transcribe':vT,'vname':vN,'id':uid})
     
 
 def status(request,id):
@@ -465,7 +508,7 @@ def statusview(request,id,id1):
 
         import ast
         res = ast.literal_eval(response[0][0])
-        return render(request,'tc_DigitalMarketing/statusview.html',{'approverres':res[0],'reason':res[1],'id':id,'video':vP,'vname':vName})
+        return render(request,'tc_DigitalMarketing/statusview.html',{'approverres':res[0],'reason':res[1],'id':id,'video':vP,'vname':vName,'vid':id1,})
     
 
 def Download(request):
@@ -487,7 +530,42 @@ def Downloadvideo(request,id):
             response['Content-Disposition']='inline;filename='+os.path.basename(file_path)
             return response
 
+def Deletevideo(request,id,id1):
+        cursor1=connection.cursor()
+        cursor1.execute("select VideoName from CampaignVideo cv inner join tb_Video v on v.VideoID=cv.VideoID AND cv.CampaignVideoID='{val}'".format(val=id))
+        VideoDeatails=cursor1.fetchall()
+        vName=VideoDeatails[0][0]
 
+        getpath=connection.cursor()
+        getpath.execute("SELECT VideoPath FROM tb_Video WHERE videoID='{value}';".format(value=id))
+        getpath=getpath.fetchall()
+        v_path=getpath[0][0]
+        print(v_path)
+
+        deletestatus=connection.cursor()
+        deletestatus.execute("DELETE FROM DigitalMarketing_status WHERE videoID='{value}';".format(value=id))
+
+        deleteQuestionsres=connection.cursor()
+        deleteQuestionsres.execute("DELETE CampaignQuestionResponse FROM CampaignQuestionResponse inner join tb_CampaignQuestion on CampaignQuestionResponse.CampaignQuestionID = tb_CampaignQuestion.CampaignQuestionID WHERE tb_CampaignQuestion.CampaignVideoID='{value}';".format(value=id))
+        # deleteQuestions.execute("DELETE FROM CampaignQuestionResponse CQR inner join tb_CampaignQuestion CQ on CQ.CampaignQuestionID = CQR.CampaignQuestionID WHERE CQ.CampaignVideoID='{value}';".format(value=id))
+        
+        
+        # This for deleting videoID
+        deleteQuestions=connection.cursor()
+        deleteQuestions.execute("DELETE tb_CampaignQuestion WHERE CampaignVideoID='{value}';".format(value=id))
+
+        deleteCampVideo=connection.cursor()
+        deleteCampVideo.execute("DELETE CampaignVideo WHERE VideoID='{value}';".format(value=id))
+       
+        video=connection.cursor()
+        video.execute("DELETE tb_Video WHERE VideoID='{value}';".format(value=id))
+
+        video=connection.cursor()
+        video.execute("DELETE DigitalMarketing_video WHERE Title='{value}';".format(value=vName))
+
+        os.remove(v_path)
+        messages.error(request, 'Video Details Deleted succesfully')
+        return redirect('/dm/createrupload/'+str(id1))
 
 
 

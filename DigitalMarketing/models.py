@@ -159,7 +159,9 @@ class Status(models.Model):
     VideoID = models.CharField(db_column='videoID', max_length=250, db_collation='SQL_Latin1_General_CP1_CI_AS')
     status = models.CharField(db_column='Status', max_length=250, db_collation='SQL_Latin1_General_CP1_CI_AS')
     reason = models.CharField(db_column='Reason',max_length=250,null=True,blank=True, db_collation='SQL_Latin1_General_CP1_CI_AS')
-    date =  models.DateField(default=datetime.now)
+    date =  models.DateTimeField(default=datetime.now)
+    VideoName= models.CharField(db_column='videoName', max_length=250, db_collation='SQL_Latin1_General_CP1_CI_AS')
+    ApproverName= models.CharField(db_column='Approver', max_length=250, db_collation='SQL_Latin1_General_CP1_CI_AS')
     def __str__(self):
         return self.VideoID
     
@@ -168,6 +170,6 @@ class Approve(models.Model):
     VideoID = models.CharField(db_column='videoID', max_length=250, db_collation='SQL_Latin1_General_CP1_CI_AS')
     VideoTitle = models.CharField(db_column='videoTitle', max_length=250, db_collation='SQL_Latin1_General_CP1_CI_AS')
     VideoPath = models.CharField(db_column='videoPath', max_length=250, db_collation='SQL_Latin1_General_CP1_CI_AS')
-    approvedDate =  models.DateField(default=datetime.now)
+    approvedDate =  models.DateTimeField(default=datetime.now)
     def __str__(self):
         return self.VideoID

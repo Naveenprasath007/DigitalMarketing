@@ -23,12 +23,13 @@ urlpatterns = [
     path("createrupload/<str:id>", views.createrupload),
     # path("createrupload", views.createrupload),
     path("UserIndexpage", views.UserIndexpage),
-    path("approver", views.approver),
-    path("approverview/<str:id>", views.approverview),
+    path("approver/<str:id>", views.approver),
+    path("approverview/<str:id>/<str:uid>", views.approverview),
     path("status/<str:id>", views.status),
     path("statusview/<int:id>/<str:id1>", views.statusview),
     path("Download", views.Download),
     path("Downloadvideo/<str:id>", views.Downloadvideo),
+    path("DeleteVideo/<str:id>/<str:id1>", views.Deletevideo),
     
 ]
 

@@ -34,8 +34,10 @@
         <thead>
           <tr>
             <th scope="col">Date</th>
+            <th scope="col">VideoTitle</th>
             <th scope="col">Status</th>
             <th scope="col">Reason</th>
+            <th scope="col">ReviewerName</th>
           </tr>
         </thead>
         <tbody>
@@ -43,6 +45,7 @@
           <tr>
             <td>{{i.date}}</td>
             <!-- <th scope="row">1</th> -->
+            <td>{{i.VideoName}}</td>
             <td>{{i.status}}</td>
             {% if i.status != 'Rejected' %}
             <td>---</td>
@@ -50,6 +53,7 @@
             {% if i.status == 'Rejected' %}
             <td><a href="/dm/statusview/{{id}}/{{i.VideoID}}">view</a></td>
             {% endif %}
+            <td>{{i.ApproverName}}</td>
           </tr>
           {% endfor %}
         </tbody>

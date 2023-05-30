@@ -36,6 +36,7 @@
         <tr>
           <th scope="col">Date</th>
           <th scope="col">Creater Name</th>
+          <th scope="col">VideoTitle</th>
           <th scope="col">Video Details</th>
         </tr>
       </thead>
@@ -45,7 +46,8 @@
           <!-- <th scope="row">1</th> -->
           <td>{{i.0.0}}</td>
           <td>{{i.0.1}}</td>
-          <td><a href="/dm/approverview/{{i.0.2}}">view</a></td>
+          <td>{{i.0.2}}</td>
+          <td><a href="/dm/approverview/{{i.0.3}}/{{ id }}">view</a></td>
         </tr>
         {% endfor %}
       </tbody>
