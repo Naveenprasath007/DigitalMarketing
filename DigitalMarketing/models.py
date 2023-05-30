@@ -6,7 +6,7 @@ from datetime import datetime
 
 class Video(models.Model):
     Title=models.CharField(max_length=100)
-    video=models.FileField(upload_to="video/%m/%y",validators=[file_size])
+    video=models.FileField(upload_to="video/%y/%m",validators=[file_size])
     def __str__(self):
         return self.Title
     
