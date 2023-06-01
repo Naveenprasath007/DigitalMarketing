@@ -276,7 +276,7 @@ def UserIndexpage(request):
                     val=a.get('userid')
                     
                     return redirect('/dm/approver/'+str(val))
-
+            messages.error(request, 'Invalid! userName or password')
             return redirect('/dm/UserIndexpage')    
         else:
             return render(request, 'tc_DigitalMarketing/UserindexPage.html')

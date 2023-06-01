@@ -105,15 +105,9 @@ body, html {
   <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css'></script>
 <!-- <script src='https://code.jquery.com/jquery-1.11.1.min.js'></script><script  src="./script.js"></script> -->
 
-{% if messages %}
-<div class="messages">
-{% for message in messages %}
-
-	<div class="alert alert-danger">{{ message }}</div>
-{% endfor %}
-</div>
-{% endif %}
-	{% block content %} {% endblock %}
+{% include 'tc_DigitalMarketing/messages.html' %}
+	{% block content %}
+	{% endblock %}
 
 </div>
 
