@@ -1,6 +1,6 @@
 from django.contrib import admin
-from .models import Video,TbVideo,Campaignvideo,TbCampaignquestion,TbQuestion,Campaignquestionresponse,TbUserrole,TbUser,cVideoId,Status,Approve
-# Register your models here.
+from .models import Video,TbVideo,Campaignvideo,TbCampaignquestion,TbQuestion,Campaignquestionresponse,TbUserrole,TbUser,cVideoId,TbApprove,TbStatus
+
 
 admin.site.register(Video)
 # admin.site.register(video_details)
@@ -12,6 +12,6 @@ admin.site.register(Campaignquestionresponse)
 admin.site.register(TbUser)
 admin.site.register(TbUserrole)
 admin.site.register(cVideoId)
-admin.site.register(Status)
-admin.site.register(Approve)
+admin.site.register(TbApprove)
+admin.site.register(TbStatus)
 

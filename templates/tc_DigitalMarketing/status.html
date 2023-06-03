@@ -45,15 +45,15 @@
           <tr>
             <td>{{i.date}}</td>
             <!-- <th scope="row">1</th> -->
-            <td>{{i.VideoName}}</td>
+            <td>{{i.videoname}}</td>
             <td>{{i.status}}</td>
             {% if i.status != 'Rejected' %}
             <td>---</td>
             {% endif %}
             {% if i.status == 'Rejected' %}
-            <td><a href="/dm/statusview/{{id}}/{{i.VideoID}}">view</a></td>
+            <td><a href="/dm/statusview/{{id}}/{{i.videoid}}">view</a></td>
             {% endif %}
-            <td>{{i.ApproverName}}</td>
+            <td>{{i.approver}}</td>
           </tr>
           {% endfor %}
         </tbody>

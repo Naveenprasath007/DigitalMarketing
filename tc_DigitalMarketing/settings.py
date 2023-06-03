@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-as*@*^n(abg2r+)g4t=^&(4#r2u7nw&j922ulbae&0*qdn^2gx
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -82,14 +82,30 @@ WSGI_APPLICATION = 'tc_DigitalMarketing.wsgi.application'
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+#___________MY DATABASE_____________
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'mssql',
+#         'HOST': 'SPCOKLAP-5452\TCDM',
+#         'PORT': '',
+#         'NAME': 'db_CreatorManagement',
+#         'USER': 'sa',
+#         'PASSWORD': 'SP_436219',
+
+#         'OPTIONS': {
+#             'driver': 'ODBC Driver 17 for SQL Server',
+#         },
+#     },
+# }
+
 DATABASES = {
     'default': {
         'ENGINE': 'mssql',
-        'HOST': 'SPCOKLAP-5452\TCDM',
+        'HOST': 'dm-truecoverage.crjk5x4tyyvi.us-east-1.rds.amazonaws.com',
         'PORT': '',
         'NAME': 'db_CreatorManagement',
-        'USER': 'sa',
-        'PASSWORD': 'SP_436219',
+        'USER': 'admin',
+        'PASSWORD': 'admin1234',
 
         'OPTIONS': {
             'driver': 'ODBC Driver 17 for SQL Server',
