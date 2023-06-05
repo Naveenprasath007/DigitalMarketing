@@ -545,7 +545,7 @@ def Deletevideo(request,id,id1):
         print(v_path)
 
         deletestatus=connection.cursor()
-        deletestatus.execute("DELETE FROM DigitalMarketing_status WHERE videoID='{value}';".format(value=id))
+        deletestatus.execute("DELETE FROM tb_Status WHERE videoID='{value}';".format(value=id))
 
         deleteQuestionsres=connection.cursor()
         deleteQuestionsres.execute("DELETE CampaignQuestionResponse FROM CampaignQuestionResponse inner join tb_CampaignQuestion on CampaignQuestionResponse.CampaignQuestionID = tb_CampaignQuestion.CampaignQuestionID WHERE tb_CampaignQuestion.CampaignVideoID='{value}';".format(value=id))
