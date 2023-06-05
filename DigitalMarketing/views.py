@@ -27,11 +27,15 @@ def createrupload(request,id):
             q4 = request.POST.get('q4')
             q5 = request.POST.get('q5')
             q6 = request.POST.get('q6')
-            Campaign=request.POST.get('campaign')
+            Vendor=request.POST.get('Vendor')
+            Lob=request.POST.get('LOB')
+            Creative=request.POST.get('Creative')
+            Platform=request.POST.get('Platform')
+            print(Creative)
+            print(Platform)
             Qlist=[q0,q1,q2,q3,q4,q5,q6]
             Qlist=list(filter(None,Qlist))
             print(Qlist)
-            print(Campaign)
 
 
             if videoform:
@@ -47,34 +51,6 @@ def createrupload(request,id):
 
                     data=TbQuestion.objects.all()
 
-                    # dataQ = TbCampaignquestion.objects.filter(campaignvideoid=CVID)
-                    # listOfDataQ=[]
-                    # for i in dataQ:
-                    #     output=i.questionid
-                    #     listOfDataQ.append(output)
-                    # lenOfList=len(listOfDataQ)
-
-                    # listOfQuestion=[]
-                    # for i in listOfDataQ:
-                    #     output=i.questiontext
-                    #     listOfQuestion.append(output)
-                    # questionsText = {}
-                    # for i in range(0,lenOfList):
-                    #     QT=listOfQuestion[i]
-                    #     questionsText["q"+str(i)] = QT
-
-
-                    # listOfQuestionResponse=[]
-                    # for i in listOfDataQ:
-                    #     output=i.questionresponse.split("|")
-                    #     listOfQuestionResponse.append(output)
-
-                    # QuestionResponse = {}
-                    # for i in range(0,lenOfList):
-                    #     lQR=listOfQuestionResponse[i]
-                    #     QuestionResponse["k"+str(i)] = lQR
-
-
                     # Generate a new UUID
                     new_id = uuid.uuid4()
                     str(new_id)
@@ -85,7 +61,7 @@ def createrupload(request,id):
 
                     T=Title1
                     video_details2 = TbVideo(videoid=new_id,videoname=T,videopath=url1,
-                                            previousvideoid=0,videotranscription=text)
+                                            previousvideoid=0,videotranscription=text,vendor=Vendor,lob=Lob,creative=Creative,platform=Platform)
                     video_details2.save()
 
                     video_details3 = Campaignvideo(campaignvideoid=new_id,
@@ -93,7 +69,7 @@ def createrupload(request,id):
                                                 ,campaignid=1,previousvideoid=0)
                     video_details3.save()
 
-                    if Campaign == 'ACA':    
+                    if Platform == 'Facebook':    
                         video_details4 = TbCampaignquestion(campaignquestionid=str(new_id)+str(1),
                                                     campaignvideoid=Campaignvideo.objects.get(campaignvideoid=new_id)
                                                     ,userroleid=TbUserrole.objects.get(userroleid='U1'),
@@ -118,7 +94,7 @@ def createrupload(request,id):
                         #                             questionid=TbQuestion.objects.get(questionid='4'))
                         # video_details4.save()
                     
-                    if Campaign == 'ACA1':    
+                    if Platform == 'Youtube':    
 
                         video_details4 = TbCampaignquestion(campaignquestionid=str(new_id)+str(3),
                                                     campaignvideoid=Campaignvideo.objects.get(campaignvideoid=new_id)
@@ -131,6 +107,22 @@ def createrupload(request,id):
                         #                             ,userroleid=TbUserrole.objects.get(userroleid='U1'),
                         #                             questionid=TbQuestion.objects.get(questionid='6'))
                         # video_details4.save()
+                    
+                    if Platform == 'GDN':    
+
+                        video_details4 = TbCampaignquestion(campaignquestionid=str(new_id)+str(3),
+                                                    campaignvideoid=Campaignvideo.objects.get(campaignvideoid=new_id)
+                                                    ,userroleid=TbUserrole.objects.get(userroleid='U1'),
+                                                    questionid=TbQuestion.objects.get(questionid='1'))
+                        video_details4.save()
+
+                    if Platform == 'TikTok':    
+
+                        video_details4 = TbCampaignquestion(campaignquestionid=str(new_id)+str(3),
+                                                    campaignvideoid=Campaignvideo.objects.get(campaignvideoid=new_id)
+                                                    ,userroleid=TbUserrole.objects.get(userroleid='U1'),
+                                                    questionid=TbQuestion.objects.get(questionid='1'))
+                        video_details4.save()
 
 
                         
@@ -179,11 +171,18 @@ def createrupload(request,id):
             
 
             cursor1=connection.cursor()
-            cursor1.execute("select VideoPath,VideoTranscription,VideoName from CampaignVideo cv inner join tb_Video v on v.VideoID=cv.VideoID AND cv.CampaignVideoID='{val}'".format(val=CVID))
+            cursor1.execute("select VideoPath,VideoTranscription,VideoName,Platform from CampaignVideo cv inner join tb_Video v on v.VideoID=cv.VideoID AND cv.CampaignVideoID='{val}'".format(val=CVID))
             VideoDeatails=cursor1.fetchall()
             vP='/'+VideoDeatails[0][0]
             vN=VideoDeatails[0][2]
-            
+            pN=VideoDeatails[0][3]
+
+            userName=connection.cursor()
+            userName.execute("select UserName from tb_User where UserID='{val}'".format(val=id))
+            userName=userName.fetchall()
+            UN=userName[0][0]
+            print(UN)
+
             for i in all_video:
                 url=i.video.url
                 Title1=i.Title
@@ -202,7 +201,7 @@ def createrupload(request,id):
             dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
 
             # status = TbStatus(userid=TbUser.objects.get(userid=id),VideoID=CVID,status='Pending',VideoName=vN,ApproverName='---')
-            status = TbStatus(userid=TbUser.objects.get(userid=id),videoid=CVID,status='Pending',videoname=vN,approver='---')
+            status = TbStatus(userid=TbUser.objects.get(userid=id),videoid=CVID,status='Pending',videoname=vN,approver='---',uploadername=UN,platform=pN)
             status.save()
   
             cQresponse=TbCampaignquestion.objects.filter(campaignvideoid=CVID)
@@ -255,8 +254,6 @@ def unique_numbers(numbers):
     # this will take only unique numbers from the tuple
     return tuple(set(numbers))
 
-
-        
     
 def UserIndexpage(request):
         if request.method == 'POST':
@@ -288,49 +285,45 @@ def approver(request,id):
     if request.method == "POST":
         return render(request,'tc_DigitalMarketing/createrupload.html')
     else:
-        # cursor=connection.cursor()
-        # cursor.execute("select UserName from tb_User WHERE UserRoleID='U1';")
-        # result=cursor.fetchall()
-        # print(result)
-
-        cursor1=connection.cursor()
-        cursor1.execute("select CampaignVideoID from tb_User u inner join CampaignQuestionResponse cqr on u.UserID = cqr.UserID inner join tb_CampaignQuestion cq on cq.CampaignQuestionID=cqr.CampaignQuestionID;")
-        result1=cursor1.fetchall()
+        # cursor1=connection.cursor()
+        # cursor1.execute("select CampaignVideoID from tb_User u inner join CampaignQuestionResponse cqr on u.UserID = cqr.UserID inner join tb_CampaignQuestion cq on cq.CampaignQuestionID=cqr.CampaignQuestionID;")
+        # result1=cursor1.fetchall()
         
         
-        uniresult=unique_numbers(result1)
-        print(uniresult)
+        # uniresult=unique_numbers(result1)
+        # print(uniresult)
 
-        listOfVid=[]
-        for i in uniresult:
-            OUTPUT=i[0]
-            listOfVid.append(OUTPUT)
-        print(listOfVid)
+        # listOfVid=[]
+        # for i in uniresult:
+        #     OUTPUT=i[0]
+        #     listOfVid.append(OUTPUT)
+        # print(listOfVid)
 
-        listOfuserName=[]
+        # listOfuserName=[]
+
         # for i in listOfVid:
         #     cursor=connection.cursor()
         #     # cursor.execute("select UserName,CampaignVideoID from tb_User u inner join CampaignQuestionResponse cqr on u.UserID = cqr.UserID inner join tb_CampaignQuestion cq on cq.CampaignQuestionID=cqr.CampaignQuestionID AND cq.CampaignVideoID='{val}';".format(val=i))
-        #     cursor.execute("select date,UserName,CampaignVideoID,videoName from DigitalMarketing_status status inner join tb_User u on u.UserID = status.UserID inner join CampaignQuestionResponse cqr on u.UserID = cqr.UserID inner join tb_CampaignQuestion cq on cq.CampaignQuestionID=cqr.CampaignQuestionID AND cq.CampaignVideoID='{val}';".format(val=i))
+            
+        #     #old one
+        #     # cursor.execute("select date,UserName,videoName,VideoID from DigitalMarketing_status status inner join tb_User u on u.UserID=status.UserID  Where VideoID='{val}';".format(val=i))
+        #     cursor.execute("select CreatedDate,UserName,videoName,VideoID from tb_Status status inner join tb_User u on u.UserID=status.UserID  Where VideoID='{val}';".format(val=i))
         #     result=cursor.fetchall()
         #     result=unique_numbers(result)
         #     listOfuserName.append(result)
         # print(listOfuserName)
-
-        for i in listOfVid:
-            cursor=connection.cursor()
-            # cursor.execute("select UserName,CampaignVideoID from tb_User u inner join CampaignQuestionResponse cqr on u.UserID = cqr.UserID inner join tb_CampaignQuestion cq on cq.CampaignQuestionID=cqr.CampaignQuestionID AND cq.CampaignVideoID='{val}';".format(val=i))
-            
-            #old one
-            # cursor.execute("select date,UserName,videoName,VideoID from DigitalMarketing_status status inner join tb_User u on u.UserID=status.UserID  Where VideoID='{val}';".format(val=i))
-            cursor.execute("select CreatedDate,UserName,videoName,VideoID from tb_Status status inner join tb_User u on u.UserID=status.UserID  Where VideoID='{val}';".format(val=i))
-            result=cursor.fetchall()
-            result=unique_numbers(result)
-            listOfuserName.append(result)
-        print(listOfuserName)
     
 
-        return render(request,'tc_DigitalMarketing/approver.html',{"r":listOfuserName,'id':id,})
+        # return render(request,'tc_DigitalMarketing/approver.html',{"r":listOfuserName,'id':id,})
+        d=1
+        userName=connection.cursor()
+        userName.execute("select UserName from tb_User where UserID='{val}';".format(val=d))
+        userName=userName.fetchall()
+        UN=userName[0][0]
+        print(UN)
+    
+        status=TbStatus.objects.all()
+        return render(request,'tc_DigitalMarketing/approver.html',{'status':status,'id':id})
 
 
 
@@ -349,10 +342,11 @@ def approverview(request,id,uid):
             btn=request.POST.get('btn')
             if btn =='Approve':  
                 cursor1=connection.cursor()
-                cursor1.execute("select VideoPath,VideoTranscription,VideoName from CampaignVideo cv inner join tb_Video v on v.VideoID=cv.VideoID AND cv.CampaignVideoID='{val}'".format(val=id))
+                cursor1.execute("select VideoPath,VideoTranscription,VideoName,Platform from CampaignVideo cv inner join tb_Video v on v.VideoID=cv.VideoID AND cv.CampaignVideoID='{val}'".format(val=id))
                 VideoDeatails=cursor1.fetchall()
                 vP='/'+VideoDeatails[0][0]
                 vN=VideoDeatails[0][2]
+                pN=VideoDeatails[0][3]
 
                 getApproverName=connection.cursor()
                 getApproverName.execute("select UserName from tb_User  WHERE UserID='{value}';".format(value=uid) )
@@ -366,13 +360,18 @@ def approverview(request,id,uid):
                 getuserid.execute("select UserID from tb_User WHERE UserName='{value}';".format(value=getuid[0][0]))  
                 getuserid=getuserid.fetchall()  
                 print(getuserid[0][0])
+
+                userName=connection.cursor()
+                userName.execute("select UserName from tb_User where UserID='{val}'".format(val=getuserid[0][0]))
+                userName=userName.fetchall()
+                UN=userName[0][0]
                 
-                approve = TbApprove(userid=TbUser.objects.get(userid=getuserid[0][0]),VideoID=id,VideoTitle=vN,VideoPath=vP)
+                approve = TbApprove(userid=TbUser.objects.get(userid=getuserid[0][0]),videoid=id,videotitle=vN,videopath=vP,uploadername=UN)
                 approve.save()
                 deletestatus=connection.cursor()
                 deletestatus.execute("DELETE FROM tb_Status WHERE videoID='{value}';".format(value=id))
 
-                video = TbStatus(userid=TbUser.objects.get(userid=getuserid[0][0]),videoid=id,status='Approved',reason='Video is Correct',videoname=vN,approver=getApproverName[0][0])   
+                video = TbStatus(userid=TbUser.objects.get(userid=getuserid[0][0]),videoid=id,status='Approved',reason='Video is Correct',videoname=vN,approver=getApproverName[0][0],uploadername=UN,platform=pN)   
                 # video = Status(userid=TbUser.objects.get(userid=getuserid[0][0]),VideoID=id,status='Approved',reason='Video is Correct',VideoName=vN,ApproverName=getApproverName[0][0])
                 video.save() 
                 deleteQuestionsres=connection.cursor()
@@ -398,21 +397,12 @@ def approverview(request,id,uid):
                 l.append(res)
                 l.append(tb)
 
-
-                # l=[]
-                # d={}
-                # q=len(Qlist)
-                # import itertools
-                # for (a, b) in itertools.zip_longest(result,range(0,q)):
-                #     d = {a[0]: Qlist[b]}
-                #     l.append(d)
-                # l.append(tb)
-                # print(l)
                 cursor1=connection.cursor()
-                cursor1.execute("select VideoPath,VideoTranscription,VideoName from CampaignVideo cv inner join tb_Video v on v.VideoID=cv.VideoID AND cv.CampaignVideoID='{val}'".format(val=id))
+                cursor1.execute("select VideoPath,VideoTranscription,VideoName,Platform from CampaignVideo cv inner join tb_Video v on v.VideoID=cv.VideoID AND cv.CampaignVideoID='{val}'".format(val=id))
                 VideoDeatails=cursor1.fetchall()
                 vP='/'+VideoDeatails[0][0]
                 vN=VideoDeatails[0][2]
+                pN=VideoDeatails[0][3]
 
                 getuid=connection.cursor()
                 getuid.execute("select UserName from tb_User u inner join CampaignQuestionResponse cqr on cqr.userID=u.userID inner join tb_CampaignQuestion cq on cq.CampaignQuestionID=cqr.CampaignQuestionID AND cq.CampaignVideoID ='{value}';".format(value=id))  
@@ -426,7 +416,13 @@ def approverview(request,id,uid):
                 getApproverName=getApproverName.fetchall() 
                 print(getApproverName)
 
-                video = TbStatus(userid=TbUser.objects.get(userid=getuserid[0][0]),videoid=id,status='Rejected',reason=l,videoname=vN,approver=getApproverName[0][0])   
+
+                userName=connection.cursor()
+                userName.execute("select UserName from tb_User where UserID='{val}'".format(val=getuserid[0][0]))
+                userName=userName.fetchall()
+                UN=userName[0][0]
+
+                video = TbStatus(userid=TbUser.objects.get(userid=getuserid[0][0]),videoid=id,status='Rejected',reason=l,videoname=vN,approver=getApproverName[0][0],uploadername=UN,platform=pN)   
                 # video = Status(userid=TbUser.objects.get(userid=getuserid[0][0]),VideoID=id,status='Rejected',reason=l,VideoName=vN,ApproverName=getApproverName[0][0])
                 video.save() 
 

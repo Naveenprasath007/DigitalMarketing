@@ -37,11 +37,12 @@ class Campaignvideo(models.Model):
         db_table = 'CampaignVideo'
 
 class TbApprove(models.Model):
-    userid = models.ForeignKey('TbUser', models.DO_NOTHING, db_column='UserID',primary_key=True)  # Field name made lowercase.
-    videoid = models.CharField(db_column='VideoID', max_length=250)  # Field name made lowercase.
+    userid = models.ForeignKey('TbUser', models.DO_NOTHING, db_column='UserID')  # Field name made lowercase.
+    videoid = models.CharField(db_column='VideoID', max_length=250,primary_key=True)  # Field name made lowercase.
     videotitle = models.CharField(db_column='VideoTitle', max_length=255, blank=True, null=True)  # Field name made lowercase.
     videopath = models.CharField(db_column='VideoPath', max_length=255, blank=True, null=True)  # Field name made lowercase.
-    approveddate = models.DateTimeField(db_column='ApprovedDate', blank=True, null=True)  # Field name made lowercase.
+    uploadername = models.CharField(db_column='UploaderName', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    approveddate = models.DateTimeField(default=datetime.now)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -70,13 +71,16 @@ class TbQuestion(models.Model):
 
 
 class TbStatus(models.Model):
-    userid = models.ForeignKey('TbUser', models.DO_NOTHING, db_column='UserID', primary_key=True)  # Field name made lowercase.
-    videoid = models.CharField(db_column='VideoID', max_length=250)  # Field name made lowercase.
+    userid = models.ForeignKey('TbUser', models.DO_NOTHING, db_column='UserID')  # Field name made lowercase.
+    videoid = models.CharField(db_column='VideoID', max_length=250, primary_key=True)  # Field name made lowercase.
     reason = models.CharField(db_column='Reason', max_length=255, blank=True, null=True)  # Field name made lowercase.
     videoname = models.CharField(db_column='videoName', max_length=255, blank=True, null=True)  # Field name made lowercase.
     approver = models.CharField(db_column='Approver', max_length=255, blank=True, null=True)  # Field name made lowercase.
     status = models.CharField(db_column='Status', max_length=255, blank=True, null=True)  # Field name made lowercase.
-    createddate = models.DateTimeField(db_column='CreatedDate', blank=True, null=True)  # Field name made lowercase.
+    uploadername = models.CharField(db_column='UploaderName', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    platform = models.CharField(db_column='Platform', max_length=2000)  # Field name made lowercase.
+    createddate = models.DateTimeField(default=datetime.now)  # Field name made lowercase.
+
 
     class Meta:
         managed = False
@@ -109,6 +113,10 @@ class TbVideo(models.Model):
     videoname = models.CharField(db_column='VideoName', max_length=2000)  # Field name made lowercase.
     videopath = models.CharField(db_column='VideoPath', max_length=2000)  # Field name made lowercase.
     videotranscription = models.TextField(db_column='VideoTranscription')  # Field name made lowercase.
+    vendor = models.CharField(db_column='Vendor', max_length=2000)  # Field name made lowercase.
+    lob = models.CharField(db_column='LOB', max_length=2000)  # Field name made lowercase.
+    creative = models.CharField(db_column='Creative', max_length=2000)  # Field name made lowercase.
+    platform = models.CharField(db_column='Platform', max_length=2000)  # Field name made lowercase.
 
     class Meta:
         managed = False

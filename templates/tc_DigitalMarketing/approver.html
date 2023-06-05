@@ -28,7 +28,7 @@
   </div> 
 </nav>
 
-<div>
+<!-- <div>
   <div class="container">
     {% include 'tc_DigitalMarketing/messages.html' %}
     <table class="table table-bordered text-center">
@@ -43,11 +43,44 @@
       <tbody>
         {% for i in r %}
         <tr>
-          <!-- <th scope="row">1</th> -->
           <td>{{i.0.0}}</td>
           <td>{{i.0.1}}</td>
           <td>{{i.0.2}}</td>
           <td><a href="/dm/approverview/{{i.0.3}}/{{ id }}">view</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div> -->
+
+<div>
+  <div class="container">
+    <table class="table table-bordered text-center">
+      <thead>
+        <tr>
+          <!-- <th scope="col">Date</th> -->
+          <th scope="col">VideoTitle</th>
+          <th scope="col">Status</th>
+          <th scope="col">Uploaded By</th>
+          <th scope="col">Reviewed By</th>
+          <th scope="col">Reason</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for i in status %}
+        <tr>
+          <!-- <td>{{i.date}}</td> -->
+          <td>{{i.videoname}}</td>
+          <td>{{i.status}}</td>
+          <td>{{i.uploadername}}</td>
+          <td>{{i.approver}}</td>
+          {% if i.status != 'Pending' %}
+          <td>---</td>
+          {% endif %}
+          {% if i.status == 'Pending' %}
+          <td><a href="/dm/approverview/{{i.videoid}}/{{id}}">view</a></td>
+          {% endif %}
         </tr>
         {% endfor %}
       </tbody>

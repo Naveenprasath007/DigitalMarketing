@@ -38,16 +38,43 @@
         <form action="" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <h6>{{ form.as_p }}</h6> 
-            <label ><h6>Choose a campaign:</h6></label>
-            <select name="campaign">
-              <option value="ACA">ACA</option>
-              <option value="ACA1">ACA1</option>
+            <label ><h6>Select Vendor</h6></label>
+            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+            <select name="Vendor">
+              <option value="ACAIM">ACAIM</option>
+              <option value="AdSparkx">AdSparkx</option>
+              <option value="TC NB">TC NB</option>
+              <option value="My Health Angel">My Health Angel</option>
             </select>
-             &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-             &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-             &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; 
-             &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;
-             &nbsp; &nbsp;&nbsp; 
+            <br>
+            <label ><h6>Which LOB is this Creative for?</h6></label>
+            &nbsp; &nbsp; &nbsp; &nbsp;
+            <select name="LOB">
+              <option value="ACA">ACA</option>
+              <option value="MediCare">MediCare</option>
+              <option value="MediCare">MediCaid</option>
+            </select>
+            <br>
+            <label ><h6>Select type of Creative </h6></label>
+            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+            <select name="Creative">
+              <option value="Image">Image</option>
+              <option value="Video">Video</option>
+              <option value="GIF">GIF</option>
+            </select>
+            <br>
+            <label ><h6>Which Platform is this Creative for?</h6></label>&nbsp;
+            <select name="Platform">
+              <option value="Facebook">Facebook</option>
+              <option value="Youtube">Youtube</option>
+              <option value="GDN">GDN</option>
+              <option value="TikTok">TikTok</option>
+              <option value="Native">Native</option>
+            </select>
+             &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
             <button class="btn btn-primary">Upload</button>
         </form>
     

@@ -33,27 +33,30 @@
       <table class="table table-bordered text-center">
         <thead>
           <tr>
-            <th scope="col">Date</th>
+            <!-- <th scope="col">Date</th> -->
             <th scope="col">VideoTitle</th>
+            <th scope="col">VideoPlatform</th>
             <th scope="col">Status</th>
+            <th scope="col">Uploaded By</th>
+            <th scope="col">Reviewed By</th>
             <th scope="col">Reason</th>
-            <th scope="col">ReviewerName</th>
           </tr>
         </thead>
         <tbody>
           {% for i in status %}
           <tr>
-            <td>{{i.date}}</td>
-            <!-- <th scope="row">1</th> -->
+            <!-- <td>{{i.date}}</td> -->
             <td>{{i.videoname}}</td>
+            <td>{{i.platform}}</td>
             <td>{{i.status}}</td>
+            <td>{{i.uploadername}}</td>
+            <td>{{i.approver}}</td>
             {% if i.status != 'Rejected' %}
             <td>---</td>
             {% endif %}
             {% if i.status == 'Rejected' %}
             <td><a href="/dm/statusview/{{id}}/{{i.videoid}}">view</a></td>
             {% endif %}
-            <td>{{i.approver}}</td>
           </tr>
           {% endfor %}
         </tbody>
