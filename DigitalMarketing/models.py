@@ -3,12 +3,6 @@ from .validators import file_size
 from datetime import datetime
 
 
-class Video(models.Model):
-    Title=models.CharField(max_length=100)
-    video=models.FileField(upload_to="video/%y/%m",validators=[file_size])
-    def __str__(self):
-        return self.Title
-
 class cVideoId(models.Model):
     VideoID = models.CharField(db_column='videoID', max_length=250, db_collation='SQL_Latin1_General_CP1_CI_AS') 
 
@@ -19,7 +13,7 @@ class cVideoId(models.Model):
 class Campaignquestionresponse(models.Model):
     campaignquestionid = models.ForeignKey('TbCampaignquestion', models.DO_NOTHING, db_column='CampaignQuestionID', blank=True, null=True)  # Field name made lowercase.
     userid = models.ForeignKey('TbUser', models.DO_NOTHING, db_column='UserID', blank=True, null=True)  # Field name made lowercase.
-    response = models.CharField(db_column='Response', max_length=2000)  # Field name made lowercase.
+    response = models.CharField(db_column='Response',primary_key=True, max_length=2000)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -117,6 +111,8 @@ class TbVideo(models.Model):
     lob = models.CharField(db_column='LOB', max_length=2000)  # Field name made lowercase.
     creative = models.CharField(db_column='Creative', max_length=2000)  # Field name made lowercase.
     platform = models.CharField(db_column='Platform', max_length=2000)  # Field name made lowercase.
+    videopath1 = models.CharField(db_column='VideoPath1', max_length=2000,blank=True, null=True)  # Field name made lowercase.
+    videotranscription1 = models.TextField(db_column='VideoTranscribeOne')  # Field name made lowercase.
 
     class Meta:
         managed = False

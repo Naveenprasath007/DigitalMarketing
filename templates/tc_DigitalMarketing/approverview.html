@@ -41,6 +41,17 @@
         Your browser does not support the video tag.
         </video>
           <textarea class="form-control"  rows="3">{{ Transcribe }}</textarea>
+          <br>
+        {% if video1 != '--' %}
+          <label><h5>Other Creatives</h5> </label>
+          
+          <video width="100%" height="240" controls>
+            <source src="{{ video1 }}" type="video/mp4">
+            <source src="{{ video1 }}" type="video/ogg">
+        Your browser does not support the video tag.
+        </video>
+          <textarea class="form-control"  rows="3">{{ Transcribe1 }}</textarea>
+        {% endif %}
       </div>
       </div>
       <div class="col-md-1"></div>
@@ -55,15 +66,15 @@
               {% endif %}
               
               {% if qR.k0 %}
-              <label>User Selected : {{R.0.1}}</label>
-              <select required aria-label="Select usage" class="form-select"
+              <label>User Choice: <b>{{R.0.1}}</b> </label>
+              <!-- <select required aria-label="Select usage" class="form-select"
                   name="q0" onchange="set_sub_usage_list()" >
                   <option selected>----</option>
                     {% for usage in qR.k0 %}
                         <option value="{{ usage }}">{{ usage }}</option>
                     {% endfor %}
                    
-              </select>
+              </select> -->
               <br>
               {% endif %}
              
@@ -166,15 +177,41 @@
               </select>
               <br>
               {% endif %}
+              <button  name="btn1" value="Rej" class="btn btn-danger">Reject</button>
+              <button  name="btn2" value="Apo" class="btn btn-success">Approve</button>
+
+              {% if btn1 == 'Rej' %}
+              <br>
               <label><h6>Reason</h6></label>
-              <textarea class="form-control" name="Textbox" rows="3"></textarea>
+              <textarea class="form-control" name="ReasonTextbox" rows="3"></textarea>
+              <br>
+              <label><h6>Dimensions?</h6></label>
+              <textarea class="form-control" name="DimensionsTextbox" rows="3"></textarea>
+              <br>
+              <label><h6>Quality?</h6></label>
+              <textarea class="form-control" name="QualityTextbox" rows="3"></textarea>
+              <br>
+              <label><h6>Content in the Video?</h6></label>
+              <textarea class="form-control" name="ContentTextbox" rows="3"></textarea>
+              <br>
+              <label><h6>Others</h6></label>
+              <textarea class="form-control" name="OthersTextbox" rows="3"></textarea>
               <br>
 
               <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                
-                <button type="submit" name="btn" value="Reject" class="btn btn-danger">Reject</button>
-                <button type="submit" name="btn" value="Approve" class="btn btn-success">Approve</button>
+                <button type="submit" name="btn" value="Reject" class="btn btn-danger">Confirm Rejection</button>
               </div>
+              {% endif %}
+
+              {% if btn2 == 'Apo' %}
+              <br>
+              <label><h6>suggestion</h6></label>
+              <textarea class="form-control" name="Textbox" rows="3"></textarea>
+              <br>
+              <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button type="submit" name="btn" value="Approve" class="btn btn-success">Confirm Approve</button>
+              </div>
+              {% endif %}
             </div>
           </form>
           </div>

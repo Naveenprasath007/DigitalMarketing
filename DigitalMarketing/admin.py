@@ -1,9 +1,7 @@
 from django.contrib import admin
-from .models import Video,TbVideo,Campaignvideo,TbCampaignquestion,TbQuestion,Campaignquestionresponse,TbUserrole,TbUser,cVideoId,TbApprove,TbStatus
+from .models import TbVideo,Campaignvideo,TbCampaignquestion,TbQuestion,Campaignquestionresponse,TbUserrole,TbUser,cVideoId,TbApprove,TbStatus
 
 
-admin.site.register(Video)
-# admin.site.register(video_details)
 admin.site.register(TbVideo)
 admin.site.register(Campaignvideo)
 admin.site.register(TbCampaignquestion)

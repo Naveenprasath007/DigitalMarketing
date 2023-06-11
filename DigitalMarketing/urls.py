@@ -30,6 +30,6 @@ urlpatterns = [
     path("Download", views.Download),
     path("Downloadvideo/<str:id>", views.Downloadvideo),
     path("DeleteVideo/<str:id>/<str:id1>", views.Deletevideo),
-    
+    path("uploadagain/<str:id>", views.uploadagain),   
 ]
 

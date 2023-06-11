@@ -44,11 +44,48 @@
 
 
 <div class="container">  
-    <label for=""><h6>Reason For Rejection:</h6></label>
+    <label for=""><h6></h6></label>
     <br>
-    <textarea id="" name="" rows="3" cols="40">
+    <!-- <textarea id="" name="" rows="3" cols="40">
     {{ reason }}
     </textarea>
+    <br>
+    <label for=""><h6>Dimension</h6></label>
+    <textarea id="" name="" rows="3" cols="40">
+    {{ Dimension }}
+    </textarea> -->
+
+
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Question</th>
+            <th scope="col">Reasons</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Reason For Rejection</th>
+            <td>{{ reason }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Dimension?</th>
+            <td>{{ Dimension }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Quality?</th>
+            <td>{{ Quality }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Content in the Video?</th>
+            <td>{{ Content }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Others</th>
+            <td>{{ Others }}</td>
+          </tr>
+        </tbody>
+      </table>
 </div>
 </div>
 

@@ -36,8 +36,21 @@
       <div class="col-md-6">
         <div class="overflow-auto" style="max-width:100%; max-height:70vh"> 
         <form action="" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <h6>{{ form.as_p }}</h6> 
+            <!-- {% csrf_token %} -->
+            <!-- <h6>{{ form.as_p }}</h6>  -->
+            
+              {% csrf_token %}
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Video Title</label>
+                <input type="text" class="form-control" name="Videotitle">
+              </div>
+              <div class="mb-3">
+                <input class="form-control" type="file" id="formFile" name="myfile">
+              </div>
+              
+    
+              <!-- <button type="submit" class="btn btn-primary">Submit</button> -->
+    
             <label ><h6>Select Vendor</h6></label>
             &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
             &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
@@ -75,7 +88,7 @@
               <option value="Native">Native</option>
             </select>
              &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
-            <button class="btn btn-primary">Upload</button>
+            <button class="btn btn-primary" name='Upload' value="Upload">Upload</button>
         </form>
     
         <hr>
