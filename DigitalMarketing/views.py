@@ -40,22 +40,16 @@ def createrupload(request,id):
             print(Qlist)
 
             if upload == 'Upload':
-                    
                     Title1=request.POST.get('Videotitle')
                     myfile = request.FILES['myfile']
                     fs = FileSystemStorage()
                     filename = fs.save(myfile.name, myfile)
                     uploaded_file_url = fs.url(filename)
                     print(uploaded_file_url)
-
-
                     url=uploaded_file_url
                     url1=url[1:]
                     print(url1)
                     text=videotranscribe(url1)
-                    
-
-
                     data=TbQuestion.objects.all()
 
                     # Generate a new UUID
