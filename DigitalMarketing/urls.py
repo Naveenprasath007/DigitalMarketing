@@ -20,16 +20,15 @@ from DigitalMarketing import views
 
 urlpatterns = [
     path("admin/", admin.site.urls), 
-    path("createrupload/<str:id>", views.createrupload),
-    # path("createrupload", views.createrupload),
-    path("UserIndexpage", views.UserIndexpage),
+    path("createrupload/<str:id>", views.creater_upload),
+    path("UserIndexpage", views.user_indexpage),
     path("approver/<str:id>", views.approver),
-    path("approverview/<str:id>/<str:uid>", views.approverview),
+    path("approverview/<str:id>/<str:uid>", views.approver_view),
     path("status/<str:id>", views.status),
-    path("statusview/<int:id>/<str:id1>", views.statusview),
-    path("Download", views.Download),
-    path("Downloadvideo/<str:id>", views.Downloadvideo),
-    path("DeleteVideo/<str:id>/<str:id1>", views.Deletevideo),
-    path("uploadagain/<str:id>", views.uploadagain),   
+    path("statusview/<int:id>/<str:id1>", views.status_view),
+    path("Download", views.download),
+    path("Downloadvideo/<str:id>", views.download_video),
+    path("DeleteVideo/<str:id>/<str:id1>", views.delete_video),
+    path("uploadagain/<str:id>", views.upload_again),   
 ]
 

@@ -4,22 +4,18 @@ from .forms import Question,userRole
 from .models import TbVideo,Campaignvideo,TbCampaignquestion,TbQuestion,Campaignquestionresponse,TbUserrole,cVideoId,TbStatus,TbUser,TbApprove
 import pandas as pd
 
-
 import speech_recognition as sr 
 import moviepy.editor as mp
 from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
 
 import uuid
 from django.contrib import messages
-
 from django.db import connection
-
 import os
 from datetime import datetime
 
-def createrupload(request,id):
+def creater_upload(request,id):
         if request.method == "POST":
-            # videoform=Video_form(data=request.POST,files=request.FILES)
             q0 = request.POST.get('q0')
             q1 = request.POST.get('q1')
             q2 = request.POST.get('q2')
@@ -32,12 +28,9 @@ def createrupload(request,id):
             Creative=request.POST.get('Creative')
             Platform=request.POST.get('Platform')
             upload=request.POST.get('Upload')
-            print(upload)
-            print(Creative)
-            print(Platform)
             Qlist=[q0,q1,q2,q3,q4,q5,q6]
             Qlist=list(filter(None,Qlist))
-            print(Qlist)
+
 
             if upload == 'Upload':
                     Title1=request.POST.get('Videotitle')
@@ -49,7 +42,8 @@ def createrupload(request,id):
                     url=uploaded_file_url
                     url1=url[1:]
                     print(url1)
-                    text=videotranscribe(url1)
+                    # text=videotranscribe(url1)
+                    text='--'
                     data=TbQuestion.objects.all()
 
                     # Generate a new UUID
@@ -134,10 +128,6 @@ def createrupload(request,id):
                                                     questionid=TbQuestion.objects.get(questionid='1'))
                         video_details4.save()
 
-
-
-                        
-
                     dataQ = TbCampaignquestion.objects.filter(campaignvideoid=new_id)
                     listOfDataQ=[]
                     for i in dataQ:
@@ -154,7 +144,6 @@ def createrupload(request,id):
                         QT=listOfQuestion[i]
                         questionsText["q"+str(i)] = QT
 
-
                     listOfQuestionResponse=[]
                     for i in listOfDataQ:
                         output=i.questionresponse.split("|")
@@ -170,11 +159,6 @@ def createrupload(request,id):
                                                                                     'qR':QuestionResponse,
                                                                                     "data":data,'dataQ':dataQ})
             
-            
-            # all_video=Video.objects.all()
-
-
-
             cursor=connection.cursor()
             cursor.execute("SELECT TOP 1 VideoID FROM DigitalMarketing_cvideoid ORDER BY id DESC;")
             result=cursor.fetchall()
@@ -193,19 +177,6 @@ def createrupload(request,id):
             userName.execute("select UserName from tb_User where UserID='{val}'".format(val=id))
             userName=userName.fetchall()
             UN=userName[0][0]
-            print(UN)
-
-            # for i in all_video:
-            #     url=i.video.url
-            #     Title1=i.Title
-            #     # q1=i.question1
-            # url1=url[1:]
-            # text=videotranscribe(url1)
-            print(CVID)
-            print(q0,q1,q2,q3)
-            print(id)
-
-            # status = TbStatus(userid=TbUser.objects.get(userid=id),VideoID=CVID,status='Pending',VideoName=vN,ApproverName='---')
             status = TbStatus(userid=TbUser.objects.get(userid=id),videoid=CVID,status='Pending',videoname=vN,approver='---',uploadername=UN,platform=pN)
             status.save()
   
@@ -231,11 +202,8 @@ def createrupload(request,id):
             messages.success(request, 'submitted succesfully')
             return redirect('/dm/createrupload/'+id)
         else:
-  
-            # videoform=Video_form()
             a=id
             return render(request,'tc_DigitalMarketing/createrupload.html',{'k':a})
-
 
 
 def videotranscribe(url):
@@ -265,8 +233,8 @@ def unique_numbers(numbers):
     # this will take only unique numbers from the tuple
     return tuple(set(numbers))
 
-    
-def UserIndexpage(request):
+
+def user_indexpage(request):
         if request.method == 'POST':
             userName = request.POST.get('username')
             Password = request.POST.get('pass')
@@ -290,55 +258,21 @@ def UserIndexpage(request):
         else:
             return render(request, 'tc_DigitalMarketing/UserindexPage.html')
 
-
     
 def approver(request,id):
     if request.method == "POST":
         return render(request,'tc_DigitalMarketing/createrupload.html')
     else:
-        # cursor1=connection.cursor()
-        # cursor1.execute("select CampaignVideoID from tb_User u inner join CampaignQuestionResponse cqr on u.UserID = cqr.UserID inner join tb_CampaignQuestion cq on cq.CampaignQuestionID=cqr.CampaignQuestionID;")
-        # result1=cursor1.fetchall()
-        
-        
-        # uniresult=unique_numbers(result1)
-        # print(uniresult)
-
-        # listOfVid=[]
-        # for i in uniresult:
-        #     OUTPUT=i[0]
-        #     listOfVid.append(OUTPUT)
-        # print(listOfVid)
-
-        # listOfuserName=[]
-
-        # for i in listOfVid:
-        #     cursor=connection.cursor()
-        #     # cursor.execute("select UserName,CampaignVideoID from tb_User u inner join CampaignQuestionResponse cqr on u.UserID = cqr.UserID inner join tb_CampaignQuestion cq on cq.CampaignQuestionID=cqr.CampaignQuestionID AND cq.CampaignVideoID='{val}';".format(val=i))
-            
-        #     #old one
-        #     # cursor.execute("select date,UserName,videoName,VideoID from DigitalMarketing_status status inner join tb_User u on u.UserID=status.UserID  Where VideoID='{val}';".format(val=i))
-        #     cursor.execute("select CreatedDate,UserName,videoName,VideoID from tb_Status status inner join tb_User u on u.UserID=status.UserID  Where VideoID='{val}';".format(val=i))
-        #     result=cursor.fetchall()
-        #     result=unique_numbers(result)
-        #     listOfuserName.append(result)
-        # print(listOfuserName)
-    
-
-        # return render(request,'tc_DigitalMarketing/approver.html',{"r":listOfuserName,'id':id,})
         d=1
         userName=connection.cursor()
         userName.execute("select UserName from tb_User where UserID='{val}';".format(val=d))
         userName=userName.fetchall()
         UN=userName[0][0]
-        print(UN)
-    
         status=TbStatus.objects.all()
         return render(request,'tc_DigitalMarketing/approver.html',{'status':status,'id':id})
 
 
-
-def approverview(request,id,uid):
+def approver_view(request,id,uid):
     if request.method == "POST":
             q0 = request.POST.get('q0')
             q1 = request.POST.get('q1')
@@ -391,7 +325,6 @@ def approverview(request,id,uid):
                 cursor=connection.cursor()
                 cursor.execute("select QuestionText,Response from CampaignQuestionResponse cqr inner join tb_CampaignQuestion cquestion on cqr.CampaignQuestionID = cquestion.CampaignQuestionID AND cquestion.CampaignVideoID ='{value}' inner join tb_Question question on cquestion.QuestionID = question.QuestionID;".format(value=CVID))
                 result=cursor.fetchall()
-                print(result)
 
                 cursor1=connection.cursor()
                 cursor1.execute("select VideoPath,VideoTranscription,VideoName,VideoPath1,VideoTranscribeOne,Vendor,LOB,Creative,Platform from CampaignVideo cv inner join tb_Video v on v.VideoID=cv.VideoID AND cv.CampaignVideoID='{val}'".format(val=CVID))
@@ -620,7 +553,7 @@ def status(request,id):
         status=TbStatus.objects.filter(userid=id)
         return render(request,'tc_DigitalMarketing/status.html',{'status':status,'id':id})
     
-def statusview(request,id,id1):
+def status_view(request,id,id1):
     if request.method == "POST":
         return render(request,'tc_DigitalMarketing/createrupload.html')
     else:
@@ -641,14 +574,14 @@ def statusview(request,id,id1):
         return render(request,'tc_DigitalMarketing/statusview.html',{'approverres':res[0],'reason':res[1],'Dimension':res[2],'Quality':res[3],'Content':res[4],'Others':res[5],'id':id,'video':vP,'vname':vName,'vid':id1,})
    
 
-def Download(request):
+def download(request):
     if request.method == "POST":
         return render(request,'tc_DigitalMarketing/Download.html',{'approvedvid':approvedvid,})
     else:
         approvedvid=TbApprove.objects.all()
         return render(request,'tc_DigitalMarketing/Download.html',{'approvedvid':approvedvid,})
     
-def Downloadvideo(request,id):
+def download_video(request,id):
         cursor1=connection.cursor()
         cursor1.execute("select VideoPath,VideoTranscription,VideoName from CampaignVideo cv inner join tb_Video v on v.VideoID=cv.VideoID AND cv.CampaignVideoID='{val}'".format(val=id))
         VideoDeatails=cursor1.fetchall()
@@ -660,7 +593,7 @@ def Downloadvideo(request,id):
             response['Content-Disposition']='inline;filename='+os.path.basename(file_path)
             return response
 
-def Deletevideo(request,id,id1):
+def delete_video(request,id,id1):
         cursor1=connection.cursor()
         cursor1.execute("select VideoName from CampaignVideo cv inner join tb_Video v on v.VideoID=cv.VideoID AND cv.CampaignVideoID='{val}'".format(val=id))
         VideoDeatails=cursor1.fetchall()
@@ -695,7 +628,7 @@ def Deletevideo(request,id,id1):
         messages.error(request, 'Video Details Deleted succesfully')
         return redirect('/dm/createrupload/'+str(id1))
 
-def uploadagain(request,id):
+def upload_again(request,id):
     if request.method == "POST":
         myfile = request.FILES['myfile']
         fs = FileSystemStorage()
@@ -704,8 +637,9 @@ def uploadagain(request,id):
         print(uploaded_file_url)
         url=uploaded_file_url
         url1=url[1:]
-        text=videotranscribe(url1)
-        text=str(text)
+        # text=videotranscribe(url1)
+        # text=str(text)
+        text='--'
         # UpdateQuery=connection.cursor()
         # UpdateQuery.execute("UPDATE tb_Video SET VideoPath1 = '{value1}' WHERE VideoID = '{value}';".format(value1=uploaded_file_url,value=id))
 
