@@ -222,11 +222,13 @@ def createrupload(request,id):
                     video_details5 = Campaignquestionresponse(campaignquestionid=TbCampaignquestion.objects.get(campaignquestionid = a),
                                             userid=TbUser.objects.get(userid = str(id)),response= b)
                     video_details5.save()  
-            messages.success(request, 'submitted succesfully')
+            
             if q0=='No':
                 messages.success(request, 'Upload other Placements Creative')
                 a=CVID
                 return redirect('/dm/uploadagain/'+str(a))
+            
+            messages.success(request, 'submitted succesfully')
             return redirect('/dm/createrupload/'+id)
         else:
   
@@ -392,16 +394,19 @@ def approverview(request,id,uid):
                 print(result)
 
                 cursor1=connection.cursor()
-                cursor1.execute("select VideoPath,VideoTranscription,VideoName,VideoPath1,VideoTranscribeOne from CampaignVideo cv inner join tb_Video v on v.VideoID=cv.VideoID AND cv.CampaignVideoID='{val}'".format(val=CVID))
+                cursor1.execute("select VideoPath,VideoTranscription,VideoName,VideoPath1,VideoTranscribeOne,Vendor,LOB,Creative,Platform from CampaignVideo cv inner join tb_Video v on v.VideoID=cv.VideoID AND cv.CampaignVideoID='{val}'".format(val=CVID))
                 VideoDeatails=cursor1.fetchall()
                 vP='/'+VideoDeatails[0][0]
                 vT=VideoDeatails[0][1]
                 vN=VideoDeatails[0][2]
                 vP1=VideoDeatails[0][3]
                 vT1=VideoDeatails[0][4]
-
-                return render(request,'tc_DigitalMarketing/approverview.html',{'qT':questionsText,'qR':QuestionResponse,'R':result,'video':vP,'Transcribe':vT,'vname':vN,'id':uid,'video1':vP1,'Transcribe1':vT1,'btn1':btn1})
-                
+                Vendor=VideoDeatails[0][5]
+                LOB=VideoDeatails[0][6]
+                Creative=VideoDeatails[0][7]
+                Platform=VideoDeatails[0][8]
+                return render(request,'tc_DigitalMarketing/approverview.html',{'qT':questionsText,'qR':QuestionResponse,'R':result,'video':vP,'Transcribe':vT,'vname':vN,'id':uid,'video1':vP1,'Transcribe1':vT1,'Vendor':Vendor,'LOB':LOB,'Creative':Creative,'Platform':Platform,'btn1':btn1})
+                    
             if btn2 =='Apo':
                 CVID=id
                 dataQ = TbCampaignquestion.objects.filter(campaignvideoid=CVID)
@@ -438,16 +443,19 @@ def approverview(request,id,uid):
                 print(result)
 
                 cursor1=connection.cursor()
-                cursor1.execute("select VideoPath,VideoTranscription,VideoName,VideoPath1,VideoTranscribeOne from CampaignVideo cv inner join tb_Video v on v.VideoID=cv.VideoID AND cv.CampaignVideoID='{val}'".format(val=CVID))
+                cursor1.execute("select VideoPath,VideoTranscription,VideoName,VideoPath1,VideoTranscribeOne,Vendor,LOB,Creative,Platform from CampaignVideo cv inner join tb_Video v on v.VideoID=cv.VideoID AND cv.CampaignVideoID='{val}'".format(val=CVID))
                 VideoDeatails=cursor1.fetchall()
                 vP='/'+VideoDeatails[0][0]
                 vT=VideoDeatails[0][1]
                 vN=VideoDeatails[0][2]
                 vP1=VideoDeatails[0][3]
                 vT1=VideoDeatails[0][4]
-
-                return render(request,'tc_DigitalMarketing/approverview.html',{'qT':questionsText,'qR':QuestionResponse,'R':result,'video':vP,'Transcribe':vT,'vname':vN,'id':uid,'video1':vP1,'Transcribe1':vT1,'btn2':btn2})
-                
+                Vendor=VideoDeatails[0][5]
+                LOB=VideoDeatails[0][6]
+                Creative=VideoDeatails[0][7]
+                Platform=VideoDeatails[0][8]
+                return render(request,'tc_DigitalMarketing/approverview.html',{'qT':questionsText,'qR':QuestionResponse,'R':result,'video':vP,'Transcribe':vT,'vname':vN,'id':uid,'video1':vP1,'Transcribe1':vT1,'Vendor':Vendor,'LOB':LOB,'Creative':Creative,'Platform':Platform,'btn2':btn2})
+                    
             
             if btn =='Approve':  
                 cursor1=connection.cursor()
@@ -591,15 +599,18 @@ def approverview(request,id,uid):
         print(result)
 
         cursor1=connection.cursor()
-        cursor1.execute("select VideoPath,VideoTranscription,VideoName,VideoPath1,VideoTranscribeOne from CampaignVideo cv inner join tb_Video v on v.VideoID=cv.VideoID AND cv.CampaignVideoID='{val}'".format(val=CVID))
+        cursor1.execute("select VideoPath,VideoTranscription,VideoName,VideoPath1,VideoTranscribeOne,Vendor,LOB,Creative,Platform from CampaignVideo cv inner join tb_Video v on v.VideoID=cv.VideoID AND cv.CampaignVideoID='{val}'".format(val=CVID))
         VideoDeatails=cursor1.fetchall()
         vP='/'+VideoDeatails[0][0]
         vT=VideoDeatails[0][1]
         vN=VideoDeatails[0][2]
         vP1=VideoDeatails[0][3]
         vT1=VideoDeatails[0][4]
-
-        return render(request,'tc_DigitalMarketing/approverview.html',{'qT':questionsText,'qR':QuestionResponse,'R':result,'video':vP,'Transcribe':vT,'vname':vN,'id':uid,'video1':vP1,'Transcribe1':vT1})
+        Vendor=VideoDeatails[0][5]
+        LOB=VideoDeatails[0][6]
+        Creative=VideoDeatails[0][7]
+        Platform=VideoDeatails[0][8]
+        return render(request,'tc_DigitalMarketing/approverview.html',{'qT':questionsText,'qR':QuestionResponse,'R':result,'video':vP,'Transcribe':vT,'vname':vN,'id':uid,'video1':vP1,'Transcribe1':vT1,'Vendor':Vendor,'LOB':LOB,'Creative':Creative,'Platform':Platform})
     
 
 def status(request,id):
@@ -702,8 +713,8 @@ def uploadagain(request,id):
         record.videopath1 = uploaded_file_url
         record.videotranscription1 = text
         record.save()
-
-        return render(request,'tc_DigitalMarketing/uploadagain.html',{"video":url})
+        messages.success(request, 'submitted succesfully')
+        return render(request,'tc_DigitalMarketing/uploadagain.html',{"video":url,'text':text})
     else:
         return render(request,'tc_DigitalMarketing/uploadagain.html')
     

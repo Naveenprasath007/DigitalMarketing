@@ -34,12 +34,14 @@
     {% include 'tc_DigitalMarketing/messages.html' %}
     <!-- Stack the columns on mobile by making one full-width and the other half-width -->
     <div class="row">
-      <div class="col-md-6">
-        <div class="overflow-auto" style="max-width:100%; max-height:70vh"> 
+      <div class="col-md-12">
+        <div class="overflow-auto" style="max-width:100%; max-height:100vh"> 
         <form action="" method="post" enctype="multipart/form-data">
+          <div class="mb-3">
             {% csrf_token %}
-                <input type="file" id="myFile" name="myfile">
-                <input type="submit">
+                <input class="form-control" type="file" id="myFile" name="myfile"><br>
+                <input class="btn btn-primary" type="submit" value="Upload">
+           </div>
         </form>  
 
 

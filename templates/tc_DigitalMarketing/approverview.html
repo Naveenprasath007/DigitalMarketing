@@ -59,7 +59,12 @@
       <div class="col-md-5">
       <div class="overflow-auto" style="max-width:100%; max-height:70vh">
       <form action="" method="post"enctype="multipart/form-data">
-        {% csrf_token %}   
+        {% csrf_token %}  
+              <label><h6>Creative&nbsp; : {{ Creative }}</h6></label>
+              <br> 
+              <label><h6>Platform : {{ Platform }}</h6></label>
+              <br>
+              <br>
               {% if qT.q0 %}
               <label><h6>{{qT.q0}}</h6></label>
               <br>
@@ -177,25 +182,26 @@
               </select>
               <br>
               {% endif %}
+              <br>
               <button  name="btn1" value="Rej" class="btn btn-danger">Reject</button>
               <button  name="btn2" value="Apo" class="btn btn-success">Approve</button>
-
+              <br>
               {% if btn1 == 'Rej' %}
               <br>
               <label><h6>Reason</h6></label>
-              <textarea class="form-control" name="ReasonTextbox" rows="3"></textarea>
+              <textarea class="form-control" name="ReasonTextbox" rows="2"></textarea>
               <br>
               <label><h6>Dimensions?</h6></label>
-              <textarea class="form-control" name="DimensionsTextbox" rows="3"></textarea>
+              <textarea class="form-control" name="DimensionsTextbox" rows="2"></textarea>
               <br>
               <label><h6>Quality?</h6></label>
-              <textarea class="form-control" name="QualityTextbox" rows="3"></textarea>
+              <textarea class="form-control" name="QualityTextbox" rows="2"></textarea>
               <br>
               <label><h6>Content in the Video?</h6></label>
-              <textarea class="form-control" name="ContentTextbox" rows="3"></textarea>
+              <textarea class="form-control" name="ContentTextbox" rows="2"></textarea>
               <br>
               <label><h6>Others</h6></label>
-              <textarea class="form-control" name="OthersTextbox" rows="3"></textarea>
+              <textarea class="form-control" name="OthersTextbox" rows="2"></textarea>
               <br>
 
               <div class="d-grid gap-2 d-md-flex justify-content-md-end">
@@ -206,7 +212,19 @@
               {% if btn2 == 'Apo' %}
               <br>
               <label><h6>suggestion</h6></label>
-              <textarea class="form-control" name="Textbox" rows="3"></textarea>
+              <textarea class="form-control" name="Textbox" rows="2"></textarea>
+              <br>
+              <label><h6>Dimensions?</h6></label>
+              <textarea class="form-control" name="DimensionsTextbox" rows="2"></textarea>
+              <br>
+              <label><h6>Quality?</h6></label>
+              <textarea class="form-control" name="QualityTextbox" rows="2"></textarea>
+              <br>
+              <label><h6>Content in the Video?</h6></label>
+              <textarea class="form-control" name="ContentTextbox" rows="2"></textarea>
+              <br>
+              <label><h6>Others</h6></label>
+              <textarea class="form-control" name="OthersTextbox" rows="2"></textarea>
               <br>
               <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                 <button type="submit" name="btn" value="Approve" class="btn btn-success">Confirm Approve</button>
