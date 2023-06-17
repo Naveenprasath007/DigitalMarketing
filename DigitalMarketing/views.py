@@ -153,11 +153,12 @@ def creater_upload(request,id):
                     for i in range(0,lenOfList):
                         lQR=listOfQuestionResponse[i]
                         QuestionResponse["k"+str(i)] = lQR
+                    status='Uploaded'
 
-                    return render(request,'tc_DigitalMarketing/createrupload.html',{"video":url,"text":text,
+                    return render(request,'tc_DigitalMarketing/upload-page.html',{"video":url,"text":text,
                                                                                     'qT':questionsText,
                                                                                     'qR':QuestionResponse,
-                                                                                    "data":data,'dataQ':dataQ})
+                                                                                    "data":data,'dataQ':dataQ,'status':status})
             
             cursor=connection.cursor()
             cursor.execute("SELECT TOP 1 VideoID FROM DigitalMarketing_cvideoid ORDER BY id DESC;")
@@ -203,7 +204,8 @@ def creater_upload(request,id):
             return redirect('/dm/createrupload/'+id)
         else:
             a=id
-            return render(request,'tc_DigitalMarketing/createrupload.html',{'k':a})
+            status='Waiting'
+            return render(request,'tc_DigitalMarketing/upload-page.html',{'k':a,'audio':a,'status':status})
 
 
 def videotranscribe(url):

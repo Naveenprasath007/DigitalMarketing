@@ -1,0 +1,313 @@
+{% extends 'tc_DigitalMarketing/createrUploadbase.html' %}
+{% load static %}
+
+{% block content %}
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid">
+        <a class="navbar-brand d-inline-flex align-items-center" href="#">
+          <img src="{% static 'images/logo_icon.png'%}" alt="" class="img-fluid" />
+          <h2>Insight<span>Motion</span></h2>
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto align-items-center">
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="#"
+                ><i class="bi bi-moon"></i
+              ></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="#">
+                <i class="bi bi-brightness-high"></i>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">
+                <i class="bi bi-bell"></i>
+              </a>
+            </li>
+            <li class="nav-item account-section">
+              <a class="nav-link" href="#">
+                <span>My Account</span>
+                <span class="av-holder">
+                  <img src="{% static 'images/avatar.png'%}" alt="" />
+                  <i class="bi bi-chevron-down"></i>
+                </span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+
+    <form action="" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+
+    
+    <div class="upload-page">
+      <div class="upload-panel mbottom">
+        <div class="upwrap">
+          {%if video %}
+          <video width="100%" height="25%" controls>
+            <source src="{{ video }}" type="video/mp4">
+            <source src="{{ video }}" type="video/ogg">
+          Your browser does not support the video tag.
+          </video>
+          {% endif %}
+
+          {%if audio %}
+          <div class="upload-box">
+            <img class="collection" src="{% static 'images/fileupload.svg'%}" />
+            <h5>
+              Drop your videos, images, gif, <span>browse</span> or import from
+            </h5>
+            <div class="file-icon-box">
+              <div class="icon-box">
+                <div class="image-upload">
+                  <label for="file-input">
+                      <img src="{% static 'images/folder.svg'%}"/>
+                  </label>
+                  <input id="file-input" type="file" name="myfile"/>
+              </div>
+              </div>
+              <div class="icon-box">
+                <img src="{% static 'images/drive.svg'%}" />
+              </div>
+            </div>
+            <p>You will free to upload any file format upto 50 mb</p>
+          </div>
+          {% endif %}
+          <div class="videotitle">
+            <div class="titlebox">
+              <div class="titlebox-img"></div>
+              <div class="titlebox-content">
+                <label>Add your Video Title</label>
+                <!-- <p>Add your Video Title</p> -->
+                <input type="VideoTiltle" class="form-control" name="Videotitle" >
+              </div>
+            </div>
+            <div class="titlebox">
+              <div class="titlebox-img"></div>
+              <div class="titlebox-content">
+                <label>Status</label>
+                <p>{{ status }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        {%if video %}
+        <div class="presets-box">
+          <h2>Questions</h2>
+
+          <form action="" method="post"enctype="multipart/form-data">
+            {% csrf_token %}   
+    
+                  {% if qT.q0 %}
+                  <label><h6>{{qT.q0}}</h6></label>
+                  {% endif %}
+                  
+                  {% if qR.k0 %}
+                  <select required aria-label="Select usage" class="form-select"
+                      name="q0" onchange="set_sub_usage_list()" >
+                      <option selected>--Select Your Choice--</option>
+                        {% for usage in qR.k0 %}
+                            <option value="{{ usage }}">{{ usage }}</option>
+                        {% endfor %}
+    
+                  </select>
+                  <br>
+                  {% endif %}
+                  <button class="submit">Submit</button>
+            </form>
+        </div>
+        {% endif %}
+
+        {% if audio %}
+        <div class="presets-box">
+          <h2>Presets</h2>
+          <!-- <div class="preset-icon-box">
+            <label>Select Vendor</label>
+            <div class="">
+              <button class="active">AdSparkx</button>
+              <button>TNCB</button>
+              <button>My Health Angel</button>
+            </div>
+          </div> -->
+          <div class="preset-icon-box">
+            <label>Creater</label>
+            <div class="icon-box-align">
+            <input class="form-control input-sm" id="inputsm" type="text">
+            </div>
+          </div>
+
+          <!-- <div class="preset-icon-box">
+            <label>Which LOB is this Creative for?</label>
+            <div class="icon-box-align">
+              <button class="active">ACA</button>
+              <button>Medicare</button>
+              <button>MediCalid</button>
+            </div>
+          </div> -->
+          <div>
+            <div class="preset-icon-box">
+            <label>Which LOB is this Creative for?</label>
+            </div>
+            <p id="id_select_creative">
+              <label><input type="checkbox" name="LOB" value="ACA"><span>ACA</span></label>
+              <label><input type="checkbox" name="LOB" value="MediCare"><span>Medicare</span></label>
+              <label><input type="checkbox" name="LOB" value="MediCare"><span>MediCalid</span></label>
+            </p>
+          </div>
+
+          <!-- <div class="preset-icon-box">
+            <label>Select type of Creative</label>
+            <div class="icon-box-align">
+              <div class="creative-box">
+                <img src="./images/picture.svg" />
+              </div>
+              <div class="creative-box">
+                <img src="./images/picture.svg" />
+              </div>
+              <div class="creative-box">
+                <img src="./images/animation.svg" />
+              </div>
+            </div>
+          </div> -->
+          <div class="preset-icon-box">
+            <label>Select type of Creative</label>
+            <div class="icon-box-align">
+              <input type="checkbox" value="image" name="Creative" />
+              <div class="creative-box">
+                <img src=" {% static './images/picture.svg'%}" />
+              </div>
+              <input type="checkbox" value="Video" name="Creative"/>
+              <div class="creative-box">
+                <img src=" {% static './images/picture.svg'%}" />
+              </div>
+              <input type="checkbox" value="GIF" name="Creative"/>
+              <div class="creative-box">
+                <img src=" {% static './images/picture.svg'%}" />
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="preset-icon-box">
+            <label>Which Platform is this Creative for?</label>
+            <div class="icon-box-align">
+              <div class="platform-box" style="background-color: #3b5998">
+                <img src="./images/facebook.svg" />
+              </div>
+              <div class="platform-box" style="background-color: #ee3b3b">
+                <img src="./images/youtube.svg" />
+              </div>
+              <div class="platform-box" style="background-color: #c9e8f9">
+                <img src="./images/cdn.png" />
+              </div>
+              <div class="platform-box" style="background-color: #1c1c1c">
+                <img src="./images/tiktok.svg" />
+              </div>
+              <div class="platform-box" style="background-color: #2fab7c">
+                <img src="./images/settings.svg" />
+              </div>
+            </div>
+          </div> -->
+          <div class="preset-icon-box">
+            <label>Which Platform is this Creative for?</label>
+            <div class="icon-box-align">
+              <input type="checkbox" value="Facebook" name="Platform" />
+              <div class="platform-box" style="background-color: #3b5998">
+                <img src="{% static './images/facebook.svg'%}" />
+              </div>
+              <input type="checkbox" value="Youtube" name="Platform" />
+              <div class="platform-box" style="background-color: #ee3b3b">
+                <img src="{% static './images/youtube.svg'%} "/>
+              </div>
+              <input type="checkbox" value="GDN" name="Platform" />
+              <div class="platform-box" style="background-color: #c9e8f9">
+                <img src="{% static './images/cdn.png '%}" />
+              </div>
+              <input type="checkbox" value="TikTok" name="Platform"/>
+              <div class="platform-box" style="background-color: #1c1c1c">
+                <img src="{% static './images/tiktok.svg '%}" />
+              </div>
+              <input type="checkbox" value="Native" name="Platform"/>
+              <div class="platform-box" style="background-color: #2fab7c">
+                <img src="{% static './images/settings.svg'%}" />
+              </div>
+            </div>
+          </div>
+
+          <!-- <button class="submit">Submit</button> -->
+          <button class="submit" name='Upload' value="Upload">Upload</button>
+        </div>
+        {% endif %}
+      </div>
+    </form>
+
+    {% if video %}
+    <div class="transcription-panel mbottom">
+      <h2>Transcription</h2>
+      <div class="transcription-box">
+        <p>{{ text }}</p>
+      </div>
+    </div>
+    {% endif %}
+
+    {% if audio %}
+      <div class="transcription-panel mbottom">
+        <h2>Transcription</h2>
+        <div class="transcription-box">
+          <p>Transcription will be generated once video uploaded.</p>
+        </div>
+      </div>
+    {% endif %}
+
+
+
+      <div class="my-videos-panel mbottom">
+        <h2>My Videos</h2>
+        <div class="scroll-panel">
+          <div class="videos-box">
+            <div class="thumbnail"></div>
+            <p class="video-title">Edits_Tutorial.mp4</p>
+          </div>
+          <div class="videos-box">
+            <div class="thumbnail"></div>
+            <p class="video-title">Edits_Tutorial.mp4</p>
+          </div>
+          <div class="videos-box">
+            <div class="thumbnail"></div>
+            <p class="video-title">Edits_Tutorial.mp4</p>
+          </div>
+          <div class="videos-box">
+            <div class="thumbnail"></div>
+            <p class="video-title">Edits_Tutorial.mp4</p>
+          </div>
+          <div class="videos-box">
+            <div class="thumbnail"></div>
+            <p class="video-title">Edits_Tutorial.mp4</p>
+          </div>
+          <div class="videos-box">
+            <div class="thumbnail"></div>
+            <p class="video-title">Edits_Tutorial.mp4</p>
+          </div>
+          <div class="videos-box">
+            <div class="thumbnail"></div>
+            <p class="video-title">Edits_Tutorial.mp4</p>
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock content %}
+
