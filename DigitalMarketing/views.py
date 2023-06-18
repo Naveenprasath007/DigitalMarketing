@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect,HttpResponse
 from django.core.files.storage import FileSystemStorage
 from .forms import Question,userRole
-from .models import TbVideo,Campaignvideo,TbCampaignquestion,TbQuestion,Campaignquestionresponse,TbUserrole,cVideoId,TbStatus,TbUser,TbApprove
+from .models import TbVideo,Campaignvideo,TbCampaignquestion,TbQuestion,Campaignquestionresponse,TbUserrole,cVideoId,TbStatus,TbUser,TbApprove,video_Details
 import pandas as pd
 
 import speech_recognition as sr 
@@ -13,6 +13,35 @@ from django.contrib import messages
 from django.db import connection
 import os
 from datetime import datetime
+
+
+
+def uploaderdashboard(request,id):
+        if request.method == "POST":
+            return render(request,'tc_DigitalMarketing/dash_index.html',{})
+        status=TbStatus.objects.filter(userid=id)
+        q = status.values()
+        df = pd.DataFrame.from_records(q)
+        if len(df) == 0:
+            val=id
+            return redirect('/dm/createrupload/'+str(val))
+        filter1 =df["status"].isin(['Pending'])
+        Pending = df[filter1]
+        Pending =len(Pending)
+        filter2 =df["status"].isin(['Rejected'])
+        Rejected = df[filter2]
+        Rejected =len(Rejected)
+        filter3 =df["status"].isin(['Approved'])
+        Approved = df[filter3]
+        Approved =len(Approved)
+        return render(request,'tc_DigitalMarketing/dash_index.html',{'id':id,'status':status,'Approved':Approved,'Rejected':Rejected,'Pending':Pending})
+
+def filterpage(request,id,id1):
+        if request.method == "POST":
+             return render(request,'tc_DigitalMarketing/filterpage.html',{'id':id,'status':status,})
+        status=TbStatus.objects.filter(userid=id,status=id1)
+        return render(request,'tc_DigitalMarketing/filterpage.html',{'id':id,'status':status,})
+
 
 def creater_upload(request,id):
         if request.method == "POST":
@@ -195,17 +224,21 @@ def creater_upload(request,id):
                                             userid=TbUser.objects.get(userid = str(id)),response= b)
                     video_details5.save()  
             
+            videoDetails = video_Details(userid=TbUser.objects.get(userid=id),VideoPath=vP)
+            videoDetails.save()
+            
             if q0=='No':
                 messages.success(request, 'Upload other Placements Creative')
                 a=CVID
-                return redirect('/dm/uploadagain/'+str(a))
+                return redirect('/dm/uploadagain/'+str(a)+str('/')+id)
             
             messages.success(request, 'submitted succesfully')
             return redirect('/dm/createrupload/'+id)
         else:
             a=id
             status='Waiting'
-            return render(request,'tc_DigitalMarketing/upload-page.html',{'k':a,'audio':a,'status':status})
+            videodetails=video_Details.objects.filter(userid=id)
+            return render(request,'tc_DigitalMarketing/upload-page.html',{'k':a,'audio':a,'status':status,'videodetails':videodetails})
 
 
 def videotranscribe(url):
@@ -250,7 +283,7 @@ def user_indexpage(request):
                 if value == "U1":
                     val=a.get('userid')
                     
-                    return redirect('/dm/createrupload/'+str(val)) 
+                    return redirect('/dm/uploaderdashboard/'+str(val)) 
                 if value == "R1":
                     val=a.get('userid')
                     
@@ -630,7 +663,7 @@ def delete_video(request,id,id1):
         messages.error(request, 'Video Details Deleted succesfully')
         return redirect('/dm/createrupload/'+str(id1))
 
-def upload_again(request,id):
+def upload_again(request,id,id1):
     if request.method == "POST":
         myfile = request.FILES['myfile']
         fs = FileSystemStorage()
@@ -649,6 +682,8 @@ def upload_again(request,id):
         record.videopath1 = uploaded_file_url
         record.videotranscription1 = text
         record.save()
+        videoDetails = video_Details(userid=TbUser.objects.get(userid=id1),VideoPath=uploaded_file_url)
+        videoDetails.save()
         messages.success(request, 'submitted succesfully')
         return render(request,'tc_DigitalMarketing/uploadagain.html',{"video":url,'text':text})
     else:

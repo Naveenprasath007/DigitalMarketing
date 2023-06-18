@@ -20,6 +20,8 @@ from DigitalMarketing import views
 
 urlpatterns = [
     path("admin/", admin.site.urls), 
+    path("uploaderdashboard/<str:id>", views.uploaderdashboard),
+    path("filterpage/<str:id>/<str:id1>", views.filterpage),
     path("createrupload/<str:id>", views.creater_upload),
     path("UserIndexpage", views.user_indexpage),
     path("approver/<str:id>", views.approver),
@@ -29,6 +31,6 @@ urlpatterns = [
     path("Download", views.download),
     path("Downloadvideo/<str:id>", views.download_video),
     path("DeleteVideo/<str:id>/<str:id1>", views.delete_video),
-    path("uploadagain/<str:id>", views.upload_again),   
+    path("uploadagain/<str:id>/<str:id1>", views.upload_again),   
 ]
 

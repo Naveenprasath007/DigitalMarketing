@@ -117,3 +117,11 @@ class TbVideo(models.Model):
     class Meta:
         managed = False
         db_table = 'tb_Video'
+
+class video_Details(models.Model):
+    userid = models.ForeignKey('TbUser', models.DO_NOTHING, db_column='UserID')  # Field name made lowercase.
+    VideoPath = models.CharField(db_column='videopath',primary_key=True, max_length=2000)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'videodetails'
