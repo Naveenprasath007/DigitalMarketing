@@ -5,7 +5,7 @@
 
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container-fluid">
-    <a class="navbar-brand d-inline-flex align-items-center" href="#">
+    <a class="navbar-brand d-inline-flex align-items-center" href="/dm/UserIndexpage">
         <img src="{% static 'images/logo_icon.png' %}" alt="" class="img-fluid">
         <h2>Insight<span>Motion</span></h2>
     </a>
@@ -223,7 +223,19 @@
               {% if btn1 == 'Rej' %}
               <br>
               <label><h6>Reason</h6></label>
-              <textarea class="form-control" name="ReasonTextbox" rows="2"></textarea>
+              <!-- <textarea class="form-control" name="ReasonTextbox" rows="2"></textarea>  -->
+              <select name='ReasonTextbox'>  
+                <option value = "Dimensions"> Dimensions   
+                </option>  
+                <option value = "Quality"> Quality   
+                </option>  
+                <option value = "Content in the Video"> Content in the Video  
+                </option>  
+                <option value = "Others"> Others  
+                </option>  
+                </select> 
+
+
               <br>
               <label><h6>Dimensions?</h6></label>
               <textarea class="form-control" name="DimensionsTextbox" rows="2"></textarea>
@@ -246,7 +258,17 @@
               {% if btn2 == 'Apo' %}
               <br>
               <label><h6>suggestion</h6></label>
-              <textarea class="form-control" name="Textbox" rows="2"></textarea>
+              <select name='Textbox'>  
+                <option value = "Dimensions"> Dimensions   
+                </option>  
+                <option value = "Quality"> Quality   
+                </option>  
+                <option value = "Content in the Video"> Content in the Video  
+                </option>  
+                <option value = "Others"> Others  
+                </option>  
+                </select> 
+              <!-- <textarea class="form-control" name="Textbox" rows="2"></textarea> -->
               <br>
               <label><h6>Dimensions?</h6></label>
               <textarea class="form-control" name="DimensionsTextbox" rows="2"></textarea>
