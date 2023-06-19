@@ -13,7 +13,8 @@ class cVideoId(models.Model):
 class Campaignquestionresponse(models.Model):
     campaignquestionid = models.ForeignKey('TbCampaignquestion', models.DO_NOTHING, db_column='CampaignQuestionID', blank=True, null=True)  # Field name made lowercase.
     userid = models.ForeignKey('TbUser', models.DO_NOTHING, db_column='UserID', blank=True, null=True)  # Field name made lowercase.
-    response = models.CharField(db_column='Response',primary_key=True, max_length=2000)  # Field name made lowercase.
+    response = models.CharField(db_column='Response', max_length=2000)
+    # response = models.CharField(db_column='Response',primary_key=True, max_length=2000)  # Field name made lowercase.
 
     class Meta:
         managed = False
