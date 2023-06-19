@@ -19,6 +19,10 @@ from datetime import datetime
 def uploaderdashboard(request,id):
         if request.method == "POST":
             return render(request,'tc_DigitalMarketing/dash_index.html',{})
+        userName=connection.cursor()
+        userName.execute("select UserName from tb_User where UserID='{val}'".format(val=id))
+        userName=userName.fetchall()
+        UN=userName[0][0]
         status=TbStatus.objects.filter(userid=id)
         q = status.values()
         df = pd.DataFrame.from_records(q)
@@ -34,7 +38,7 @@ def uploaderdashboard(request,id):
         filter3 =df["status"].isin(['Approved'])
         Approved = df[filter3]
         Approved =len(Approved)
-        return render(request,'tc_DigitalMarketing/dash_index.html',{'id':id,'status':status,'Approved':Approved,'Rejected':Rejected,'Pending':Pending})
+        return render(request,'tc_DigitalMarketing/dash_index.html',{'id':id,'status':status,'Approved':Approved,'Rejected':Rejected,'Pending':Pending,'UserName':UN})
 
 def filterpage(request,id,id1):
         if request.method == "POST":
@@ -187,7 +191,7 @@ def creater_upload(request,id):
                     return render(request,'tc_DigitalMarketing/upload-page.html',{"video":url,"text":text,
                                                                                     'qT':questionsText,
                                                                                     'qR':QuestionResponse,
-                                                                                    "data":data,'dataQ':dataQ,'status':status})
+                                                                                    "data":data,'dataQ':dataQ,'status':status,'Title':Title1})
             
             cursor=connection.cursor()
             cursor.execute("SELECT TOP 1 VideoID FROM DigitalMarketing_cvideoid ORDER BY id DESC;")
@@ -238,7 +242,7 @@ def creater_upload(request,id):
             a=id
             status='Waiting'
             videodetails=video_Details.objects.filter(userid=id)
-            return render(request,'tc_DigitalMarketing/upload-page.html',{'k':a,'audio':a,'status':status,'videodetails':videodetails})
+            return render(request,'tc_DigitalMarketing/upload-page.html',{'k':a,'status':status,'videodetails':videodetails})
 
 
 def videotranscribe(url):
