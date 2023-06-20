@@ -696,7 +696,7 @@ def upload_again(request,id,id1):
         videoDetails = video_Details(userid=TbUser.objects.get(userid=id1),VideoPath=uploaded_file_url)
         videoDetails.save()
         messages.success(request, 'submitted succesfully')
-        return render(request,'tc_DigitalMarketing/uploadagain.html',{"video":url,'text':text})
+        return render(request,'tc_DigitalMarketing/uploadagain.html',{"video":url,'text':text,'id':id1})
     else:
         return render(request,'tc_DigitalMarketing/uploadagain.html')
     

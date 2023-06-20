@@ -70,12 +70,14 @@
     <div class="row">
       <div class="col-md-12">
         <div class="overflow-auto" style="max-width:100%; max-height:100vh"> 
-        <form action="" method="post" enctype="multipart/form-data">
+          {% if video %}
+          <button class="btn btn-success btn-sm float-end" onclick="window.location.href='/dm/uploaderdashboard/{{ id }}';" >Go to Dashboard</button>
+          {% endif %}
+          <form action="" method="post" enctype="multipart/form-data">
           <div class="mb-3">
             {% csrf_token %}
                 <input class="form-control" type="file" id="myFile" name="myfile"><br>
                 <input class="btn btn-primary" type="submit" value="Upload">
-                <button class="btn btn-success btn-sm float-end" onclick="window.location.href='https://w3docs.com';" >Go to Dashboard</button>
            </div>
         </form>  
 
