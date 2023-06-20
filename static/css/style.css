@@ -511,8 +511,6 @@ span.upload-info img {
      cursor: pointer;
  }
 
-
- 
 #id_select_creative input[type="checkbox"] {
   display: none;
 }
@@ -531,6 +529,13 @@ span.upload-info img {
   background-color: #0278bd;
   color: black;
 }
+
+/* video size  */
+.vid {
+  width: 30%;
+}
+
+
 
 
 
@@ -558,3 +563,4 @@ span.upload-info img {
 video {
   width: 100%;
 }/*# sourceMappingURL=style.css.map */
+
