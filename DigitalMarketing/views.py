@@ -83,7 +83,7 @@ def creater_upload(request,id):
                     url=uploaded_file_url
                     url1=url[1:]
                     print(url1)
-                    # text=videotranscribe(url1)
+                    # text=transcribe(url1)
                     text='--'
                     data=TbQuestion.objects.all()
 
@@ -252,29 +252,6 @@ def creater_upload(request,id):
             videodetails=video_Details.objects.filter(userid=id)
             return render(request,'tc_DigitalMarketing/upload-page.html',{'k':a,'status':status,'videodetails':videodetails})
 
-
-def videotranscribe(url):
-    num_seconds_video= 52*60
-    print("The video is {} seconds".format(num_seconds_video))
-    l=list(range(0,num_seconds_video+1,60))
-
-    diz={}
-    for i in range(len(l)-1):
-        ffmpeg_extract_subclip(url, l[i]-2*(l[i]!=0), l[i+1], targetname="chunks/cut{}.mp4".format(i+1))
-        clip = mp.VideoFileClip(r"chunks/cut{}.mp4".format(i+1)) 
-        clip.audio.write_audiofile(r"converted/converted{}.wav".format(i+1))
-        r = sr.Recognizer()
-        audio = sr.AudioFile("converted/converted{}.wav".format(i+1))
-        with audio as source:
-            r.adjust_for_ambient_noise(source)  
-            audio_file = r.record(source)
-        result = r.recognize_google(audio_file)
-        diz['chunk{}'.format(i+1)]=result
-
-        l_chunks=[diz['chunk{}'.format(i+1)] for i in range(len(diz))]
-        text='\n'.join(l_chunks)
-
-        return text
 
 def unique_numbers(numbers):
     # this will take only unique numbers from the tuple
