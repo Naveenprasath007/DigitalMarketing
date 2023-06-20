@@ -68,6 +68,7 @@ def creater_upload(request,id):
             Creative=request.POST.get('Creative')
             Platform=request.POST.get('Platform')
             upload=request.POST.get('Upload')
+            Creater=request.POST.get('Creater')
             Qlist=[q0,q1,q2,q3,q4,q5,q6]
             Qlist=list(filter(None,Qlist))
 
@@ -96,7 +97,7 @@ def creater_upload(request,id):
 
                     T=Title1
                     video_details2 = TbVideo(videoid=new_id,videoname=T,videopath=url1,
-                                            previousvideoid=0,videotranscription=text,vendor=Vendor,lob=Lob,creative=Creative,platform=Platform,videopath1='--',videotranscription1='--')
+                                            previousvideoid=0,videotranscription=text,vendor=Vendor,lob=Lob,creative=Creative,platform=Platform,videopath1='--',videotranscription1='--',creater=Creater)
                     video_details2.save()
 
                     video_details3 = Campaignvideo(campaignvideoid=new_id,

@@ -115,6 +115,7 @@ class TbVideo(models.Model):
     platform = models.CharField(db_column='Platform', max_length=2000)  # Field name made lowercase.
     videopath1 = models.CharField(db_column='VideoPath1', max_length=2000,blank=True, null=True)  # Field name made lowercase.
     videotranscription1 = models.TextField(db_column='VideoTranscribeOne')  # Field name made lowercase.
+    creater = models.CharField(db_column='Creater', max_length=255, blank=True, null=True)
 
     class Meta:
         managed = False
