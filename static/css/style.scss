@@ -300,3 +300,24 @@ nav {
     }
   }
 }
+.videos-box {
+  padding: 10px;
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: 1px 1px 20px 2px #d1d5e6;
+  p{
+    margin-bottom: 0;
+  }
+  
+}
+.my-videos-panel h2 {
+  margin-bottom: 1rem;
+  font-size: 28px;
+  font-weight: 500;
+}
+.videos-box .thumbnail { 
+  width: 100%; 
+}
+video{
+  width: 100%;
+}
