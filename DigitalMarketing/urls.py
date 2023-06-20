@@ -22,6 +22,7 @@ urlpatterns = [
     path("admin/", admin.site.urls), 
     path("uploaderdashboard/<str:id>", views.uploaderdashboard),
     path("filterpage/<str:id>/<str:id1>", views.filterpage),
+    path("myvideos/<str:id>", views.myvideos),
     path("createrupload/<str:id>", views.creater_upload),
     path("UserIndexpage", views.user_indexpage),
     path("approver/<str:id>", views.approver),

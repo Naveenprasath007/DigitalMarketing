@@ -87,6 +87,7 @@ class TbUser(models.Model):
     username = models.CharField(db_column='UserName', max_length=250)  # Field name made lowercase.
     userroleid = models.ForeignKey('TbUserrole', models.DO_NOTHING, db_column='UserRoleID', blank=True, null=True)  # Field name made lowercase.
     password = models.CharField(db_column='Password', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    vendor=models.CharField(db_column='Vendor', max_length=255, blank=True, null=True)
 
     class Meta:
         managed = False

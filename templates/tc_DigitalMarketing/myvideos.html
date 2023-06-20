@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block content %}
+
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container-fluid">
     <a class="navbar-brand d-inline-flex align-items-center" href="/dm/UserIndexpage">
@@ -40,42 +41,27 @@
   </div>
 </nav> 
 
-<div>
-  {%if status%}
-  <div class="container">
-    <table class="table table-bordered text-center">
-      <thead>
-        <tr>
-          <!-- <th scope="col">Date</th> -->
-          <th scope="col">VideoTitle</th>
-          <th scope="col">VideoPlatform</th>
-          <th scope="col">Status</th>
-          <th scope="col">Uploaded By</th>
-          <th scope="col">Reviewed By</th>
-          <th scope="col">Reason</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for i in status %}
-        <tr>
-          <!-- <td>{{i.date}}</td> -->
-          <td>{{i.videoname}}</td>
-          <td>{{i.platform}}</td>
-          <td>{{i.status}}</td>
-          <td>{{i.uploadername}}</td>
-          <td>{{i.approver}}</td>
-          {% if i.status != 'Rejected' %}
-          <td>---</td>
-          {% endif %}
-          {% if i.status == 'Rejected' %}
-          <td><a href="/dm/statusview/{{id}}/{{i.videoid}}">view</a></td>
-          {% endif %}
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
-  {% endif%}
-</div>
 
-{% endblock content %}
+<div class="container">
+    <div class="my-videos-panel mbottom">
+      <h2>My Videos</h2>
+      <br>
+      <div class="scroll-panel">
+        {% for i in videodetails %}
+        <div class="videos-box">
+          
+          <div class="thumbnail">
+            <video width="30%" height="30%" controls>
+              <source src="{{ i.VideoPath }}" type="video/mp4">
+              <source src="{{ i.VideoPath }}" type="video/ogg">
+            Your browser does not support the video tag.
+            </video>
+          </div>
+          <p class="video-title">Edits_Tutorial.mp4</p>
+          
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    </div>
+    {% endblock content %}

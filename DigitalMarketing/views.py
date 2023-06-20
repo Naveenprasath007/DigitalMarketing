@@ -44,7 +44,14 @@ def filterpage(request,id,id1):
         if request.method == "POST":
              return render(request,'tc_DigitalMarketing/filterpage.html',{'id':id,'status':status,})
         status=TbStatus.objects.filter(userid=id,status=id1)
-        return render(request,'tc_DigitalMarketing/filterpage.html',{'id':id,'status':status,})
+        videodetails=video_Details.objects.filter(userid=id)
+        return render(request,'tc_DigitalMarketing/filterpage.html',{'id':id,'status':status,'videodetails':videodetails})
+
+def myvideos(request,id):
+        if request.method == "POST":
+             return render(request,'tc_DigitalMarketing/myvideos.html',{'id':id})
+        videodetails=video_Details.objects.filter(userid=id)
+        return render(request,'tc_DigitalMarketing/myvideos.html',{'id':id,'videodetails':videodetails})
 
 
 def creater_upload(request,id):
