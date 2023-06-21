@@ -69,7 +69,9 @@
 
           {%if not video %}
           <div class="upload-box">
-            {% include 'tc_DigitalMarketing/messages.html' %}
+            <div class="messege-info">
+              {% include 'tc_DigitalMarketing/messages.html' %}
+            </div>
             <img class="collection" src="{% static 'images/fileupload.svg'%}" />
             <h5>
               Drop your videos, images, gif, <span>browse</span> or import from
@@ -77,10 +79,10 @@
             <div class="file-icon-box">
               <div class="icon-box">
                 <div class="image-upload">
-                  <label for="file-input">
+                  <label for="file-upload">
                       <img src="{% static 'images/folder.svg'%}"/>
                   </label>
-                  <input id="file-input" type="file" name="myfile" required/>
+                  <input id="file-upload" type="file" name="myfile" accept="video/*,image/*" required/>
               </div>
               </div>
               <div class="icon-box">
@@ -162,17 +164,17 @@
             </p>
           </div>
           <div class="preset-icon-box">
-            <label>Select type of Creative</label>
             <div class="icon-box-align">
-              <input type="checkbox" value="image" name="Creative" />
+              <!-- <input type="checkbox" value="image" name="Creative" /> -->
+              <input type="radio" name="Creative" value="image">
               <div class="creative-box">
                 <img src=" {% static './images/picture.svg'%}" />
               </div>
-              <input type="checkbox" value="Video" name="Creative"/>
+              <input type="radio" name="Creative" value="Video">
               <div class="creative-box">
                 <img src=" {% static './images/video_ico.svg'%}" />
               </div>
-              <input type="checkbox" value="GIF" name="Creative"/>
+              <input type="radio" name="Creative" value="GIF">
               <div class="creative-box">
                 <img src=" {% static './images/Gif.svg'%}" />
               </div>
@@ -181,23 +183,24 @@
           <div class="preset-icon-box">
             <label>Which Platform is this Creative for?</label>
             <div class="icon-box-align">
-              <input type="checkbox" value="Facebook" name="Platform" />
+              <input type="radio" name="Platform" value="Facebook">
+              <!-- <input type="checkbox" value="Facebook" name="Platform" /> -->
               <div class="platform-box" style="background-color: #3b5998">
                 <img src="{% static './images/facebook.svg'%}" />
               </div>
-              <input type="checkbox" value="Youtube" name="Platform" />
+              <input type="radio" name="Platform" value="Youtube">
               <div class="platform-box" style="background-color: #ee3b3b">
                 <img src="{% static './images/youtube.svg'%} "/>
               </div>
-              <input type="checkbox" value="GDN" name="Platform" />
+              <input type="radio" name="Platform" value="GDN">
               <div class="platform-box" style="background-color: #c9e8f9">
                 <img src="{% static './images/cdn.png '%}" />
               </div>
-              <input type="checkbox" value="TikTok" name="Platform"/>
+              <input type="radio" name="Platform" value="TikTok">
               <div class="platform-box" style="background-color: #1c1c1c">
                 <img src="{% static './images/tiktok.svg '%}" />
               </div>
-              <input type="checkbox" value="Native" name="Platform"/>
+              <input type="radio" name="Platform" value="Native">
               <div class="platform-box" style="background-color: #2fab7c">
                 <img src="{% static './images/settings.svg'%}" />
               </div>
