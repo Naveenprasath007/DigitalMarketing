@@ -74,17 +74,33 @@ def creater_upload(request,id):
 
 
             if upload == 'Upload':
+                    image_url=''
+                    Gif_url=''
+                    url=''
+                    url1=''
                     Title1=request.POST.get('Videotitle')
                     myfile = request.FILES['myfile']
                     fs = FileSystemStorage()
                     filename = fs.save(myfile.name, myfile)
                     uploaded_file_url = fs.url(filename)
                     print(uploaded_file_url)
-                    url=uploaded_file_url
-                    url1=url[1:]
-                    print(url1)
-                    # text=transcribe(url1)
-                    text='--'
+
+                    if Creative == 'image':
+                         image_url=uploaded_file_url
+                         text='--'
+
+
+                    if Creative == 'Video':
+                        url=uploaded_file_url
+                        url1=url[1:]
+                        # text=transcribe(url1)
+                        text='--'
+                    
+                    if Creative == 'GIF':
+                        Gif_url=uploaded_file_url
+                        # text=transcribe(url1)
+                        text='--'
+
                     data=TbQuestion.objects.all()
 
                     # Generate a new UUID
@@ -199,7 +215,9 @@ def creater_upload(request,id):
                     return render(request,'tc_DigitalMarketing/upload-page.html',{"video":url,"text":text,
                                                                                     'qT':questionsText,
                                                                                     'qR':QuestionResponse,
-                                                                                    "data":data,'dataQ':dataQ,'status':status,'Title':Title1})
+                                                                                    "data":data,'dataQ':dataQ,
+                                                                                    'status':status,'Title':Title1,
+                                                                                    'imgurl':image_url,'gifurl':Gif_url})
             
             cursor=connection.cursor()
             cursor.execute("SELECT TOP 1 VideoID FROM DigitalMarketing_cvideoid ORDER BY id DESC;")
@@ -282,18 +300,50 @@ def user_indexpage(request):
         else:
             return render(request, 'tc_DigitalMarketing/UserindexPage.html')
 
-    
+
 def approver(request,id):
     if request.method == "POST":
         return render(request,'tc_DigitalMarketing/createrupload.html')
     else:
-        d=1
         userName=connection.cursor()
-        userName.execute("select UserName from tb_User where UserID='{val}';".format(val=d))
+        userName.execute("select UserName from tb_User where UserID='{val}';".format(val=id))
         userName=userName.fetchall()
         UN=userName[0][0]
         status=TbStatus.objects.all()
-        return render(request,'tc_DigitalMarketing/approver.html',{'status':status,'id':id})
+        user_status=TbStatus.objects.filter(approver = UN)
+        q = user_status.values()
+        df = pd.DataFrame.from_records(q)
+        if len(df) == 0:
+            val=id
+            return redirect('/dm/createrupload/'+str(val))
+        filter1 =df["status"].isin(['Pending'])
+        Pending = df[filter1]
+        Pending =len(Pending)
+        filter2 =df["status"].isin(['Rejected'])
+        Rejected = df[filter2]
+        Rejected =len(Rejected)
+        filter3 =df["status"].isin(['Approved'])
+        Approved = df[filter3]
+        Approved =len(Approved)
+        # return render(request,'tc_DigitalMarketing/approver.html',{'status':status,'id':id})
+        return render(request,'tc_DigitalMarketing/approver_index.html',{'status':status,'id':id,'Approved':Approved,'Rejected':Rejected,'Pending':Pending,'UserName':UN})
+
+
+
+
+    
+# def approver(request,id):
+#     if request.method == "POST":
+#         return render(request,'tc_DigitalMarketing/createrupload.html')
+#     else:
+#         d=1
+#         userName=connection.cursor()
+#         userName.execute("select UserName from tb_User where UserID='{val}';".format(val=d))
+#         userName=userName.fetchall()
+#         UN=userName[0][0]
+#         status=TbStatus.objects.all()
+#         # return render(request,'tc_DigitalMarketing/approver.html',{'status':status,'id':id})
+#         return render(request,'tc_DigitalMarketing/approver_index.html',{'status':status,'id':id})
 
 
 def approver_view(request,id,uid):

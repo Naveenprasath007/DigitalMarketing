@@ -51,7 +51,7 @@
     </nav>
 
 
-    <form action="" method="post" enctype="multipart/form-data">
+    <form action="" method="post" enctype="multipart/form-data" id="upload-form">
       {% csrf_token %}
       
     <div class="upload-page">
@@ -67,7 +67,22 @@
           </div>
           {% endif %}
 
-          {%if not video %}
+
+          {%if imgurl %}
+          <div class="upload-box">
+            <img width="100%" height="100%" src="{{ imgurl }}" alt="">
+          </div>
+          {% endif %}
+
+          {%if gifurl %}
+          <div class="upload-box">
+            <img width="100%" height="100%" src="{{ gifurl }}" alt="">
+          </div>
+          {% endif %}
+
+          
+
+          {%if videodetails %}
           <div class="upload-box">
             <div class="messege-info">
               {% include 'tc_DigitalMarketing/messages.html' %}
@@ -91,17 +106,21 @@
             </div>
             <p>You will free to upload any file format upto 50 mb</p>
           </div>
+
+          <!-- <div class="progress-bar">
+            <div id="progress"></div>
+          </div> -->
           {% endif %}
           <div class="videotitle">
             
             <div class="titlebox">
               <div class="titlebox-img"></div>
               <div class="titlebox-content">
-                {% if video %}
+                {% if video or imgurl or gifurl %}
                 <label>Your Video Title</label>
                 <p>{{ Title }}</p>
                 {% endif %}
-                {% if not video %}
+                {% if videodetails %}
                 <label>Add your Video Title</label>
                 <input type="VideoTiltle" class="form-control" name="Videotitle" required>
                 {% endif %}
@@ -117,7 +136,7 @@
             </div>
           </div>
         </div>
-        {%if video %}
+        {%if video or imgurl or gifurl %}
         <div class="presets-box">
           <h2>Questions</h2>
 
@@ -144,7 +163,7 @@
         </div>
         {% endif %}
 
-        {% if not video %}
+        {% if videodetails %}
         <div class="presets-box">
           <h2>Presets</h2>
           <div class="preset-icon-box">
@@ -213,7 +232,7 @@
       </div>
     </form>
 
-    {% if video %}
+    {% if video or imgurl or gifurl %}
     <div class="transcription-panel mbottom">
       <h2>Transcription</h2>
       <div class="transcription-box">
@@ -222,7 +241,7 @@
     </div>
     {% endif %}
 
-    {% if not video %}
+    {% if videodetails %}
       <div class="transcription-panel mbottom">
         <h2>Transcription</h2>
         <div class="transcription-box">
@@ -232,7 +251,7 @@
     {% endif %}
 
 
-    {%if not video %}
+    {%if videodetails %}
       <div class="my-videos-panel mbottom">
         <h2>My Videos</h2>
         <div class="scroll-panel">
