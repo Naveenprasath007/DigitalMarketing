@@ -113,7 +113,12 @@ def creater_upload(request,id):
 
                     T=Title1
                     video_details2 = TbVideo(videoid=new_id,videoname=T,videopath=url1,
-                                            previousvideoid=0,videotranscription=text,vendor=Vendor,lob=Lob,creative=Creative,platform=Platform,videopath1='--',videotranscription1='--',creater=Creater)
+                                            previousvideoid=0,videotranscription=text,
+                                            vendor=Vendor,lob=Lob,creative=Creative,
+                                            platform=Platform,videopath1='--',
+                                            videotranscription1='--',creater=Creater,
+                                            Gifurl=Gif_url,Imageurl=image_url
+                                            )
                     video_details2.save()
 
                     video_details3 = Campaignvideo(campaignvideoid=new_id,
