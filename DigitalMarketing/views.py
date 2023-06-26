@@ -296,7 +296,9 @@ def creater_upload(request,id):
         else:
             a=id
             status='Waiting'
-            videodetails=video_Details.objects.filter(userid=id)
+            # videodetails=video_Details.objects.filter(userid=id)
+            videodetails="video_Details.objects.filter(userid=id)"
+
             return render(request,'tc_DigitalMarketing/upload-page.html',{'k':a,'status':status,'videodetails':videodetails})
 
 
@@ -340,21 +342,57 @@ def approver(request,id):
         UN=userName[0][0]
         status=TbStatus.objects.all()
         user_status=TbStatus.objects.filter(approver = UN)
-        # q = user_status.values()
-        q = status.values()
+        q = user_status.values()
+        # q = status.values()
         df = pd.DataFrame.from_records(q)
         if len(df) == 0:
             val=id
-            return redirect('/dm/createrupload/'+str(val))
-        filter1 =df["status"].isin(['Pending'])
-        Pending = df[filter1]
-        Pending =len(Pending)
+            Approved = 0
+            Rejected = 0
+
+
+            q1 = status.values()
+            df = pd.DataFrame.from_records(q1)
+            filter1 =df["status"].isin(['Pending'])
+            Pending = df[filter1]
+            Pending =len(Pending)
+
+
+            filter4 =df["creative"].isin(['image','GIF'])
+            upload_img_gif = df[filter4]
+            upload_img_gif_count =len(upload_img_gif)
+
+
+            df['createddate']=df['createddate'].astype(str)
+            df['createddate']=df['createddate'].str.slice(0, -22)
+            video_count = df.groupby('createddate')['videoname'].count().reset_index()
+            DateValue=video_count['createddate'].values.tolist()
+            videoC=video_count['videoname'].values.tolist()
+
+            file_type_counts = df['creative'].value_counts().reset_index()
+            file_type_counts.columns = ['File_Type', 'Count']
+            File_Type=file_type_counts['File_Type'].values.tolist()
+            File_TypeC=file_type_counts['Count'].values.tolist()
+            return render(request,'tc_DigitalMarketing/approver_index.html',{'status':status,'id':id,'status':status,'id':id,'Approved':Approved,'Rejected':Rejected,
+                                                                         'Pending':Pending,'UserName':UN,'DateValue':DateValue,"videoC":videoC,
+                                                                          'File_Type':File_Type,'File_TypeC':File_TypeC,})
+            # return redirect('/dm/createrupload/'+str(val))
+        # filter1 =df["status"].isin(['Pending'])
+        # Pending = df[filter1]
+        # Pending =len(Pending)
         filter2 =df["status"].isin(['Rejected'])
         Rejected = df[filter2]
         Rejected =len(Rejected)
         filter3 =df["status"].isin(['Approved'])
         Approved = df[filter3]
         Approved =len(Approved)
+
+        q1 = status.values()
+        df = pd.DataFrame.from_records(q1)
+        filter1 =df["status"].isin(['Pending'])
+        Pending = df[filter1]
+        Pending =len(Pending)
+
 
         filter4 =df["creative"].isin(['image','GIF'])
         upload_img_gif = df[filter4]
