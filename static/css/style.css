@@ -244,6 +244,21 @@ nav .navbar-nav .av-holder i {
   color: #ce094f;
   margin-bottom: 0;
 }
+
+
+.upload-page .transcription-panel .transcription-box1 {
+  border-radius: 6px;
+  padding: 11px 12px;
+  background-color: rgba(9, 206, 85, 0.123);
+}
+.upload-page .transcription-panel .transcription-box1 p {
+  font-size: 16px;
+  color: #000000;
+  margin-bottom: 0;
+}
+
+
+
 .upload-page .my-videos-panel h2 {
   font-size: 18px;
   font-family: "Lato", sans-serif;

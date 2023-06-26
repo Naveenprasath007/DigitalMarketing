@@ -112,7 +112,7 @@ def creater_upload(request,id):
                         url=uploaded_file_url
                         url1=url[1:]
                         # text=transcribe(url1)
-                        text='--'
+                        text=' Are you an American over 25 and earning less than $50,000? Well you might have already qualified for this $5,200 healthcare assistance program available in the US. Just CLICK the link below and see how much you might get back.'
                     
                     if Creative == 'GIF':
                         Gif_url=uploaded_file_url
@@ -296,10 +296,10 @@ def creater_upload(request,id):
         else:
             a=id
             status='Waiting'
-            # videodetails=video_Details.objects.filter(userid=id)
+            videodetails1=video_Details.objects.filter(userid=id)
             videodetails="video_Details.objects.filter(userid=id)"
 
-            return render(request,'tc_DigitalMarketing/upload-page.html',{'k':a,'status':status,'videodetails':videodetails})
+            return render(request,'tc_DigitalMarketing/upload-page.html',{'k':a,'status':status,'videodetails':videodetails,'videodetails1':videodetails1})
 
 
 def unique_numbers(numbers):
