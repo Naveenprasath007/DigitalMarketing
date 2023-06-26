@@ -86,6 +86,7 @@
           <div class="upload-box">
             <div class="messege-info">
               {% include 'tc_DigitalMarketing/messages.html' %}
+              <!-- <span class="sucess-message"><img src="{% static 'images/success.png' %}" alt=""> Video has been Submitted Successfully <span> -->
             </div>
             <img class="collection" src="{% static 'images/fileupload.svg'%}" />
             <h5>
@@ -97,7 +98,7 @@
                   <label for="file-upload">
                       <img src="{% static 'images/folder.svg'%}"/>
                   </label>
-                  <input id="file-upload" type="file" name="myfile" accept="video/*,image/*" required/>
+                  <input id="file-upload" type="file" name="myfile" onchange="GetFileSizeNameAndType()" accept="video/*,image/*" required/>
               </div>
               </div>
               <div class="icon-box">
@@ -105,7 +106,13 @@
               </div>
             </div>
             <p>You will free to upload any file format upto 50 mb</p>
+            <div id="fp"></div>
+            <p>
+              <div id="divTotalSize"></div>
+            </p>
+
           </div>
+
 
           <!-- <div class="progress-bar">
             <div id="progress"></div>

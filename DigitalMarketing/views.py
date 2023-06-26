@@ -38,7 +38,25 @@ def uploaderdashboard(request,id):
         filter3 =df["status"].isin(['Approved'])
         Approved = df[filter3]
         Approved =len(Approved)
-        return render(request,'tc_DigitalMarketing/dash_index.html',{'id':id,'status':status,'Approved':Approved,'Rejected':Rejected,'Pending':Pending,'UserName':UN})
+        filter4 =df["creative"].isin(['image','GIF'])
+        upload_img_gif = df[filter4]
+        upload_img_gif_count =len(upload_img_gif)
+
+        #  = pd.to_datetime(df['createddate'])
+        df['createddate']=df['createddate'].astype(str)
+        df['createddate']=df['createddate'].str.slice(0, -22)
+        video_count = df.groupby('createddate')['videoname'].count().reset_index()
+        DateValue=video_count['createddate'].values.tolist()
+        videoC=video_count['videoname'].values.tolist()
+
+        file_type_counts = df['creative'].value_counts().reset_index()
+        file_type_counts.columns = ['File_Type', 'Count']
+        File_Type=file_type_counts['File_Type'].values.tolist()
+        File_TypeC=file_type_counts['Count'].values.tolist()
+        return render(request,'tc_DigitalMarketing/dash_index.html',{'id':id,'status':status,'Approved':Approved,'Rejected':Rejected,'Pending':Pending,'UserName':UN,
+                                                                     'DateValue':DateValue,"videoC":videoC,'upload_img_gif_count':upload_img_gif_count,'File_Type':File_Type,
+                                                                     'File_TypeC':File_TypeC,
+                                                                     })
 
 def filterpage(request,id,id1):
         if request.method == "POST":
@@ -232,17 +250,23 @@ def creater_upload(request,id):
             
 
             cursor1=connection.cursor()
-            cursor1.execute("select VideoPath,VideoTranscription,VideoName,Platform from CampaignVideo cv inner join tb_Video v on v.VideoID=cv.VideoID AND cv.CampaignVideoID='{val}'".format(val=CVID))
+            cursor1.execute("select VideoPath,VideoTranscription,VideoName,Platform,VideoPath1,imageurl,gifurl,Creative from CampaignVideo cv inner join tb_Video v on v.VideoID=cv.VideoID AND cv.CampaignVideoID='{val}'".format(val=CVID))
             VideoDeatails=cursor1.fetchall()
             vP='/'+VideoDeatails[0][0]
             vN=VideoDeatails[0][2]
             pN=VideoDeatails[0][3]
+            vP1='/'+VideoDeatails[0][4]
+            img='/'+VideoDeatails[0][5]
+            gifurl='/'+VideoDeatails[0][6]
+            Cre=VideoDeatails[0][7]    
+
+
 
             userName=connection.cursor()
             userName.execute("select UserName from tb_User where UserID='{val}'".format(val=id))
             userName=userName.fetchall()
             UN=userName[0][0]
-            status = TbStatus(userid=TbUser.objects.get(userid=id),videoid=CVID,status='Pending',videoname=vN,approver='---',uploadername=UN,platform=pN)
+            status = TbStatus(userid=TbUser.objects.get(userid=id),videoid=CVID,status='Pending',videoname=vN,approver='---',uploadername=UN,platform=pN,videopath1=vP1,Imageurl=img,Gifurl=gifurl,creative=Cre)
             status.save()
   
             cQresponse=TbCampaignquestion.objects.filter(campaignvideoid=CVID)
@@ -316,7 +340,8 @@ def approver(request,id):
         UN=userName[0][0]
         status=TbStatus.objects.all()
         user_status=TbStatus.objects.filter(approver = UN)
-        q = user_status.values()
+        # q = user_status.values()
+        q = status.values()
         df = pd.DataFrame.from_records(q)
         if len(df) == 0:
             val=id
@@ -330,9 +355,27 @@ def approver(request,id):
         filter3 =df["status"].isin(['Approved'])
         Approved = df[filter3]
         Approved =len(Approved)
-        # return render(request,'tc_DigitalMarketing/approver.html',{'status':status,'id':id})
-        return render(request,'tc_DigitalMarketing/approver_index.html',{'status':status,'id':id,'Approved':Approved,'Rejected':Rejected,'Pending':Pending,'UserName':UN})
 
+        filter4 =df["creative"].isin(['image','GIF'])
+        upload_img_gif = df[filter4]
+        upload_img_gif_count =len(upload_img_gif)
+
+
+        df['createddate']=df['createddate'].astype(str)
+        df['createddate']=df['createddate'].str.slice(0, -22)
+        video_count = df.groupby('createddate')['videoname'].count().reset_index()
+        DateValue=video_count['createddate'].values.tolist()
+        videoC=video_count['videoname'].values.tolist()
+
+        file_type_counts = df['creative'].value_counts().reset_index()
+        file_type_counts.columns = ['File_Type', 'Count']
+        File_Type=file_type_counts['File_Type'].values.tolist()
+        File_TypeC=file_type_counts['Count'].values.tolist()
+
+        # return render(request,'tc_DigitalMarketing/approver.html',{'status':status,'id':id})
+        return render(request,'tc_DigitalMarketing/approver_index.html',{'status':status,'id':id,'Approved':Approved,'Rejected':Rejected,
+                                                                         'Pending':Pending,'UserName':UN,'DateValue':DateValue,"videoC":videoC,
+                                                                          'File_Type':File_Type,'File_TypeC':File_TypeC,})
 
 
 
@@ -497,19 +540,29 @@ def approver_view(request,id,uid):
                 
                 approve = TbApprove(userid=TbUser.objects.get(userid=getuserid[0][0]),videoid=id,videotitle=vN,videopath=vP,uploadername=UN)
                 approve.save()
-                deletestatus=connection.cursor()
-                deletestatus.execute("DELETE FROM tb_Status WHERE videoID='{value}';".format(value=id))
+                # deletestatus=connection.cursor()
+                # deletestatus.execute("DELETE FROM tb_Status WHERE videoID='{value}';".format(value=id))
 
-                video = TbStatus(userid=TbUser.objects.get(userid=getuserid[0][0]),videoid=id,status='Approved',reason='Video is Correct',videoname=vN,approver=getApproverName[0][0],uploadername=UN,platform=pN)   
-                # video = Status(userid=TbUser.objects.get(userid=getuserid[0][0]),VideoID=id,status='Approved',reason='Video is Correct',VideoName=vN,ApproverName=getApproverName[0][0])
-                video.save() 
+                # video = TbStatus(userid=TbUser.objects.get(userid=getuserid[0][0]),videoid=id,status='Approved',reason='Video is Correct',videoname=vN,approver=getApproverName[0][0],uploadername=UN,platform=pN)   
+                # video.save() 
+
+                video = TbStatus.objects.get(videoid=id)
+                video.status='Approved'
+                video.reason=l
+                video.approver=getApproverName[0][0]
+                video.save()
+
+
+
                 deleteQuestionsres=connection.cursor()
                 deleteQuestionsres.execute("DELETE CampaignQuestionResponse FROM CampaignQuestionResponse inner join tb_CampaignQuestion on CampaignQuestionResponse.CampaignQuestionID = tb_CampaignQuestion.CampaignQuestionID WHERE tb_CampaignQuestion.CampaignVideoID='{value}';".format(value=id))
                 messages.success(request, 'Approved succesfully')
                 return redirect('/dm/approver/'+str(uid))
             if btn =='Reject':
-                deletestatus=connection.cursor()
-                deletestatus.execute("DELETE FROM tb_Status WHERE videoID='{value}';".format(value=id))
+
+                # NO NEED THIS CODE /25/6/23
+                # deletestatus=connection.cursor()
+                # deletestatus.execute("DELETE FROM tb_Status WHERE videoID='{value}';".format(value=id))
                 
                 # ___This for get question and responces__
                 cursor=connection.cursor()
@@ -556,9 +609,18 @@ def approver_view(request,id,uid):
                 userName=userName.fetchall()
                 UN=userName[0][0]
 
-                video = TbStatus(userid=TbUser.objects.get(userid=getuserid[0][0]),videoid=id,status='Rejected',reason=l,videoname=vN,approver=getApproverName[0][0],uploadername=UN,platform=pN)   
-                # video = Status(userid=TbUser.objects.get(userid=getuserid[0][0]),VideoID=id,status='Rejected',reason=l,VideoName=vN,ApproverName=getApproverName[0][0])
-                video.save() 
+                # HERE INCLUDE UPDATE
+                # NO NEED THIS CODE /25/6/23
+                # video = TbStatus(userid=TbUser.objects.get(userid=getuserid[0][0]),videoid=id,status='Rejected',reason=l,videoname=vN,approver=getApproverName[0][0],uploadername=UN,platform=pN)   
+                # video.save() 
+
+                video = TbStatus.objects.get(videoid=id)
+                video.status='Rejected'
+                video.reason=l
+                video.approver=getApproverName[0][0]
+                video.save()
+
+
 
                 # ____new Delete lines added here__
                 deleteQuestionsres=connection.cursor()
@@ -707,30 +769,87 @@ def delete_video(request,id,id1):
         messages.error(request, 'Video Details Deleted succesfully')
         return redirect('/dm/createrupload/'+str(id1))
 
-def upload_again(request,id,id1):
-    if request.method == "POST":
-        myfile = request.FILES['myfile']
-        fs = FileSystemStorage()
-        filename = fs.save(myfile.name, myfile)
-        uploaded_file_url = fs.url(filename)
-        print(uploaded_file_url)
-        url=uploaded_file_url
-        url1=url[1:]
-        # text=videotranscribe(url1)
-        # text=str(text)
-        text='--'
-        # UpdateQuery=connection.cursor()
-        # UpdateQuery.execute("UPDATE tb_Video SET VideoPath1 = '{value1}' WHERE VideoID = '{value}';".format(value1=uploaded_file_url,value=id))
+# def upload_again(request,id,id1):
+#     if request.method == "POST":
+#         myfile = request.FILES['myfile']
+#         fs = FileSystemStorage()
+#         filename = fs.save(myfile.name, myfile)
+#         uploaded_file_url = fs.url(filename)
+#         print(uploaded_file_url)
+#         url=uploaded_file_url
+#         url1=url[1:]
 
-        record = TbVideo.objects.get(videoid=id)
-        record.videopath1 = uploaded_file_url
-        record.videotranscription1 = text
-        record.save()
-        videoDetails = video_Details(userid=TbUser.objects.get(userid=id1),VideoPath=uploaded_file_url)
-        videoDetails.save()
-        messages.success(request, 'submitted succesfully')
-        return render(request,'tc_DigitalMarketing/uploadagain.html',{"video":url,'text':text,'id':id1})
-    else:
-        return render(request,'tc_DigitalMarketing/uploadagain.html')
+#         text='--'
+
+#         record = TbVideo.objects.get(videoid=id)
+#         record.videopath1 = uploaded_file_url
+#         record.videotranscription1 = text
+#         record.save()
+#         videoDetails = video_Details(userid=TbUser.objects.get(userid=id1),VideoPath=uploaded_file_url)
+#         videoDetails.save()
+#         messages.success(request, 'submitted succesfully')
+#         return render(request,'tc_DigitalMarketing/uploadagain.html',{"video":url,'text':text,'id':id1})
+#     else:
+#         status='Waiting'
+#         videodetails=video_Details.objects.filter(userid=id1)
+#         return render(request,'tc_DigitalMarketing/uploadagainnew.html',{'videodetails':videodetails,'status':status})
     
 
+
+def upload_again(request,id,id1):
+    Creative=request.POST.get('Creative')
+    upload=request.POST.get('Upload')
+
+    if request.method == "POST":
+        if upload == 'Upload':
+            image_url=''
+            Gif_url=''
+            url=''
+            url1=''
+            myfile = request.FILES['myfile']
+            fs = FileSystemStorage()
+            filename = fs.save(myfile.name, myfile)
+            uploaded_file_url = fs.url(filename)
+            print(uploaded_file_url)
+            # url=uploaded_file_url
+            # text=videotranscribe(url1)
+            # text=str(text)
+            text='--'
+            # UpdateQuery=connection.cursor()
+            # UpdateQuery.execute("UPDATE tb_Video SET VideoPath1 = '{value1}' WHERE VideoID = '{value}';".format(value1=uploaded_file_url,value=id))
+
+            if Creative == 'image':
+                image_url=uploaded_file_url
+                text='--'
+
+
+            if Creative == 'Video':
+                url=uploaded_file_url
+                url1=url[1:]
+                # text=transcribe(url1)
+                text='--'
+            
+            if Creative == 'GIF':
+                Gif_url=uploaded_file_url
+                # text=transcribe(url1)
+                text='--'
+
+            record = TbVideo.objects.get(videoid=id)
+            record.videopath1 = uploaded_file_url
+            record.videotranscription1 = text
+            record.save()
+            videoDetails = video_Details(userid=TbUser.objects.get(userid=id1),VideoPath=uploaded_file_url)
+            videoDetails.save()
+            status='Uploaded'
+            return render(request,'tc_DigitalMarketing/uploadagainnew.html',{"video":url,'text':text,'id':id1,'status':status,
+                                                                             'imgurl':image_url,'gifurl':Gif_url})
+
+        messages.success(request, 'submitted succesfully')
+        return redirect('/dm/createrupload/'+id1)
+
+        
+    else:
+        status='Waiting'
+        videodetails=video_Details.objects.filter(userid=id1)
+        return render(request,'tc_DigitalMarketing/uploadagainnew.html',{'videodetails':videodetails,'status':status})
+    

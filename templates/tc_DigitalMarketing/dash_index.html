@@ -163,22 +163,22 @@
                                             <img src="{% static 'images/av_1.png'%}" alt=""> 
                                         </a>
                                         <a href="#">
-                                            <img src="images/av_1.png" alt=""> 
+                                            <img src="{% static 'images/av_1.png'%}" alt=""> 
                                         </a>
                                         <a href="#">
-                                            <img src="images/av_1.png" alt=""> 
+                                            <img src="{% static 'images/av_1.png'%}" alt=""> 
                                         </a>
                                         <a href="#">
-                                            <img src="images/av_1.png" alt=""> 
+                                            <img src="{% static 'images/av_1.png'%}" alt=""> 
                                         </a>
                                         <a href="#">
-                                            <img src="images/av_1.png" alt=""> 
+                                            <img src="{% static 'images/av_1.png'%}" alt=""> 
                                         </a>
                                         <a href="#">
-                                            <img src="images/av_1.png" alt=""> 
+                                            <img src="{% static 'images/av_1.png'%}" alt=""> 
                                         </a>
                                         <a href="#">
-                                            <img src="images/av_1.png" alt=""> 
+                                            <img src="{% static 'images/av_1.png'%}" alt=""> 
                                         </a>
                                  </div>
                             </div>
@@ -195,7 +195,7 @@
                                         <img src="{% static 'images/img.svg'%}" alt="">
                                     </div>
                                     <div class="img-right-block">
-                                        <h2>0</h2>
+                                        <h2>{{upload_img_gif_count}}</h2>
                                         <div class="mini-info">
                                             <i class="bi bi-arrow-up"></i><span>0%</span> This month
                                         </div>
@@ -348,7 +348,7 @@ aspect.
                                         ---
                                         {% endif %}
                                         {% if i.status == 'Rejected' %}
-                                        <a href="/dm/statusview/{{id}}/{{i.videoid}}">Upload quality is not good</a>
+                                        <a href="/dm/statusview/{{id}}/{{i.videoid}}"> View Reason </a>
                                         {% endif %}
                                     </td>
                                     <td>

@@ -1,7 +1,8 @@
+{% load static %}
 {% for message in messages %}
 <div class="container-fluid p-0">
   <div class="alert {{ message.tags }} alert-dismissible" role="alert" >
-    {{ message }}
+    <span class="sucess-message"><img src="{% static 'images/success.png' %}" alt=""> {{ message }}</span>
   </div>
 </div>
 {% endfor %}

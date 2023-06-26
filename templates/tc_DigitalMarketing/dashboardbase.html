@@ -20,5 +20,80 @@
 
 {% include 'tc_DigitalMarketing/js.html' %}
 <!-- <script src="{% static 'js/custom.js'%}"></script>  -->
+
+<script>
+var options = {
+    series: [{
+    name: 'Uploads',
+    data: {{File_TypeC|safe}}
+  }],
+    chart: {
+    height: 200,
+    type: 'bar',
+    events: {
+      click: function(chart, w, e) {
+        // console.log(chart, w, e)
+      }
+    }
+  },
+  colors: ['#60E19C', '#F37086', '#81D1FF', '#574AAB', '#61FF00', '#9A9E9C'],
+  plotOptions: {
+    bar: {
+      columnWidth: '45%',
+      distributed: true,
+    }
+  },
+  dataLabels: { 
+    enabled: false
+  },
+  legend: {
+    show: false
+  },
+  xaxis: {
+    categories: {{File_Type|safe}},
+    labels: {
+      style: {
+        colors: ['#60E19C', '#F37086', '#81D1FF'],
+        fontSize: '12px'
+      }
+    }
+  }
+  };
+
+  var chart = new ApexCharts(document.querySelector("#barChart"), options);
+  chart.render();
+
+  var optionsArea = {
+    series: [{
+    name: 'Uploads',
+    data: {{videoC|safe}}
+  },],
+    chart: {
+    height: 350,
+    type: 'area'
+  },
+  dataLabels: {
+    enabled: false
+  },
+  stroke: {
+    curve: 'smooth'
+  },
+  xaxis: {
+    type: 'datetime',
+    categories: {{DateValue|safe}}
+  },
+  tooltip: {
+    x: {
+      format: 'dd/MM/yy HH:mm'
+    },
+  },
+  };
+
+  var chart = new ApexCharts(document.querySelector("#uploadHistory"), optionsArea);
+  chart.render();
+
+</script>
+
+
 </body>
 </html>

@@ -80,13 +80,17 @@
 
 
 <!-- new filtering -->
-<div class="container-fluid mb-3 mt-3">
-  <button class="btn btn-primary btn-grid">Grid View</button>
-  <button class="btn btn-danger btn-list">List View</button>
-  
+<div class="container-fluid">
+  <!-- <button class="btn btn-primary btn-grid float-right">Grid View</button> -->
+  <img align="right" class="btn-list" src="{% static 'images/grid.png'%}" alt="" class="img-fluid" />
+  <!-- <img align="right" class="btn-list" src="{% static 'images/grid.png'%}" alt="" class="img-fluid" /> -->
 </div>
+
+
+
 <div class="container-fluid grid-container mt-3">
   <div class="row">
+
     {% for i in status %}
     <div class="col-12 col-md-6 col-lg-4">
       <div class="card">
