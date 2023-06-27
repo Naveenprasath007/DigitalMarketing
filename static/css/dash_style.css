@@ -35,9 +35,41 @@ nav .navbar-brand h2 {
 nav .navbar-brand h2 span {
   color: #58595b;
 }
+/* nav .navbar-nav .account-section a.nav-link {
+  font-weight: 700;
+} */
+
+nav .navbar-nav li.account-section.active .dropdown-panel {
+  visibility: visible !important;
+}
+nav .navbar-nav .account-section {
+  position: relative;
+}
 nav .navbar-nav .account-section a.nav-link {
   font-weight: 700;
 }
+nav .navbar-nav .account-section .dropdown-panel {
+  visibility: hidden;
+  position: absolute;
+  background: white;
+  width: 100%;
+  -webkit-box-shadow: -7px 12px 24px rgba(191, 206, 223, 0.2784313725);
+          box-shadow: -7px 12px 24px rgba(191, 206, 223, 0.2784313725);
+}
+nav .navbar-nav .account-section .dropdown-panel ul {
+  list-style: none;
+  padding-left: 0px;
+}
+nav .navbar-nav .account-section .dropdown-panel ul li {
+  font-size: 15px;
+  padding: 10px 10px;
+}
+nav .navbar-nav .account-section .dropdown-panel ul li:hover {
+  cursor: pointer;
+  background: #c0e7fe;
+}
+
+
 nav .navbar-nav .nav-link.active {
   background-color: #c0e7fe;
   border-radius: 4px;

@@ -292,7 +292,7 @@ def creater_upload(request,id):
                 return redirect('/dm/uploadagain/'+str(a)+str('/')+id)
             
             messages.success(request, 'submitted succesfully')
-            return redirect('/dm/createrupload/'+id)
+            return redirect('/dm/uploaderdashboard/'+id)
         else:
             a=id
             status='Waiting'
@@ -449,106 +449,6 @@ def approver_view(request,id,uid):
             Qlist=[q0,q1,q2,q3,q4,q5,q6]
             Qlist=list(filter(None,Qlist))
             btn=request.POST.get('btn')
-            btn1=request.POST.get('btn1')
-            btn2=request.POST.get('btn2')
-            
-            if btn1 =='Rej':
-                CVID=id
-                dataQ = TbCampaignquestion.objects.filter(campaignvideoid=CVID)
-                listOfDataQ=[]
-                for i in dataQ:
-                    output=i.questionid
-                    listOfDataQ.append(output)
-                lenOfList=len(listOfDataQ)
-
-                listOfQuestion=[]
-                for i in listOfDataQ:
-                    output=i.questiontext
-                    listOfQuestion.append(output)
-                questionsText = {}
-                for i in range(0,lenOfList):
-                    QT=listOfQuestion[i]
-                    questionsText["q"+str(i)] = QT
-
-
-                listOfQuestionResponse=[]
-                for i in listOfDataQ:
-                    output=i.questionresponse.split("|")
-                    listOfQuestionResponse.append(output)
-
-                QuestionResponse = {}
-                for i in range(0,lenOfList):
-                    lQR=listOfQuestionResponse[i]
-                    QuestionResponse["k"+str(i)] = lQR
-
-                # ___This for get question and responces__
-                cursor=connection.cursor()
-                cursor.execute("select QuestionText,Response from CampaignQuestionResponse cqr inner join tb_CampaignQuestion cquestion on cqr.CampaignQuestionID = cquestion.CampaignQuestionID AND cquestion.CampaignVideoID ='{value}' inner join tb_Question question on cquestion.QuestionID = question.QuestionID;".format(value=CVID))
-                result=cursor.fetchall()
-
-                cursor1=connection.cursor()
-                cursor1.execute("select VideoPath,VideoTranscription,VideoName,VideoPath1,VideoTranscribeOne,Vendor,LOB,Creative,Platform from CampaignVideo cv inner join tb_Video v on v.VideoID=cv.VideoID AND cv.CampaignVideoID='{val}'".format(val=CVID))
-                VideoDeatails=cursor1.fetchall()
-                vP='/'+VideoDeatails[0][0]
-                vT=VideoDeatails[0][1]
-                vN=VideoDeatails[0][2]
-                vP1=VideoDeatails[0][3]
-                vT1=VideoDeatails[0][4]
-                Vendor=VideoDeatails[0][5]
-                LOB=VideoDeatails[0][6]
-                Creative=VideoDeatails[0][7]
-                Platform=VideoDeatails[0][8]
-                return render(request,'tc_DigitalMarketing/approverview.html',{'qT':questionsText,'qR':QuestionResponse,'R':result,'video':vP,'Transcribe':vT,'vname':vN,'id':uid,'video1':vP1,'Transcribe1':vT1,'Vendor':Vendor,'LOB':LOB,'Creative':Creative,'Platform':Platform,'btn1':btn1})
-                    
-            if btn2 =='Apo':
-                CVID=id
-                dataQ = TbCampaignquestion.objects.filter(campaignvideoid=CVID)
-                listOfDataQ=[]
-                for i in dataQ:
-                    output=i.questionid
-                    listOfDataQ.append(output)
-                lenOfList=len(listOfDataQ)
-
-                listOfQuestion=[]
-                for i in listOfDataQ:
-                    output=i.questiontext
-                    listOfQuestion.append(output)
-                questionsText = {}
-                for i in range(0,lenOfList):
-                    QT=listOfQuestion[i]
-                    questionsText["q"+str(i)] = QT
-
-
-                listOfQuestionResponse=[]
-                for i in listOfDataQ:
-                    output=i.questionresponse.split("|")
-                    listOfQuestionResponse.append(output)
-
-                QuestionResponse = {}
-                for i in range(0,lenOfList):
-                    lQR=listOfQuestionResponse[i]
-                    QuestionResponse["k"+str(i)] = lQR
-
-                # ___This for get question and responces__
-                cursor=connection.cursor()
-                cursor.execute("select QuestionText,Response from CampaignQuestionResponse cqr inner join tb_CampaignQuestion cquestion on cqr.CampaignQuestionID = cquestion.CampaignQuestionID AND cquestion.CampaignVideoID ='{value}' inner join tb_Question question on cquestion.QuestionID = question.QuestionID;".format(value=CVID))
-                result=cursor.fetchall()
-                print(result)
-
-                cursor1=connection.cursor()
-                cursor1.execute("select VideoPath,VideoTranscription,VideoName,VideoPath1,VideoTranscribeOne,Vendor,LOB,Creative,Platform from CampaignVideo cv inner join tb_Video v on v.VideoID=cv.VideoID AND cv.CampaignVideoID='{val}'".format(val=CVID))
-                VideoDeatails=cursor1.fetchall()
-                vP='/'+VideoDeatails[0][0]
-                vT=VideoDeatails[0][1]
-                vN=VideoDeatails[0][2]
-                vP1=VideoDeatails[0][3]
-                vT1=VideoDeatails[0][4]
-                Vendor=VideoDeatails[0][5]
-                LOB=VideoDeatails[0][6]
-                Creative=VideoDeatails[0][7]
-                Platform=VideoDeatails[0][8]
-                return render(request,'tc_DigitalMarketing/approverview.html',{'qT':questionsText,'qR':QuestionResponse,'R':result,'video':vP,'Transcribe':vT,'vname':vN,'id':uid,'video1':vP1,'Transcribe1':vT1,'Vendor':Vendor,'LOB':LOB,'Creative':Creative,'Platform':Platform,'btn2':btn2})
-                    
             
             if btn =='Approve':  
                 cursor1=connection.cursor()
@@ -586,7 +486,7 @@ def approver_view(request,id,uid):
 
                 video = TbStatus.objects.get(videoid=id)
                 video.status='Approved'
-                video.reason=l
+                video.reason="Video is Correct"
                 video.approver=getApproverName[0][0]
                 video.save()
 
@@ -722,7 +622,7 @@ def approver_view(request,id,uid):
         LOB=VideoDeatails[0][6]
         Creative=VideoDeatails[0][7]
         Platform=VideoDeatails[0][8]
-        return render(request,'tc_DigitalMarketing/approverview.html',{'qT':questionsText,'qR':QuestionResponse,'R':result,'video':vP,'Transcribe':vT,'vname':vN,'id':uid,'video1':vP1,'Transcribe1':vT1,'Vendor':Vendor,'LOB':LOB,'Creative':Creative,'Platform':Platform})
+        return render(request,'tc_DigitalMarketing/approverviewnew.html',{'qT':questionsText,'qR':QuestionResponse,'R':result,'video':vP,'Transcribe':vT,'vname':vN,'id':uid,'video1':vP1,'Transcribe1':vT1,'Vendor':Vendor,'LOB':LOB,'Creative':Creative,'Platform':Platform})
     
 
 def status(request,id):
@@ -883,7 +783,7 @@ def upload_again(request,id,id1):
                                                                              'imgurl':image_url,'gifurl':Gif_url})
 
         messages.success(request, 'submitted succesfully')
-        return redirect('/dm/createrupload/'+id1)
+        return redirect('/dm/uploaderdashboard/'+id1)
 
         
     else:

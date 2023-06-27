@@ -1,0 +1,215 @@
+{% extends 'tc_DigitalMarketing/createrUploadbase.html' %}
+{% load static %}
+
+{% block content %}
+
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand d-inline-flex align-items-center" href="/dm/UserIndexpage">
+        <!-- <img src="{% static 'images/logo_icon.png' %}" alt="" class="img-fluid"> -->
+        <h2>true<span>coverage</span></h2>
+      </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto align-items-center">
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="#"><i class="bi bi-moon"></i></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="#">
+              <i class="bi bi-brightness-high"></i>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">
+              <i class="bi bi-bell"></i>
+          </a>
+        </li>
+        <!-- <li class="nav-item account-section">
+          <a class="nav-link" href="#">
+              <span>My Account</span>
+              <span class="av-holder">
+                  <img src="{% static 'images/avatar.png'%}" alt="">
+                  <i class="bi bi-chevron-down"></i>
+              </span> 
+          </a>
+        </li> -->
+        <li class="nav-item account-section" id="accountSection" onclick="myFunction()">
+          <a class="nav-link" href="#">
+            <span>My Account</span>
+            <span class="av-holder">
+              <img src="{% static 'images/avatar.png'%}" alt="" />
+              <i class="bi bi-chevron-down"></i>
+            </span>
+          </a>
+          <div class="dropdown-panel">
+            <ul>
+                <li>Account</li>
+                <a style="text-decoration: none;color: inherit;" href="/dm/UserIndexpage"target="_blank" rel="noopener noreferrer"><li>Logout</li></a>
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav> 
+<div class="upload-page">
+   
+
+    <div class="aprove-panel">
+      <div class="creative-panel">
+          <div class="main-creative-box">
+              <video width="100%" height="340" controls="">
+                  <source src="{{video}}" type="video/mp4">
+                  <source src="{{video}}" type="video/ogg">
+              Your browser does not support the video tag.
+              </video>
+          </div>
+          <div class="sub-creative-box">
+              <div class="thumbnails">
+                  <!-- <img src="./images/video-placeholder-gray.png"> -->
+                  <video width="100%" height="120" controls="">
+                    <source src="{{video1}}" type="video/mp4">
+                    <source src="{{video1}}" type="video/ogg">
+                Your browser does not support the video tag.
+                </video>
+              </div>
+              <div class="thumbnails">
+                  <img src="{% static 'images/video-placeholder-gray.png'%}">
+              </div>
+              <div class="thumbnails">
+                  <img src="{% static 'images/video-placeholder-gray.png'%}">
+              </div>
+              <div class="thumbnails">
+                  <img src="{% static 'images/video-placeholder-gray.png'%}">
+              </div>
+
+          </div>
+          
+      </div>
+      <div class="aproval-panel">
+          <h2>Presets</h2>
+          <div class="ap-box">
+              <label>Creative</label>
+              <input text="" placeholder="Video" value="{{ Creative }}" readonly>
+          </div>
+          <div class="ap-box">
+              <label>Platform</label>
+              <input text="" placeholder="Youtubr" value="{{ Platform }}" readonly>
+          </div>
+          {% if qT.q0 %}
+          <section>
+              <p>{{qT.q0}}</p>
+          </section>
+          {% endif %}
+          {% if qR.k0 %}
+          <div class="ap-box">
+          <input text="" placeholder="Youtubr" value="{{R.0.1}}" readonly>
+          </div>
+          {% endif %}
+          
+
+
+          <div class="approval-button">
+              <button class="approval" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">Approve</button>
+              <button class="reject" data-bs-toggle="modal" data-bs-target="#exampleModalCenter1">Reject</button>
+          </div>
+      </div>
+    </div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Confirm approval</h5>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="" method="post"enctype="multipart/form-data">
+          {% csrf_token %}  
+          
+          <select name="ReasonTextbox"  class="form-control form-control-sm" onchange="if (this.selectedIndex==1){this.form['DimensionsTextbox'].style.visibility='visible'} 
+          else if (this.selectedIndex==2){this.form['QualityTextbox'].style.visibility='visible'} 
+          else if (this.selectedIndex==3){this.form['ContentTextbox'].style.visibility='visible'} 
+          else if (this.selectedIndex==4){this.form['OthersTextbox'].style.visibility='visible'} 
+          else {this.form['DimensionsTextbox'].style.visibility='hidden'; this.form['QualityTextbox'].style.visibility='hidden'; this.form['ContentTextbox'].style.visibility='hidden'; this.form['OthersTextbox'].style.visibility='hidden';}">
+
+            <option value="" selected="selected">Select...</option>
+            <option value="Dimensions">Dimensions</option>
+            <option value="Quality">Quality</option>
+            <option value="Content in the Video">Content in the Video</option>
+            <option value="Others">Others</option>
+            </select>
+            <br>
+            <input type="textbox" class="form-control form-control-sm" placeholder="Enter Dimensions suggestion" name="DimensionsTextbox" style="visibility:hidden;"/>
+            <br>
+            <input type="textbox" class="form-control form-control-sm" placeholder="Enter Quality suggestion" name="QualityTextbox" style="visibility:hidden;"/>
+            <br>
+            <input type="textbox" class="form-control form-control-sm" placeholder="Enter Content suggestion" name="ContentTextbox" style="visibility:hidden;"/>
+            <br>
+            <input type="textbox" class="form-control form-control-sm" placeholder="Enter Others suggestion" name="OthersTextbox" style="visibility:hidden;"/>
+
+      </div>
+      <div class="modal-footer">
+        
+        <button type="submit" name="btn" value="Approve"class="btn btn-primary">Confirm changes</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="exampleModalCenter1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Reject approval</h5>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="" method="post"enctype="multipart/form-data">
+          {% csrf_token %}  
+          
+          <select name="ReasonTextbox"  class="form-control form-control-sm" onchange="if (this.selectedIndex==1){this.form['DimensionsTextbox'].style.visibility='visible'} 
+          else if (this.selectedIndex==2){this.form['QualityTextbox'].style.visibility='visible'} 
+          else if (this.selectedIndex==3){this.form['ContentTextbox'].style.visibility='visible'} 
+          else if (this.selectedIndex==4){this.form['OthersTextbox'].style.visibility='visible'} 
+          else {this.form['DimensionsTextbox'].style.visibility='hidden'; this.form['QualityTextbox'].style.visibility='hidden'; this.form['ContentTextbox'].style.visibility='hidden'; this.form['OthersTextbox'].style.visibility='hidden';}">
+
+            <option value="" selected="selected">Select...</option>
+            <option value="Dimensions">Dimensions</option>
+            <option value="Quality">Quality</option>
+            <option value="Content in the Video">Content in the Video</option>
+            <option value="Others">Others</option>
+            </select>
+            <br>
+            <input type="textbox" class="form-control form-control-sm" placeholder="Enter Dimensions Reason" name="DimensionsTextbox" style="visibility:hidden;"/>
+            <br>
+            <input type="textbox" class="form-control form-control-sm" placeholder="Enter Quality Reason" name="QualityTextbox" style="visibility:hidden;"/>
+            <br>
+            <input type="textbox" class="form-control form-control-sm" placeholder="Enter Content Reason" name="ContentTextbox" style="visibility:hidden;"/>
+            <br>
+            <input type="textbox" class="form-control form-control-sm" placeholder="Enter Others Reason" name="OthersTextbox" style="visibility:hidden;"/>
+
+      </div>
+      <div class="modal-footer">
+        
+        <button type="submit" name="btn" value="Reject"class="btn btn-primary">Confirm changes</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+    
+  </div>
+
+{% endblock content %}

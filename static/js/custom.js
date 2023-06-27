@@ -93,3 +93,12 @@ function gridList(e) {
 $(document).on('click', '.btn-grid', gridList);
 $(document).on('click', '.btn-list', showList);
 
+
+
+function myFunction() {
+  var element = document.getElementById("accountSection");
+  element.classList.toggle("active");
+}
+
+
+$('.message').hide().fadeIn(500).delay(2000).fadeOut(500);  

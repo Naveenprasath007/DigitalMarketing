@@ -321,3 +321,96 @@ nav {
 video{
   width: 100%;
 }
+
+
+
+
+
+
+.aprove-panel{
+  display: flex; 
+  background-color: $color-light;
+  padding: 20px 17px;
+  @include border-radius(15px);
+  .creative-panel{
+    width: 70%;
+    .main-creative-box{
+
+    }
+    .sub-creative-box{
+      width: 100%;
+      display: flex;
+      grid-gap: 34px;
+      .thumbnails{
+        width: 195px;
+        height: 118px;
+        background-color: #ededed;
+        img{
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+  }
+  .aproval-panel{
+    width: 30%;
+    padding: 0px 26px;
+    padding-right: 0;
+    h2{
+      font-size: 20px;
+      font-family: "Lato", sans-serif;
+      font-weight: bold;
+      color: #000000;
+    }
+    .ap-box{
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 10px;
+      label{
+        font-size: 16px;
+        color: rgba(0, 0, 0, 0.5411764706);
+        width: 100%;
+        margin-bottom: 5px;
+      }
+      input{
+        border-radius: 4px;
+        padding: 5px 10px;
+        border: none;
+        background: #e9e9e9;
+        font-size: 15px;
+      }
+     
+    }
+    section {p{
+      font-size: 16px;
+      color: rgba(0, 0, 0, 0.5411764706);
+      width: 100%;
+      margin-bottom: 5px;
+    }}
+    .approval-button{
+      display: flex;
+    grid-gap: 20px;
+    margin-top: 20px;
+      .approval{
+        width: 50%;
+      border-radius: 12px;
+      background-color:#28a745;
+      border: none;
+      color: #ffffff;
+      height: 45px;
+      font-size: 15px;
+      }
+      .reject{
+        width: 50%;
+      border-radius: 12px;
+      background-color: #ce094f;
+      border: none;
+      color: #ffffff;
+      height: 45px;
+      font-size: 15px;
+      }
+    }
+    
+
+  }
+}

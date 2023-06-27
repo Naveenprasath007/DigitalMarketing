@@ -3,6 +3,9 @@ $color-highlight:#ce094f;
 $color-deafult:#58595b;
 $font-primary: 'Lato', sans-serif;
 $bg_color:#F5F6FA; 
+$color-dark:#000000;
+$color-success: #21A46B;
+$color-light:#FFFFFF;
 
 @mixin border-radius($radius){
     border-radius: $radius;

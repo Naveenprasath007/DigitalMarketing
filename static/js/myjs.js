@@ -32,3 +32,13 @@ function GetFileSizeNameAndType()
     }
     document.getElementById('divTotalSize').innerHTML = "Total File(s) Size is <b>" + Math.round(totalFileSize / 1024) + "</b> KB";
 }
+
+
+
+
+function myFunction() {
+    var element = document.getElementById("accountSection");
+    element.classList.toggle("active");
+ }
+
+ $('.messege-info').hide().fadeIn(500).delay(2000).fadeOut(500);  

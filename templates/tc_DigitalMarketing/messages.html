@@ -1,8 +1,13 @@
 {% load static %}
+
+
 {% for message in messages %}
-<div class="container-fluid p-0">
+<div class="container-fluid message">
   <div class="alert {{ message.tags }} alert-dismissible" role="alert" >
-    <span class="sucess-message"><img src="{% static 'images/success.png' %}" alt=""> {{ message }}</span>
+    {{ message }}
   </div>
 </div>
 {% endfor %}
+<script>
+  $('.message').hide().fadeIn(500).delay(2000).fadeOut(500);  
+</script>
