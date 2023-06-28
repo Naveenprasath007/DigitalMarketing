@@ -58,12 +58,29 @@ def uploaderdashboard(request,id):
                                                                      'File_TypeC':File_TypeC,
                                                                      })
 
-def filterpage(request,id,id1):
+def filterpage(request,id,id1,id2):
         if request.method == "POST":
              return render(request,'tc_DigitalMarketing/filterpage.html',{'id':id,'status':status,})
-        status=TbStatus.objects.filter(userid=id,status=id1)
-        videodetails=video_Details.objects.filter(userid=id)
-        return render(request,'tc_DigitalMarketing/filterpage.html',{'id':id,'status':status,'videodetails':videodetails})
+        
+        user_status=""
+        status=""
+        videodetails=""
+        if id2 == 'User':
+            status=TbStatus.objects.filter(userid=id,status=id1)
+            videodetails=video_Details.objects.filter(userid=id)
+
+        elif id2 == 'Apporver':
+            userName=connection.cursor()
+            userName.execute("select UserName from tb_User where UserID='{val}';".format(val=id))
+            userName=userName.fetchall()
+            UN=userName[0][0]
+            user_status=TbStatus.objects.filter(approver=UN,status=id1)
+        
+        elif id1 == 'Pending': 
+            user_status=TbStatus.objects.filter(status=id1)
+            videodetails=video_Details.objects.filter(userid=id)
+
+        return render(request,'tc_DigitalMarketing/filterpage.html',{'id':id,'status':status,'user_status':user_status,'videodetails':videodetails})
 
 def myvideos(request,id):
         if request.method == "POST":

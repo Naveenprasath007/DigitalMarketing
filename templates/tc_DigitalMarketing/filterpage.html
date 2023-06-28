@@ -105,7 +105,7 @@
 
 <div class="container-fluid grid-container mt-3">
   <div class="row">
-
+    {% if status %}
     {% for i in status %}
     <div class="col-12 col-md-6 col-lg-4">
       <div class="card">
@@ -157,6 +157,68 @@
       </div>
     </div>
     {% endfor %}
+    {% endif %}
+    
+
+
+
+    {% if user_status %}
+    {% for i in user_status %}
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="card">
+        <img class="card-img-top" src="https://picsum.photos/362/180" alt="Card image cap">
+        <div class="card-body">
+          <div class="container">
+            <div class="row">
+              <div class="col-sm">
+                <h5>{{i.videoname}}</h5>
+              </div>
+              <div class="col-sm">
+                <h5>{{i.platform}}</h5>
+              </div>
+              <div class="col-sm">
+                <h5>{{i.status}}</h5>
+              </div>
+              <div class="col-sm">
+              {% if i.status != 'Rejected' %}
+              ---
+              {% endif %}
+              {% if i.status == 'Rejected' %}
+              <h5><a href="/dm/statusview/{{id}}/{{i.videoid}}">view</a></h5>
+              {% endif %}
+            </div>
+
+
+            </div>
+          </div>
+          <br>
+          <div class='container'>
+            <h6 class="card-title">Uploaded By: {{i.uploadername}}</h6>
+            <h6 class="card-title">Reviewed By: {{i.approver}}</h6>
+          </div>
+
+
+
+          <!-- <div class="card-details"><span><i class="fa fa-calendar"></i><h5 class="card-title">{{i.videoname}}</h5></span></div>
+          <h5 class="card-title">{{i.platform}}</h5>
+          <h5 class="card-title">{{i.status}}</h5>
+          <h5 class="card-title">Uploaded By: {{i.uploadername}}</h5>
+          <h5 class="card-title">Reviewed By: {{i.approver}}</h5>
+          {% if i.status != 'Rejected' %}
+          <h5 class="card-title">Reason: ---</h5>
+          {% endif %}
+          {% if i.status == 'Rejected' %}
+          <h5 class="card-title">Reason:<a href="/dm/statusview/{{id}}/{{i.videoid}}">view</a></h5>
+          {% endif %} -->
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+
+
+
     <!-- <div class="col-12 col-md-6 col-lg-4">
       <div class="card">
         <img class="card-img-top" src="https://picsum.photos/362/180" alt="Card image cap">
