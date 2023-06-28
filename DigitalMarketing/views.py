@@ -23,7 +23,8 @@ def uploaderdashboard(request,id):
         userName.execute("select UserName from tb_User where UserID='{val}'".format(val=id))
         userName=userName.fetchall()
         UN=userName[0][0]
-        status=TbStatus.objects.filter(userid=id)
+        status=TbStatus.objects.filter(userid=id).order_by('-createddate').values()
+        recent=TbStatus.objects.filter(userid=id).order_by('-createddate').values()[:5]
         q = status.values()
         df = pd.DataFrame.from_records(q)
         if len(df) == 0:
@@ -55,7 +56,7 @@ def uploaderdashboard(request,id):
         File_TypeC=file_type_counts['Count'].values.tolist()
         return render(request,'tc_DigitalMarketing/dash_index.html',{'id':id,'status':status,'Approved':Approved,'Rejected':Rejected,'Pending':Pending,'UserName':UN,
                                                                      'DateValue':DateValue,"videoC":videoC,'upload_img_gif_count':upload_img_gif_count,'File_Type':File_Type,
-                                                                     'File_TypeC':File_TypeC,
+                                                                     'File_TypeC':File_TypeC,'recent':recent,
                                                                      })
 
 def filterpage(request,id,id1,id2):

@@ -223,24 +223,23 @@
                                 </div>
                            </div>
                            <div class="white-box tasks-holder">
-                                <h4>What's for Today</h4>
+                                <h4>Recent</h4>
+                                {% for i in recent %}
                                 <div class="alert-lists mt-2">
-                                    <div class="info-list error">
-                                        <i class="bi bi-play-circle"></i>
-                                        Reupload sportAnimation.mp4
-                                    </div>
                                     <div class="info-list warning">
-                                        <i class="bi bi-exclamation-circle"></i>
-                                        It seems video file child_Education.mpg is 
-approximately 49mb. Please try to upload
-smaller files
-                                    </div>
-                                    <div class="info-list success">
-                                        <i class="bi bi-patch-check"></i>
-                                        forest.flv file is good enough is every
-aspect.
+                                        <i class="bi bi-play-circle"></i>
+                                        {{i.videoname}}&nbsp;&nbsp;&nbsp;
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        {% if i.status != 'Rejected' %}
+                                        ---
+                                        {% endif %}
+                                        {% if i.status == 'Rejected' %}
+                                        <a href="/dm/statusview/{{id}}/{{i.videoid}}"> View Reason </a>
+                                        {% endif %}
                                     </div>
                                 </div>
+                                {% endfor %}
+
                            </div>
                         </div>
                         <div class="col-md-7">
