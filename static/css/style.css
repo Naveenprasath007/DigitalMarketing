@@ -767,3 +767,15 @@ video {
   height: 45px;
   font-size: 15px;
 }
+
+
+
+.box{
+    color: #000000;
+    padding: 0px;
+    display: none;
+    margin-top: 20px;
+}
+/* .red{ background: #ff0000; }
+.green{ background: #228B22; }
+.blue{ background: #0000ff; } */

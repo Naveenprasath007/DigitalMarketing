@@ -134,27 +134,27 @@
         <form action="" method="post"enctype="multipart/form-data">
           {% csrf_token %}  
           
-          <select name="ReasonTextbox"  class="form-control form-control-sm" onchange="if (this.selectedIndex==1){this.form['DimensionsTextbox'].style.visibility='visible'} 
-          else if (this.selectedIndex==2){this.form['QualityTextbox'].style.visibility='visible'} 
-          else if (this.selectedIndex==3){this.form['ContentTextbox'].style.visibility='visible'} 
-          else if (this.selectedIndex==4){this.form['OthersTextbox'].style.visibility='visible'} 
-          else {this.form['DimensionsTextbox'].style.visibility='hidden'; this.form['QualityTextbox'].style.visibility='hidden'; this.form['ContentTextbox'].style.visibility='hidden'; this.form['OthersTextbox'].style.visibility='hidden';}">
-
-            <option value="" selected="selected">Select...</option>
-            <option value="Dimensions">Dimensions</option>
-            <option value="Quality">Quality</option>
-            <option value="Content in the Video">Content in the Video</option>
-            <option value="Others">Others</option>
+          <div>
+            <select name="ReasonTextbox" class="form-control form-control-sm">
+              <option value="" selected="selected">Select...</option>
+              <option value="Dimensions">Dimensions</option>
+              <option value="Quality">Quality</option>
+              <option value="Content">Content</option>
             </select>
-            <br>
-            <input type="textbox" class="form-control form-control-sm" placeholder="Enter Dimensions suggestion" name="DimensionsTextbox" style="visibility:hidden;"/>
-            <br>
-            <input type="textbox" class="form-control form-control-sm" placeholder="Enter Quality suggestion" name="QualityTextbox" style="visibility:hidden;"/>
-            <br>
-            <input type="textbox" class="form-control form-control-sm" placeholder="Enter Content suggestion" name="ContentTextbox" style="visibility:hidden;"/>
-            <br>
-            <input type="textbox" class="form-control form-control-sm" placeholder="Enter Others suggestion" name="OthersTextbox" style="visibility:hidden;"/>
-
+        </div>
+        <div class="Dimensions box">
+          <input type="textbox" class="form-control form-control-sm" placeholder="Enter Dimensions Reason" name="DimensionsTextbox"/>
+        </div>
+        <div class="Quality box">
+          <input type="textbox" class="form-control form-control-sm" placeholder="Enter Quality Reason" name="QualityTextbox"/>
+         </div>
+        <div class="Content box">
+          <input type="textbox" class="form-control form-control-sm" placeholder="Enter Content Reason" name="ContentTextbox"/>
+        </div>
+        <br>
+        <div>
+        <input type="textarea"  class="form-control form-control-sm" placeholder="Any Others Reason..." name="OthersTextbox"/>
+      </div>
       </div>
       <div class="modal-footer">
         
@@ -179,28 +179,28 @@
         <form action="" method="post"enctype="multipart/form-data">
           {% csrf_token %}  
           
-          <select name="ReasonTextbox"  class="form-control form-control-sm" onchange="if (this.selectedIndex==1){this.form['DimensionsTextbox'].style.visibility='visible'} 
-          else if (this.selectedIndex==2){this.form['QualityTextbox'].style.visibility='visible'} 
-          else if (this.selectedIndex==3){this.form['ContentTextbox'].style.visibility='visible'} 
-          else if (this.selectedIndex==4){this.form['OthersTextbox'].style.visibility='visible'} 
-          else {this.form['DimensionsTextbox'].style.visibility='hidden'; this.form['QualityTextbox'].style.visibility='hidden'; this.form['ContentTextbox'].style.visibility='hidden'; this.form['OthersTextbox'].style.visibility='hidden';}">
-
-            <option value="" selected="selected">Select...</option>
-            <option value="Dimensions">Dimensions</option>
-            <option value="Quality">Quality</option>
-            <option value="Content in the Video">Content in the Video</option>
-            <option value="Others">Others</option>
+          <div>
+            <select name="ReasonTextbox" class="form-control form-control-sm">
+              <option value="" selected="selected">Select...</option>
+              <option value="Dimensions">Dimensions</option>
+              <option value="Quality">Quality</option>
+              <option value="Content">Content</option>
             </select>
-            <br>
-            <input type="textbox" class="form-control form-control-sm" placeholder="Enter Dimensions Reason" name="DimensionsTextbox" style="visibility:hidden;"/>
-            <br>
-            <input type="textbox" class="form-control form-control-sm" placeholder="Enter Quality Reason" name="QualityTextbox" style="visibility:hidden;"/>
-            <br>
-            <input type="textbox" class="form-control form-control-sm" placeholder="Enter Content Reason" name="ContentTextbox" style="visibility:hidden;"/>
-            <br>
-            <input type="textbox" class="form-control form-control-sm" placeholder="Enter Others Reason" name="OthersTextbox" style="visibility:hidden;"/>
-
+        </div>
+        <div class="Dimensions box">
+          <input type="textbox" class="form-control form-control-sm" placeholder="Enter Dimensions Suggestion" name="DimensionsTextbox"/>
+        </div>
+        <div class="Quality box">
+          <input type="textbox" class="form-control form-control-sm" placeholder="Enter Quality Suggestion" name="QualityTextbox"/>
+         </div>
+        <div class="Content box">
+          <input type="textbox" class="form-control form-control-sm" placeholder="Enter Content Suggestion" name="ContentTextbox"/>
+        </div>
+        <br>
+        <div>
+        <input type="textarea"  class="form-control form-control-sm" placeholder="Any Others Suggestion..." name="OthersTextbox"/>
       </div>
+    </div>
       <div class="modal-footer">
         
         <button type="submit" name="btn" value="Reject"class="btn btn-primary">Confirm changes</button>
@@ -209,7 +209,7 @@
     </div>
   </div>
 </div>
-    
+
   </div>
 
 {% endblock content %}

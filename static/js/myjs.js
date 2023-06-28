@@ -42,3 +42,18 @@ function myFunction() {
  }
 
  $('.messege-info').hide().fadeIn(500).delay(2000).fadeOut(500);  
+
+
+ $(document).ready(function(){
+    $("select").change(function(){
+        $(this).find("option:selected").each(function(){
+            var optionValue = $(this).attr("value");
+            if(optionValue){
+                $(".box").not("." + optionValue).hide();
+                $("." + optionValue).show();
+            } else{
+                $(".box").hide();
+            }
+        });
+    }).change();
+  });
