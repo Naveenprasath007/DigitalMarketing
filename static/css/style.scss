@@ -153,6 +153,10 @@ nav {
           width: 59px;
           height: 59px;
           @include border-radius(8px);
+          @extend .center-items;
+          img{
+            width: 30px;
+          }
         }
         .titlebox-content {
           label {

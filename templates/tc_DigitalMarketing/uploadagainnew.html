@@ -96,7 +96,7 @@
             <img src="{% static 'images/drive.svg'%}" />
           </div>
         </div>
-        <p>You will free to upload any file format upto 50 mb</p>
+        <p>You will free to upload any file format upto 500 mb</p>
         <div id="fp"></div>
         <p>
           <div id="divTotalSize"></div>
@@ -111,7 +111,9 @@
       {% endif %}
       <div class="videotitle">
         <div class="titlebox">
-          <div class="titlebox-img"></div>
+          <div class="titlebox-img">
+            <img src="{% static 'images/upload-icon.png' %}">
+          </div>
           <div class="titlebox-content">
             <label>Status</label>
             <p>{{ status }}</p>

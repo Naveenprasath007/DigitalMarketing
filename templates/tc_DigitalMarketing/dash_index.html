@@ -183,19 +183,19 @@
                                             <img src="{% static 'images/av_1.png'%}" alt=""> 
                                         </a>
                                         <a href="#">
-                                            <img src="{% static 'images/av_1.png'%}" alt=""> 
+                                            <img src="{% static 'images/av_5.png'%}" alt=""> 
                                         </a>
                                         <a href="#">
                                             <img src="{% static 'images/av_1.png'%}" alt=""> 
                                         </a>
                                         <a href="#">
-                                            <img src="{% static 'images/av_1.png'%}" alt=""> 
+                                            <img src="{% static 'images/av_5.png'%}" alt=""> 
                                         </a>
                                         <a href="#">
                                             <img src="{% static 'images/av_1.png'%}" alt=""> 
                                         </a>
                                         <a href="#">
-                                            <img src="{% static 'images/av_1.png'%}" alt=""> 
+                                            <img src="{% static 'images/av_5.png'%}" alt=""> 
                                         </a>
                                         <a href="#">
                                             <img src="{% static 'images/av_1.png'%}" alt=""> 
@@ -224,21 +224,35 @@
                            </div>
                            <div class="white-box tasks-holder">
                                 <h4>Recent</h4>
-                                {% for i in recent %}
-                                <div class="alert-lists mt-2">
-                                    <div class="info-list warning">
-                                        <i class="bi bi-play-circle"></i>
-                                        {{i.videoname}}&nbsp;&nbsp;&nbsp;
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        {% if i.status != 'Rejected' %}
-                                        ---
-                                        {% endif %}
-                                        {% if i.status == 'Rejected' %}
-                                        <a href="/dm/statusview/{{id}}/{{i.videoid}}"> View Reason </a>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                                {% endfor %}
+                                <table class="table table-stripped">
+                                    <tbody>
+                                    {% for i in recent %}
+                                    <tr>
+                                    <div class="alert-lists mt-2">
+                                            <td>
+                                                <div class="info-list success">
+                                                <i class="bi bi-play-circle"></i>
+                                                {{i.videoname}}
+                                                </div>
+                                            </td>
+        
+                                            <td>
+                                                <div class="info-list success">
+                                                    {% if i.status != 'Rejected' %}
+                                                    ---
+                                                    {% endif %}
+                                                    {% if i.status == 'Rejected' %}
+                                                    <a href="/dm/statusview/{{id}}/{{i.videoid}}"> View Reason </a>
+                                                    {% endif %}
+                                                </div>
+                                            </td>
+        
+                                        </div>
+                                    </div>                     
+                                </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
 
                            </div>
                         </div>

@@ -24,7 +24,7 @@ def uploaderdashboard(request,id):
         userName=userName.fetchall()
         UN=userName[0][0]
         status=TbStatus.objects.filter(userid=id).order_by('-createddate').values()
-        recent=TbStatus.objects.filter(userid=id).order_by('-createddate').values()[:5]
+        recent=TbStatus.objects.filter(userid=id).order_by('-createddate').values()[:3]
         q = status.values()
         df = pd.DataFrame.from_records(q)
         if len(df) == 0:
@@ -68,7 +68,6 @@ def filterpage(request,id,id1,id2):
         videodetails=""
         if id2 == 'User':
             status=TbStatus.objects.filter(userid=id,status=id1)
-            videodetails=video_Details.objects.filter(userid=id)
 
         elif id2 == 'Apporver':
             userName=connection.cursor()
@@ -79,9 +78,7 @@ def filterpage(request,id,id1,id2):
         
         elif id1 == 'Pending': 
             user_status=TbStatus.objects.filter(status=id1)
-            videodetails=video_Details.objects.filter(userid=id)
-
-        return render(request,'tc_DigitalMarketing/filterpage.html',{'id':id,'status':status,'user_status':user_status,'videodetails':videodetails})
+        return render(request,'tc_DigitalMarketing/filterpage.html',{'id':id,'status':status,'user_status':user_status})
 
 def myvideos(request,id):
         if request.method == "POST":
@@ -284,7 +281,7 @@ def creater_upload(request,id):
             userName.execute("select UserName from tb_User where UserID='{val}'".format(val=id))
             userName=userName.fetchall()
             UN=userName[0][0]
-            status = TbStatus(userid=TbUser.objects.get(userid=id),videoid=CVID,status='Pending',videoname=vN,approver='---',uploadername=UN,platform=pN,videopath1=vP1,Imageurl=img,Gifurl=gifurl,creative=Cre)
+            status = TbStatus(userid=TbUser.objects.get(userid=id),videoid=CVID,status='Pending',videoname=vN,approver='---',uploadername=UN,platform=pN,videoPath=vP,videoPath1=vP1,Imageurl=img,Gifurl=gifurl,creative=Cre)
             status.save()
   
             cQresponse=TbCampaignquestion.objects.filter(campaignvideoid=CVID)
@@ -358,7 +355,8 @@ def approver(request,id):
         userName.execute("select UserName from tb_User where UserID='{val}';".format(val=id))
         userName=userName.fetchall()
         UN=userName[0][0]
-        status=TbStatus.objects.all()
+        status=TbStatus.objects.all().order_by('-createddate').values()
+        recent=TbStatus.objects.all().order_by('-createddate').values()[:4]
         user_status=TbStatus.objects.filter(approver = UN)
         q = user_status.values()
         # q = status.values()
@@ -393,7 +391,7 @@ def approver(request,id):
             File_TypeC=file_type_counts['Count'].values.tolist()
             return render(request,'tc_DigitalMarketing/approver_index.html',{'status':status,'id':id,'status':status,'id':id,'Approved':Approved,'Rejected':Rejected,
                                                                          'Pending':Pending,'UserName':UN,'DateValue':DateValue,"videoC":videoC,
-                                                                          'File_Type':File_Type,'File_TypeC':File_TypeC,})
+                                                                          'File_Type':File_Type,'File_TypeC':File_TypeC,'recent':recent})
             # return redirect('/dm/createrupload/'+str(val))
         # filter1 =df["status"].isin(['Pending'])
         # Pending = df[filter1]
@@ -431,7 +429,7 @@ def approver(request,id):
         # return render(request,'tc_DigitalMarketing/approver.html',{'status':status,'id':id})
         return render(request,'tc_DigitalMarketing/approver_index.html',{'status':status,'id':id,'Approved':Approved,'Rejected':Rejected,
                                                                          'Pending':Pending,'UserName':UN,'DateValue':DateValue,"videoC":videoC,
-                                                                          'File_Type':File_Type,'File_TypeC':File_TypeC,})
+                                                                          'File_Type':File_Type,'File_TypeC':File_TypeC,'recent':recent})
 
 
 
@@ -506,6 +504,7 @@ def approver_view(request,id,uid):
                 video.status='Approved'
                 video.reason="Video is Correct"
                 video.approver=getApproverName[0][0]
+                video.MainReason=tb
                 video.save()
 
 
@@ -574,6 +573,7 @@ def approver_view(request,id,uid):
                 video.status='Rejected'
                 video.reason=l
                 video.approver=getApproverName[0][0]
+                video.MainReason=tb
                 video.save()
 
 
@@ -796,6 +796,13 @@ def upload_again(request,id,id1):
             record.save()
             videoDetails = video_Details(userid=TbUser.objects.get(userid=id1),VideoPath=uploaded_file_url)
             videoDetails.save()
+
+            status = TbStatus.objects.get(videoid=id)
+            status.videoPath1=uploaded_file_url
+            status.save()
+
+
+
             status='Uploaded'
             return render(request,'tc_DigitalMarketing/uploadagainnew.html',{"video":url,'text':text,'id':id1,'status':status,
                                                                              'imgurl':image_url,'gifurl':Gif_url})

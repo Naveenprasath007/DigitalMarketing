@@ -3,7 +3,8 @@ body {
   font-family: "Lato", sans-serif;
 }
 
-.center-items, .upload-page .upload-panel .presets-box .platform-box, .upload-page .upload-panel .presets-box .creative-box, .upload-page .upload-panel .upload-box .file-icon-box .icon-box, .upload-page .upload-panel .upload-box, nav .navbar-nav .nav-link.active {
+
+.center-items, .upload-page .upload-panel .presets-box .platform-box, .upload-page .upload-panel .presets-box .creative-box,.titlebox-img, .upload-page .upload-panel .upload-box .file-icon-box .icon-box, .upload-page .upload-panel .upload-box, nav .navbar-nav .nav-link.active {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -244,10 +245,10 @@ nav .navbar-nav .av-holder i {
 .upload-page .upload-panel .presets-box .creative-box img {
   width: 33px;
 }
-.upload-page .upload-panel .presets-box .platform-box {
+.upload-page .upload-panel .presets-box .platform-box  {
   width: 39px;
   height: 39px;
-  border-radius: 6px;
+  border-radius: 3px;
 }
 .upload-page .upload-panel .presets-box button.submit {
   width: 100%;

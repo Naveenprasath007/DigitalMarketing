@@ -75,10 +75,12 @@ class TbStatus(models.Model):
     uploadername = models.CharField(db_column='UploaderName', max_length=255, blank=True, null=True)  # Field name made lowercase.
     platform = models.CharField(db_column='Platform', max_length=2000)  # Field name made lowercase.
     createddate = models.DateTimeField(default=datetime.now)  # Field name made lowercase.
-    videopath1 = models.CharField(db_column='VideoPath1', max_length=2000,blank=True, null=True)  # Field name made lowercase.
+    videoPath1 = models.CharField(db_column='Videopath1', max_length=2000,blank=True, null=True)  # Field name made lowercase.
+    videoPath = models.CharField(db_column='Videopath', max_length=2000,blank=True, null=True)  # Field name made lowercase.
     Imageurl = models.CharField(db_column='imgurl', max_length=255, blank=True, null=True)
     Gifurl = models.CharField(db_column='gifurl', max_length=255, blank=True, null=True)
     creative = models.CharField(db_column='Creative', max_length=255)  # Field name made lowercase.
+    MainReason = models.CharField(db_column='mainReason', max_length=2000,blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False

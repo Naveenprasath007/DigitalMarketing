@@ -123,11 +123,8 @@
                 <img src="{% static 'images/drive.svg'%}" />
               </div>
             </div>
-            <p>You will free to upload any file format upto 50 mb</p>
-            <div id="fp"></div>
-            <p>
+            <p>You will free to upload any file format upto 500 mb</p>
               <div id="divTotalSize"></div>
-            </p>
 
           </div>
 
@@ -139,7 +136,9 @@
           <div class="videotitle">
             
             <div class="titlebox">
-              <div class="titlebox-img"></div>
+              <div class="titlebox-img">
+                <img src="{% static 'images/title-svg.png' %}">
+              </div>
               <div class="titlebox-content">
                 {% if video or imgurl or gifurl %}
                 <label>Your Video Title</label>
@@ -153,7 +152,9 @@
             </div>
             
             <div class="titlebox">
-              <div class="titlebox-img"></div>
+              <div class="titlebox-img">
+                <img src="{% static 'images/upload-icon.png' %}">
+              </div>
               <div class="titlebox-content">
                 <label>Status</label>
                 <p>{{ status }}</p>
@@ -204,7 +205,7 @@
             <p id="id_select_creative">
               <label><input type="checkbox" name="LOB" value="ACA"><span>ACA</span></label>
               <label><input type="checkbox" name="LOB" value="MediCare"><span>Medicare</span></label>
-              <label><input type="checkbox" name="LOB" value="MediCare"><span>MediCalid</span></label>
+              <label><input type="checkbox" name="LOB" value="MediCaid"><span>MediCaid</span></label>
             </p>
           </div>
           <div class="preset-icon-box">
@@ -241,12 +242,12 @@
                 <img src="{% static './images/cdn.png '%}" />
               </div>
               <input type="radio" name="Platform" value="TikTok">
-              <div class="platform-box" style="background-color: #1c1c1c">
+              <div class="platform-box" style="background-color: #d8d5d5">
                 <img src="{% static './images/tiktok.svg '%}" />
               </div>
               <input type="radio" name="Platform" value="Native">
-              <div class="platform-box" style="background-color: #2fab7c">
-                <img src="{% static './images/settings.svg'%}" />
+              <div class="platform-box" style="background-color: #69c0e9">
+                <img src="{% static './images/native.svg'%}" />
               </div>
             </div>
           </div>
