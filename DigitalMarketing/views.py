@@ -4,9 +4,7 @@ from .forms import Question,userRole
 from .models import TbVideo,Campaignvideo,TbCampaignquestion,TbQuestion,Campaignquestionresponse,TbUserrole,cVideoId,TbStatus,TbUser,TbApprove,video_Details
 import pandas as pd
 
-import speech_recognition as sr 
-import moviepy.editor as mp
-from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
+# import whisper
 
 import uuid
 from django.contrib import messages
@@ -126,7 +124,10 @@ def creater_upload(request,id):
                     if Creative == 'Video':
                         url=uploaded_file_url
                         url1=url[1:]
-                        # text=transcribe(url1)
+                        url=uploaded_file_url
+                        url=url.replace("/",'\\')
+                        url=url.replace('%20',' ')
+                        # text=transcribe_video_audio(url)
                         text=' Are you an American over 25 and earning less than $50,000? Well you might have already qualified for this $5,200 healthcare assistance program available in the US. Just CLICK the link below and see how much you might get back.'
                     
                     if Creative == 'GIF':
@@ -315,6 +316,19 @@ def creater_upload(request,id):
             videodetails="video_Details.objects.filter(userid=id)"
 
             return render(request,'tc_DigitalMarketing/upload-page.html',{'k':a,'status':status,'videodetails':videodetails,'videodetails1':videodetails1})
+
+
+def transcribe_video_audio(video_path):
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    file_path = BASE_DIR+video_path
+    model = whisper.load_model("medium")
+    audio_dir = os.path.dirname(file_path)
+    print(audio_dir)
+    audio_path = os.path.join(audio_dir, "audio.wav")
+    command = f'ffmpeg -i "{file_path}" -vn -acodec pcm_s16le -ar 16000 -ac 1 "{audio_path}"'
+    os.system(command)
+    result = model.transcribe(audio_path)
+    return result["text"]
 
 
 def unique_numbers(numbers):
@@ -781,8 +795,9 @@ def upload_again(request,id,id1):
 
             if Creative == 'Video':
                 url=uploaded_file_url
-                url1=url[1:]
-                # text=transcribe(url1)
+                # url=url.replace("/",'\\')
+                # url=url.replace('%20',' ')
+                # text=transcribe_video_audio(url)
                 text='--'
             
             if Creative == 'GIF':
