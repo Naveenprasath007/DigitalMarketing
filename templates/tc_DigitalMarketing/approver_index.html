@@ -4,7 +4,7 @@
 {% block content %}
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
-          <a class="navbar-brand" href="/dm/UserIndexpage">
+          <a class="navbar-brand" href="/dm/approver/{{ id }}">
               <!-- <img src="{% static 'images/logo_icon.png'%}" alt="" class="img-fluid"> -->
               <h2>true<span>coverage</span></h2>
           </a>
@@ -46,7 +46,7 @@
                 <div class="dropdown-panel">
                   <ul>
                       <li>Account</li>
-                      <li>Logout</li>
+                      <a style="text-decoration: none;color: inherit;" href="/dm/UserIndexpage" rel="noopener noreferrer"><li>Logout</li></a>
                   </ul>
                 </div>
               </li>
@@ -80,7 +80,7 @@
                     <div class="row">
                         <div class="col-12 col-md-4 col-lg-4">
                             <div class="info-box approved justify-content-between align-items-center">
-                                <a style="text-decoration: none;color: inherit;" href='/dm/filterpage/{{ id }}/Approved/Apporver'target="_blank" rel="noopener noreferrer">
+                                <a style="text-decoration: none;color: inherit;" href='/dm/filterpage/{{ id }}/Approved/Apporver' rel="noopener noreferrer">
                                     <div class="left-box">
                                     <h4>Approved Assets</h4>
                                     <h2>{{ Approved }}</h2>
@@ -98,7 +98,7 @@
                         </div>
                         <div class="col-12 col-md-4 col-lg-4">
                             <div class="info-box rejected justify-content-between  align-items-center">
-                                <a style="text-decoration: none;color: inherit;" href='/dm/filterpage/{{ id }}/Rejected/Apporver'target="_blank" rel="noopener noreferrer">
+                                <a style="text-decoration: none;color: inherit;" href='/dm/filterpage/{{ id }}/Rejected/Apporver' rel="noopener noreferrer">
                                 <div class="left-box">
                                     <h4>Rejected Assets</h4>
                                     <h2>{{ Rejected }}</h2>
@@ -116,7 +116,7 @@
                         </div>
                         <div class="col-12 col-md-4 col-lg-4">
                             <div class="info-box pending justify-content-between  align-items-center">
-                                <a style="text-decoration: none;color: inherit;" href='/dm/filterpage/{{ id }}/Pending/Approver'target="_blank" rel="noopener noreferrer">
+                                <a style="text-decoration: none;color: inherit;" href='/dm/filterpage/{{ id }}/Pending/Approver' rel="noopener noreferrer">
                                 <div class="left-box">
                                     <h4>Pending Assets</h4>
                                     <h2>{{ Pending }}</h2>

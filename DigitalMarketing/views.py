@@ -251,7 +251,7 @@ def creater_upload(request,id):
                         QuestionResponse["k"+str(i)] = lQR
                     status='Uploaded'
 
-                    return render(request,'tc_DigitalMarketing/upload-page.html',{"video":url,"text":text,
+                    return render(request,'tc_DigitalMarketing/upload-page.html',{"k":id,"video":url,"text":text,
                                                                                     'qT':questionsText,
                                                                                     'qR':QuestionResponse,
                                                                                     "data":data,'dataQ':dataQ,
@@ -829,5 +829,5 @@ def upload_again(request,id,id1):
     else:
         status='Waiting'
         videodetails=video_Details.objects.filter(userid=id1)
-        return render(request,'tc_DigitalMarketing/uploadagainnew.html',{'videodetails':videodetails,'status':status})
+        return render(request,'tc_DigitalMarketing/uploadagainnew.html',{'videodetails':videodetails,'status':status,'id':id1,})
     

@@ -5,7 +5,7 @@
 
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container-fluid">
-    <a class="navbar-brand d-inline-flex align-items-center" href="/dm/UserIndexpage">
+    <a class="navbar-brand d-inline-flex align-items-center" href="/dm/uploaderdashboard/{{ id }}">
         <!-- <img src="{% static 'images/logo_icon.png' %}" alt="" class="img-fluid"> -->
         <!-- <h2>Insight<span>Motion</span></h2> -->
         <h2>true<span>coverage</span></h2>
@@ -29,14 +29,21 @@
               <i class="bi bi-bell"></i>
           </a>
         </li>
-        <li class="nav-item account-section">
+
+        <li class="nav-item account-section" id="accountSection" onclick="myFunction()">
           <a class="nav-link" href="#">
-              <span>My Account</span>
-              <span class="av-holder">
-                  <img src="{% static 'images/avatar.png'%}" alt="">
-                  <i class="bi bi-chevron-down"></i>
-              </span> 
+            <span>My Account</span>
+            <span class="av-holder">
+              <img src="{% static 'images/avatar.png'%}" alt="" />
+              <i class="bi bi-chevron-down"></i>
+            </span>
           </a>
+          <div class="dropdown-panel">
+            <ul>
+                <li>Account</li>
+                <a style="text-decoration: none;color: inherit;" href="/dm/UserIndexpage" rel="noopener noreferrer"><li>Logout</li></a>
+            </ul>
+          </div>
         </li>
       </ul>
     </div>

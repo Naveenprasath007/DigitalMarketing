@@ -4,7 +4,7 @@
 {% block content %}
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
       <div class="container-fluid">
-        <a class="navbar-brand d-inline-flex align-items-center" href="/dm/UserIndexpage">
+        <a class="navbar-brand d-inline-flex align-items-center" href="/dm/uploaderdashboard/{{ k }}">
           <!-- <img src="{% static 'images/logo_icon.png'%}" alt="" class="img-fluid" /> -->
           <h2>true<span>coverage</span></h2>
         </a>
@@ -56,7 +56,7 @@
               <div class="dropdown-panel">
                 <ul>
                     <li>Account</li>
-                    <li>Logout</li>
+                    <a style="text-decoration: none;color: inherit;" href="/dm/UserIndexpage" rel="noopener noreferrer"><li>Logout</li></a>
                 </ul>
               </div>
             </li>
@@ -193,7 +193,7 @@
         <div class="presets-box">
           <h2>Presets</h2>
           <div class="preset-icon-box">
-            <label>Creater</label>
+            <label>Creator</label>
             <div class="icon-box-align">
             <input class="form-control input-sm" id="inputsm" type="text" name="Creater" required>
             </div>
