@@ -212,7 +212,13 @@
 <div class="transcription-panel mbottom">
   <h2>Transcription</h2>
   <div class="transcription-box1">
-    <p>{{ text }}</p>
+  {% if Transcribe != '--' %}
+    <p>{{ Transcribe }}</p>
+  {% endif %}
+  {% if Transcribe1 != '--' %}
+  <h2>Other Creative's Transcription</h2>
+    <p>{{ Transcribe1 }}</p>
+  {% endif %}
   </div>
 </div>
 

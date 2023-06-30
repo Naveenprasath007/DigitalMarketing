@@ -527,7 +527,7 @@ def approver_view(request,id,uid):
                 deleteQuestionsres.execute("DELETE CampaignQuestionResponse FROM CampaignQuestionResponse inner join tb_CampaignQuestion on CampaignQuestionResponse.CampaignQuestionID = tb_CampaignQuestion.CampaignQuestionID WHERE tb_CampaignQuestion.CampaignVideoID='{value}';".format(value=id))
                 messages.success(request, 'Approved succesfully')
                 return redirect('/dm/approver/'+str(uid))
-            if btn =='Reject':
+            elif btn =='Reject':
 
                 # NO NEED THIS CODE /25/6/23
                 # deletestatus=connection.cursor()
