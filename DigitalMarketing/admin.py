@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import TbVideo,Campaignvideo,TbCampaignquestion,TbQuestion,Campaignquestionresponse,TbUserrole,TbUser,cVideoId,TbApprove,TbStatus,video_Details
+from .models import TbVideo,Campaignvideo,TbCampaignquestion,TbQuestion,Campaignquestionresponse,TbUserrole,TbUser,cVideoId,TbApprove,TbStatus,video_Details,TbapproverQuestion
 
 
 admin.site.register(TbVideo)
@@ -13,4 +13,6 @@ admin.site.register(cVideoId)
 admin.site.register(TbApprove)
 admin.site.register(TbStatus)
 admin.site.register(video_Details)
+admin.site.register(TbapproverQuestion)
+
 

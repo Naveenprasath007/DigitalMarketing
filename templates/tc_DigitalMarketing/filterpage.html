@@ -55,226 +55,221 @@
   </div>
 </nav> 
 
-<!-- <div>
-  {%if status%}
-  <div class="container">
-    <table class="table table-bordered text-center">
-      <thead>
-        <tr>
-          <th scope="col">Date</th>
-          <th scope="col">VideoTitle</th>
-          <th scope="col">VideoPlatform</th>
-          <th scope="col">Status</th>
-          <th scope="col">Uploaded By</th>
-          <th scope="col">Reviewed By</th>
-          <th scope="col">Reason</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for i in status %}
-        <tr>
-          <td>{{i.date}}</td>
-          <td>{{i.videoname}}</td>
-          <td>{{i.platform}}</td>
-          <td>{{i.status}}</td>
-          <td>{{i.uploadername}}</td>
-          <td>{{i.approver}}</td>
-          {% if i.status != 'Rejected' %}
-          <td>---</td>
-          {% endif %}
-          {% if i.status == 'Rejected' %}
-          <td><a href="/dm/statusview/{{id}}/{{i.videoid}}">view</a></td>
-          {% endif %}
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
-  {% endif%}
-</div> -->
+<div class="container-fluid" >
+  <div class="innersearch" style="height: 100px;">
+    <div class="col-md-12">
+        <input type="search" placeholder="search here">
+   
+    <div class="searchbox">
+        <div class="sortby">
+            
+               <img src="{% static 'images/menu.png'%}">
 
-
-<!-- new filtering -->
-<div class="container-fluid">
-  <!-- <button class="btn btn-primary btn-grid float-right">Grid View</button> -->
-  <img align="right" class="btn-list" src="{% static 'images/grid.png'%}" alt="" class="img-fluid" />
-  <!-- <img align="right" class="btn-list" src="{% static 'images/grid.png'%}" alt="" class="img-fluid" /> -->
+        </div>
+        
+    </div>
 </div>
+    </div>
+
+{% if status %}
+{% for i in status %}
+<div class="list-panel">
+  <div class="tnail">
+      <!-- <img src="images/grid-thumbnail.png"> -->
+      <video width="30" height="50" poster="{% static 'images/tc.png'%}"  controls="">
+        <source src="{{video}}" type="video/mp4">
+        <source src="{{video}}" type="video/ogg">
+    Your browser does not support the video tag.
+    </video>
+  </div>
+  <div class="dname">
+      <span class="minhead">19-5-2023</span>
+      <p>{{i.videoname}}</p>
+  </div>
+  <div class="uploader">
+      <span class="minhead">Platform</span>
+      <p class="listinner"> {{i.platform}}</p>
+  </div>
+  <div class="reviewer">
+      <span class="minhead">Uploaded by</span>
+      <p class="listinner"><img src="images/name.png"> {{i.uploadername}}</p>
+  </div>
+  <div class="approver">
+      <span class="minhead">Reviewed by</span>
+      <p class="listinner"><img src="images/name1.png"> {{i.approver}}</p>
+  </div>
+  <div class="vstatus"><span>{{i.status}}</span></div>
+  {% if i.status != 'Rejected' %}
+  <div class="vview"><a style="text-decoration:none" href="">---</a></div>
+  {% endif %}
+  {% if i.status == 'Rejected' %}
+  <div class="vview"><a style="text-decoration:none" href="/dm/statusview/{{id}}/{{i.videoid}}">View</a></div>
+  {% endif %}
+</div>
+{% endfor %}
+{% endif %}
+
+
+{% if user_status %}
+{% for i in user_status %}
+<div class="list-panel">
+  <div class="tnail">
+      <!-- <img src="images/grid-thumbnail.png"> -->
+      <video width="30" height="50" poster="{% static 'images/tc.png'%}"  controls="">
+        <source src="{{video}}" type="video/mp4">
+        <source src="{{video}}" type="video/ogg">
+    Your browser does not support the video tag.
+    </video>
+  </div>
+  <div class="dname">
+      <span class="minhead">19-5-2023</span>
+      <p>{{i.videoname}}</p>
+  </div>
+  <div class="uploader">
+      <span class="minhead">Platform</span>
+      <p class="listinner"><img src="images/name.png"> {{i.platform}}</p>
+  </div>
+  <div class="reviewer">
+      <span class="minhead">Uploaded by</span>
+      <p class="listinner"><img src="images/name.png"> {{i.uploadername}}</p>
+  </div>
+  <div class="approver">
+      <span class="minhead">Reviewed by</span>
+      <p class="listinner"><img src="images/name1.png"> {{i.approver}}</p>
+  </div>
+  <div class="vstatus"><span>{{i.status}}</span></div>
+
+  {% if i.status != 'Pending' %}
+  <div class="vview"><a style="text-decoration:none" href="">---</a></div>
+  {% endif %}
+  {% if i.status == 'Pending' %}
+  <div class="vview"><a style="text-decoration:none" href="/dm/approverview/{{i.videoid}}/{{id}}">View</a></div>
+  {% endif %}
+</div>
+{% endfor %}
+{% endif %}
 
 
 
-<div class="container-fluid grid-container mt-3">
-  <div class="row">
+
+  <div class="grid-panel">
     {% if status %}
     {% for i in status %}
-    <div class="col-12 col-md-6 col-lg-4">
-      <div class="card">
-        <video class="vid" controls>
-          <source src="{{ video }}" type="video/mp4">
-          <source src="{{ video }}" type="video/ogg">
-        Your browser does not support the video tag.
-        </video>
-        <div class="card-body">
-          <div class="container">
-            <div class="row">
-              <div class="col-sm">
-                <h5>{{i.videoname}}</h5>
-              </div>
-              <div class="col-sm">
-                <h5>{{i.platform}}</h5>
-              </div>
-              <div class="col-sm">
-                <h5>{{i.status}}</h5>
-              </div>
-              <div class="col-sm">
-              {% if i.status != 'Rejected' %}
-              ---
-              {% endif %}
-              {% if i.status == 'Rejected' %}
-              <h5><a href="/dm/statusview/{{id}}/{{i.videoid}}">view</a></h5>
-              {% endif %}
-            </div>
-
-
-            </div>
-          </div>
-          <br>
-          <div class='container'>
-            <h6 class="card-title">Uploaded By: {{i.uploadername}}</h6>
-            <h6 class="card-title">Reviewed By: {{i.approver}}</h6>
-          </div>
-
-
-
-          <!-- <div class="card-details"><span><i class="fa fa-calendar"></i><h5 class="card-title">{{i.videoname}}</h5></span></div>
-          <h5 class="card-title">{{i.platform}}</h5>
-          <h5 class="card-title">{{i.status}}</h5>
-          <h5 class="card-title">Uploaded By: {{i.uploadername}}</h5>
-          <h5 class="card-title">Reviewed By: {{i.approver}}</h5>
-          {% if i.status != 'Rejected' %}
-          <h5 class="card-title">Reason: ---</h5>
-          {% endif %}
-          {% if i.status == 'Rejected' %}
-          <h5 class="card-title">Reason:<a href="/dm/statusview/{{id}}/{{i.videoid}}">view</a></h5>
-          {% endif %} -->
+    <div class="col-md-3">
+      
+      <div class="gridbox">
+        <div class="thumbnail-bg">
+            <!-- <img src="{% static './images/grid-thumbnail.png'%}"> -->
+            <video width="100%" height="350" poster="{% static 'images/tc.png'%}"  controls="">
+              <source src="{{video}}" type="video/mp4">
+              <source src="{{video}}" type="video/ogg">
+          Your browser does not support the video tag.
+          </video>
         </div>
-      </div>
-    </div>
-    {% endfor %}
-    {% endif %}
-    
+        <div class="grid-top">
+            <div class="col-md-6">
+                <div class="statusbar">{{i.status}}</div>
+            </div>
+            <div class="col-md-6 alincol    ">
+                <div class="downloadIcon">
+                    {% if i.status != 'Rejected' %}
+                  <a style="text-decoration:none" href="">---</a>
+                    {% endif %}
+                    {% if i.status == 'Rejected' %}
+                    <a style="text-decoration:none" href="/dm/statusview/{{id}}/{{i.videoid}}"> <img src="{% static 'images/view.svg'%}"> </a>
+                    {% endif %}
+                </div>
+            </div>
+           
+        </div>
+        <div class="grid-bottom">
+            <span class="grid-video-date">19-5-2023</span>
+            <h2 class="grid-video-title">{{i.videoname}}</h2>
+            <p>Platform<b> {{i.platform}}</b></p>
+            <div class="approver-section">
+                <div class="col-md-6">
+                    <span>Uploaded by</span>
+                    <p><img src="images/name.png"> {{i.uploadername}}</p>
+                </div>
+                <div class="col-md-6">
 
+                    <span>Reviewed by</span>
+                    <p><img src="images/name1.png"> {{i.approver}}</p>
+                </div>
+            </div>
+        </div>
+   
+</div>
 
+ 
+  </div>
+  {% endfor %}
+  {% endif %}
+  </div>
 
+  <div class="grid-panel">
     {% if user_status %}
     {% for i in user_status %}
-    <div class="col-12 col-md-6 col-lg-4">
-      <div class="card">
-        <video class="vid" controls>
-          <source src="{{ video }}" type="video/mp4">
-          <source src="{{ video }}" type="video/ogg">
-        Your browser does not support the video tag.
-        </video>
-        <div class="card-body">
-          <div class="container">
-            <div class="row">
-              <div class="col-sm">
-                <h5>{{i.videoname}}</h5>
-              </div>
-              <div class="col-sm">
-                <h5>{{i.platform}}</h5>
-              </div>
-              <div class="col-sm">
-                <h5>{{i.status}}</h5>
-              </div>
-              <div class="col-sm">
-              {% if i.status != 'Rejected' %}
-              ---
-              {% endif %}
-              {% if i.status == 'Rejected' %}
-              <h5><a href="/dm/statusview/{{id}}/{{i.videoid}}">view</a></h5>
-              {% endif %}
+    <div class="col-md-3">
+      
+      <div class="gridbox">
+        <div class="thumbnail-bg">
+            <!-- <img src="{% static './images/grid-thumbnail.png'%}"> -->
+            <video width="100%" height="350" poster="{% static 'images/tc.png'%}"  controls="">
+              <source src="{{video}}" type="video/mp4">
+              <source src="{{video}}" type="video/ogg">
+          Your browser does not support the video tag.
+          </video>
+        </div>
+        <div class="grid-top">
+            <div class="col-md-6">
+                <div class="statusbar">{{i.status}}</div>
             </div>
-
-
+            <div class="col-md-6 alincol    ">
+                <div class="downloadIcon">
+                  {% if i.status != 'Pending' %}
+                  <a style="text-decoration:none" href="">---</a>
+                    {% endif %}
+                    {% if i.status == 'Pending' %}
+                    <a style="text-decoration:none" href="/dm/approverview/{{i.videoid}}/{{id}}"> <img src="{% static 'images/view.svg'%}"> </a>
+                    {% endif %}
+                </div>
             </div>
-          </div>
-          <br>
-          <div class='container'>
-            <h6 class="card-title">Uploaded By: {{i.uploadername}}</h6>
-            <h6 class="card-title">Reviewed By: {{i.approver}}</h6>
-          </div>
-
-
-
-          <!-- <div class="card-details"><span><i class="fa fa-calendar"></i><h5 class="card-title">{{i.videoname}}</h5></span></div>
-          <h5 class="card-title">{{i.platform}}</h5>
-          <h5 class="card-title">{{i.status}}</h5>
-          <h5 class="card-title">Uploaded By: {{i.uploadername}}</h5>
-          <h5 class="card-title">Reviewed By: {{i.approver}}</h5>
-          {% if i.status != 'Rejected' %}
-          <h5 class="card-title">Reason: ---</h5>
-          {% endif %}
-          {% if i.status == 'Rejected' %}
-          <h5 class="card-title">Reason:<a href="/dm/statusview/{{id}}/{{i.videoid}}">view</a></h5>
-          {% endif %} -->
+           
         </div>
-      </div>
-    </div>
-    {% endfor %}
-    {% endif %}
+        <div class="grid-bottom">
+            <span class="grid-video-date">19-5-2023</span>
+            <h2 class="grid-video-title">{{i.videoname}}</h2>
+            <p>Platform<b> {{i.platform}}</b></p>
+            <div class="approver-section">
+                <div class="col-md-6">
+                    <span>Uploaded by</span>
+                    <p><img src="images/name.png"> {{i.uploadername}}</p>
+                </div>
+                <div class="col-md-6">
 
-
-
-
-    <!-- <div class="col-12 col-md-6 col-lg-4">
-      <div class="card">
-        <img class="card-img-top" src="https://picsum.photos/362/180" alt="Card image cap">
-        <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                    <span>Reviewed by</span>
+                    <p><img src="images/name1.png"> {{i.approver}}</p>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-    <div class="col-12 col-md-6 col-lg-4">
-      <div class="card">
-        <img class="card-img-top" src="https://picsum.photos/362/180" alt="Card image cap">
-        <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-        </div>
-      </div>
-    </div>
-    <div class="col-12 col-md-6 col-lg-4">
-      <div class="card">
-        <img class="card-img-top" src="https://picsum.photos/362/180" alt="Card image cap">
-        <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-        </div>
-      </div>
-    </div>
-    <div class="col-12 col-md-6 col-lg-4">
-      <div class="card">
-        <img class="card-img-top" src="https://picsum.photos/362/180" alt="Card image cap">
-        <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-        </div>
-      </div>
-    </div>
-    <div class="col-12 col-md-6 col-lg-4">
-      <div class="card">
-        <img class="card-img-top" src="https://picsum.photos/362/180" alt="Card image cap">
-        <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-        </div>
-      </div>
-    </div> -->
-  </div>
-  
+   
 </div>
+
+ 
+  </div>
+  {% endfor %}
+  {% endif %}
+  </div>
+
+
+</div>
+
+
+
+
+
+
 
 
 

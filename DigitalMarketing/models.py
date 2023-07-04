@@ -137,3 +137,12 @@ class video_Details(models.Model):
     class Meta:
         managed = False
         db_table = 'videodetails'
+
+
+class TbapproverQuestion(models.Model):
+    questionid = models.CharField(db_column='QuestionID', primary_key=True, max_length=255)  # Field name made lowercase.
+    questiontext = models.CharField(db_column='QuestionText', max_length=2000)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'tb_ApproverQuestion'

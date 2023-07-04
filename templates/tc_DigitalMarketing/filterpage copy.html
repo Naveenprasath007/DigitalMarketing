@@ -1,0 +1,289 @@
+{% extends 'tc_DigitalMarketing/createrUploadbase.html' %}
+{% load static %}
+
+{% block content %}
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand d-inline-flex align-items-center" href="/dm/UserIndexpage">
+        <!-- <img src="{% static 'images/logo_icon.png' %}" alt="" class="img-fluid"> -->
+        <h2>true<span>coverage</span></h2>
+      </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto align-items-center">
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="#"><i class="bi bi-moon"></i></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="#">
+              <i class="bi bi-brightness-high"></i>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">
+              <i class="bi bi-bell"></i>
+          </a>
+        </li>
+        <!-- <li class="nav-item account-section">
+          <a class="nav-link" href="#">
+              <span>My Account</span>
+              <span class="av-holder">
+                  <img src="{% static 'images/avatar.png'%}" alt="">
+                  <i class="bi bi-chevron-down"></i>
+              </span> 
+          </a>
+        </li> -->
+        <li class="nav-item account-section" id="accountSection" onclick="myFunction()">
+          <a class="nav-link" href="#">
+            <span>My Account</span>
+            <span class="av-holder">
+              <img src="{% static 'images/avatar.png'%}" alt="" />
+              <i class="bi bi-chevron-down"></i>
+            </span>
+          </a>
+          <div class="dropdown-panel">
+            <ul>
+                <li>Account</li>
+                <li>Logout</li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav> 
+
+<!-- <div>
+  {%if status%}
+  <div class="container">
+    <table class="table table-bordered text-center">
+      <thead>
+        <tr>
+          <th scope="col">Date</th>
+          <th scope="col">VideoTitle</th>
+          <th scope="col">VideoPlatform</th>
+          <th scope="col">Status</th>
+          <th scope="col">Uploaded By</th>
+          <th scope="col">Reviewed By</th>
+          <th scope="col">Reason</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for i in status %}
+        <tr>
+          <td>{{i.date}}</td>
+          <td>{{i.videoname}}</td>
+          <td>{{i.platform}}</td>
+          <td>{{i.status}}</td>
+          <td>{{i.uploadername}}</td>
+          <td>{{i.approver}}</td>
+          {% if i.status != 'Rejected' %}
+          <td>---</td>
+          {% endif %}
+          {% if i.status == 'Rejected' %}
+          <td><a href="/dm/statusview/{{id}}/{{i.videoid}}">view</a></td>
+          {% endif %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif%}
+</div> -->
+
+
+<!-- new filtering -->
+<div class="container-fluid">
+  <!-- <button class="btn btn-primary btn-grid float-right">Grid View</button> -->
+  <img align="right" class="btn-list" src="{% static 'images/grid.png'%}" alt="" class="img-fluid" />
+  <!-- <img align="right" class="btn-list" src="{% static 'images/grid.png'%}" alt="" class="img-fluid" /> -->
+</div>
+
+
+
+<div class="container-fluid grid-container mt-3">
+  <div class="row">
+    {% if status %}
+    {% for i in status %}
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="card">
+        <video class="vid" controls>
+          <source src="{{ video }}" type="video/mp4">
+          <source src="{{ video }}" type="video/ogg">
+        Your browser does not support the video tag.
+        </video>
+        <div class="card-body">
+          <div class="container">
+            <div class="row">
+              <div class="col-sm">
+                <h5>{{i.videoname}}</h5>
+              </div>
+              <div class="col-sm">
+                <h5>{{i.platform}}</h5>
+              </div>
+              <div class="col-sm">
+                <h5>{{i.status}}</h5>
+              </div>
+              <div class="col-sm">
+              {% if i.status != 'Rejected' %}
+              ---
+              {% endif %}
+              {% if i.status == 'Rejected' %}
+              <h5><a href="/dm/statusview/{{id}}/{{i.videoid}}">view</a></h5>
+              {% endif %}
+            </div>
+
+
+            </div>
+          </div>
+          <br>
+          <div class='container'>
+            <h6 class="card-title">Uploaded By: {{i.uploadername}}</h6>
+            <h6 class="card-title">Reviewed By: {{i.approver}}</h6>
+          </div>
+
+
+
+          <!-- <div class="card-details"><span><i class="fa fa-calendar"></i><h5 class="card-title">{{i.videoname}}</h5></span></div>
+          <h5 class="card-title">{{i.platform}}</h5>
+          <h5 class="card-title">{{i.status}}</h5>
+          <h5 class="card-title">Uploaded By: {{i.uploadername}}</h5>
+          <h5 class="card-title">Reviewed By: {{i.approver}}</h5>
+          {% if i.status != 'Rejected' %}
+          <h5 class="card-title">Reason: ---</h5>
+          {% endif %}
+          {% if i.status == 'Rejected' %}
+          <h5 class="card-title">Reason:<a href="/dm/statusview/{{id}}/{{i.videoid}}">view</a></h5>
+          {% endif %} -->
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+    
+
+
+
+    {% if user_status %}
+    {% for i in user_status %}
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="card">
+        <video class="vid" controls>
+          <source src="{{ video }}" type="video/mp4">
+          <source src="{{ video }}" type="video/ogg">
+        Your browser does not support the video tag.
+        </video>
+        <div class="card-body">
+          <div class="container">
+            <div class="row">
+              <div class="col-sm">
+                <h5>{{i.videoname}}</h5>
+              </div>
+              <div class="col-sm">
+                <h5>{{i.platform}}</h5>
+              </div>
+              <div class="col-sm">
+                <h5>{{i.status}}</h5>
+              </div>
+              <div class="col-sm">
+              {% if i.status != 'Rejected' %}
+              ---
+              {% endif %}
+              {% if i.status == 'Rejected' %}
+              <h5><a href="/dm/statusview/{{id}}/{{i.videoid}}">view</a></h5>
+              {% endif %}
+            </div>
+
+
+            </div>
+          </div>
+          <br>
+          <div class='container'>
+            <h6 class="card-title">Uploaded By: {{i.uploadername}}</h6>
+            <h6 class="card-title">Reviewed By: {{i.approver}}</h6>
+          </div>
+
+
+
+          <!-- <div class="card-details"><span><i class="fa fa-calendar"></i><h5 class="card-title">{{i.videoname}}</h5></span></div>
+          <h5 class="card-title">{{i.platform}}</h5>
+          <h5 class="card-title">{{i.status}}</h5>
+          <h5 class="card-title">Uploaded By: {{i.uploadername}}</h5>
+          <h5 class="card-title">Reviewed By: {{i.approver}}</h5>
+          {% if i.status != 'Rejected' %}
+          <h5 class="card-title">Reason: ---</h5>
+          {% endif %}
+          {% if i.status == 'Rejected' %}
+          <h5 class="card-title">Reason:<a href="/dm/statusview/{{id}}/{{i.videoid}}">view</a></h5>
+          {% endif %} -->
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+
+
+
+    <!-- <div class="col-12 col-md-6 col-lg-4">
+      <div class="card">
+        <img class="card-img-top" src="https://picsum.photos/362/180" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title">Card title</h5>
+          <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="card">
+        <img class="card-img-top" src="https://picsum.photos/362/180" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title">Card title</h5>
+          <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="card">
+        <img class="card-img-top" src="https://picsum.photos/362/180" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title">Card title</h5>
+          <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="card">
+        <img class="card-img-top" src="https://picsum.photos/362/180" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title">Card title</h5>
+          <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="card">
+        <img class="card-img-top" src="https://picsum.photos/362/180" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title">Card title</h5>
+          <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+        </div>
+      </div>
+    </div> -->
+  </div>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+{% endblock content %}

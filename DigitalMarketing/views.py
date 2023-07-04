@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect,HttpResponse
 from django.core.files.storage import FileSystemStorage
 from .forms import Question,userRole
-from .models import TbVideo,Campaignvideo,TbCampaignquestion,TbQuestion,Campaignquestionresponse,TbUserrole,cVideoId,TbStatus,TbUser,TbApprove,video_Details
+from .models import TbVideo,Campaignvideo,TbCampaignquestion,TbQuestion,Campaignquestionresponse,TbUserrole,cVideoId,TbStatus,TbUser,TbApprove,video_Details,TbapproverQuestion
 import pandas as pd
 
 # import whisper
@@ -478,21 +478,22 @@ def approver_view(request,id,uid):
             OthersTextbox = request.POST.get('OthersTextbox')
             Qlist=[q0,q1,q2,q3,q4,q5,q6]
 
-            inlineRadioOptionsDimension= request.POST.get('inlineRadioOptionsDimension')
-            inlineRadioOptionsQuality= request.POST.get('inlineRadioOptionsQuality')
-            inlineRadioOptionsContent= request.POST.get('inlineRadioOptionsContent')
+            inlineRadioOptions1= request.POST.get('inlineRadioOptions1')
+            inlineRadioOptions2= request.POST.get('inlineRadioOptions2')
+            inlineRadioOptions3= request.POST.get('inlineRadioOptions3')
 
-            qResList=[inlineRadioOptionsDimension,inlineRadioOptionsQuality,inlineRadioOptionsContent]
-
-
+            qResList=[inlineRadioOptions1,inlineRadioOptions2,inlineRadioOptions3]
 
 
+
+            # i need to check
             Qlist=list(filter(None,Qlist))
             btn=request.POST.get('btn')
             
             qResList=list(filter(None,qResList))
-            
             Total=qResList.count("Yes")
+            print(Total)
+            print(len(qResList))
 
             
             if Total == len(qResList):  
@@ -547,17 +548,13 @@ def approver_view(request,id,uid):
                 # deletestatus=connection.cursor()
                 # deletestatus.execute("DELETE FROM tb_Status WHERE videoID='{value}';".format(value=id))
                 
-                # ___This for get question and responces__
-                cursor=connection.cursor()
-                cursor.execute("select QuestionText,Response from CampaignQuestionResponse cqr inner join tb_CampaignQuestion cquestion on cqr.CampaignQuestionID = cquestion.CampaignQuestionID AND cquestion.CampaignVideoID ='{value}' inner join tb_Question question on cquestion.QuestionID = question.QuestionID;".format(value=id))
-                result=cursor.fetchall()
-                print(result)
+                Question = TbapproverQuestion.objects.all()
                 l=[]
                 res = {}
-                for key in result:
-                    for value in Qlist:
-                        res[key[0]] = value
-                        Qlist.remove(value)
+                for key in Question:
+                    for value in qResList:
+                        res[key.questiontext] = value
+                        qResList.remove(value)
                         break       
                 l.append(res)
                 l.append(tb)
@@ -566,6 +563,28 @@ def approver_view(request,id,uid):
                 l.append(ContentTextbox)
                 l.append(OthersTextbox)
                 print(l)
+
+                # ___This for get question and responces__
+                # cursor=connection.cursor()
+                # cursor.execute("select QuestionText,Response from CampaignQuestionResponse cqr inner join tb_CampaignQuestion cquestion on cqr.CampaignQuestionID = cquestion.CampaignQuestionID AND cquestion.CampaignVideoID ='{value}' inner join tb_Question question on cquestion.QuestionID = question.QuestionID;".format(value=id))
+                # result=cursor.fetchall()
+                # print(result)
+
+
+                # l=[]
+                # res = {}
+                # for key in result:
+                #     for value in Qlist:
+                #         res[key[0]] = value
+                #         Qlist.remove(value)
+                #         break       
+                # l.append(res)
+                # l.append(tb)
+                # l.append(DimensionsTextbox)
+                # l.append(QualityTextbox)
+                # l.append(ContentTextbox)
+                # l.append(OthersTextbox)
+                # print(l)
 
                 cursor1=connection.cursor()
                 cursor1.execute("select VideoPath,VideoTranscription,VideoName,Platform from CampaignVideo cv inner join tb_Video v on v.VideoID=cv.VideoID AND cv.CampaignVideoID='{val}'".format(val=id))
@@ -639,6 +658,7 @@ def approver_view(request,id,uid):
             QT=listOfQuestion[i]
             questionsText["q"+str(i)] = QT
 
+        print(questionsText)
 
         listOfQuestionResponse=[]
         for i in listOfDataQ:
@@ -649,6 +669,12 @@ def approver_view(request,id,uid):
         for i in range(0,lenOfList):
             lQR=listOfQuestionResponse[i]
             QuestionResponse["k"+str(i)] = lQR
+
+
+        
+        Question = TbapproverQuestion.objects.all()
+
+        
 
         # ___This for get question and responces__
         cursor=connection.cursor()
@@ -668,7 +694,7 @@ def approver_view(request,id,uid):
         LOB=VideoDeatails[0][6]
         Creative=VideoDeatails[0][7]
         Platform=VideoDeatails[0][8]
-        return render(request,'tc_DigitalMarketing/approverviewnew.html',{'qT':questionsText,'qR':QuestionResponse,'R':result,'video':vP,'Transcribe':vT,'vname':vN,'id':uid,'video1':vP1,'Transcribe1':vT1,'Vendor':Vendor,'LOB':LOB,'Creative':Creative,'Platform':Platform})
+        return render(request,'tc_DigitalMarketing/approverviewnew.html',{'qT':questionsText,'qR':QuestionResponse,'R':result,'video':vP,'Transcribe':vT,'vname':vN,'id':uid,'video1':vP1,'Transcribe1':vT1,'Vendor':Vendor,'LOB':LOB,'Creative':Creative,'Platform':Platform,'Questions':Question})
   
 
 
@@ -895,6 +921,7 @@ def status_view(request,id,id1):
 
         import ast
         res = ast.literal_eval(response[0][0])
+        print(res)
         return render(request,'tc_DigitalMarketing/statusview.html',{'approverres':res[0],'reason':res[1],'Dimension':res[2],'Quality':res[3],'Content':res[4],'Others':res[5],'id':id,'video':vP,'vname':vName,'vid':id1,})
    
 

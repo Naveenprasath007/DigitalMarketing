@@ -162,57 +162,26 @@
           </div>
           {% endif %}
 
+          {% for i in Questions %}
           <div>
             <section>
-              <p>Video Dimensions are good?</p>
+              <p>{{ i.questiontext }}</p>
             </section>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="inlineRadioOptionsDimension" id="inlineRadio1" value='Yes' checked>
+              <input class="form-check-input" type="radio" name="inlineRadioOptions{{ i.questionid }}" id="inlineRadio1" value='Yes' checked>
               <label class="form-check-label" for="inlineRadio1">Yes</label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="inlineRadioOptionsDimension" id="inlineRadio2" value='No'>
+              <input class="form-check-input" type="radio" name="inlineRadioOptions{{ i.questionid }}" id="inlineRadio2" value='No'>
               <label class="form-check-label" for="inlineRadio2">No</label>
             </div>
             <div class="form-group">
               <textarea class="form-control" id="exampleFormControlTextarea1" rows="1"></textarea>
             </div>
           </div>
+          {% endfor %}
 
-          <div>
-            <section>
-              <p>Video Quality are good?</p>
-            </section>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="inlineRadioOptionsQuality" id="inlineRadio1" value='Yes' checked>
-              <label class="form-check-label" for="inlineRadio1">Yes</label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="inlineRadioOptionsQuality" id="inlineRadio2" value='No'>
-              <label class="form-check-label" for="inlineRadio2">No</label>
-            </div>
-            <div class="form-group">
-              <textarea class="form-control" id="exampleFormControlTextarea1" rows="1"></textarea>
-            </div>
-          </div>
 
-          <div>
-            <section>
-              <p>Video Content are good?</p>
-            </section>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="inlineRadioOptionsContent" id="inlineRadio1" value="Yes" checked>
-              <label class="form-check-label" for="inlineRadio1">Yes</label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="inlineRadioOptionsContent" id="inlineRadio2" value="No">
-              <label class="form-check-label" for="inlineRadio2">No</label>
-            </div>
-            <div class="form-group">
-              <textarea class="form-control" id="exampleFormControlTextarea1" rows="1"></textarea>
-            </div>
-
-        </div>
         <br>
         <div>
           <div class="form-group">
