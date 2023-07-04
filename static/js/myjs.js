@@ -51,7 +51,7 @@ function myFunction() {
 
   $("input[type='radio']").change(function(){
    
-    if($(this).val()=="2")
+    if($(this).val()=="No")
     {
         $("#Reason").show();
     }
