@@ -753,7 +753,8 @@ video {
   margin-top: 20px;
 }
 .aprove-panel .aproval-panel .approval-button .approval {
-  width: 50%;
+  /* width: 50%; */
+  width: 100%;
   border-radius: 12px;
   background-color: #28a745;
   border: none;

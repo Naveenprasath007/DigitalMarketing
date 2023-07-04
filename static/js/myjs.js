@@ -46,3 +46,18 @@ function myFunction() {
         });
     }).change();
   });
+
+
+
+  $("input[type='radio']").change(function(){
+   
+    if($(this).val()=="2")
+    {
+        $("#Reason").show();
+    }
+    else
+    {
+           $("#Reason").hide(); 
+    }
+        
+    });

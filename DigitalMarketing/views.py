@@ -321,13 +321,14 @@ def creater_upload(request,id):
 def transcribe_video_audio(video_path):
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     file_path = BASE_DIR+video_path
-    model = whisper.load_model("medium")
+    model = whisper.load_model("")
     audio_dir = os.path.dirname(file_path)
     print(audio_dir)
     audio_path = os.path.join(audio_dir, "audio.wav")
     command = f'ffmpeg -i "{file_path}" -vn -acodec pcm_s16le -ar 16000 -ac 1 "{audio_path}"'
     os.system(command)
     result = model.transcribe(audio_path)
+    os.remove(audio_path)
     return result["text"]
 
 
@@ -461,8 +462,220 @@ def approver(request,id):
 #         # return render(request,'tc_DigitalMarketing/approver.html',{'status':status,'id':id})
 #         return render(request,'tc_DigitalMarketing/approver_index.html',{'status':status,'id':id})
 
-
 def approver_view(request,id,uid):
+    if request.method == "POST":
+            q0 = request.POST.get('q0')
+            q1 = request.POST.get('q1')
+            q2 = request.POST.get('q2')
+            q3 = request.POST.get('q3')
+            q4 = request.POST.get('q4')
+            q5 = request.POST.get('q5')
+            q6 = request.POST.get('q6')
+            tb = request.POST.get('ReasonTextbox')
+            DimensionsTextbox = request.POST.get('DimensionsTextbox')
+            QualityTextbox = request.POST.get('QualityTextbox')
+            ContentTextbox = request.POST.get('ContentTextbox')
+            OthersTextbox = request.POST.get('OthersTextbox')
+            Qlist=[q0,q1,q2,q3,q4,q5,q6]
+
+            inlineRadioOptionsDimension= request.POST.get('inlineRadioOptionsDimension')
+            inlineRadioOptionsQuality= request.POST.get('inlineRadioOptionsQuality')
+            inlineRadioOptionsContent= request.POST.get('inlineRadioOptionsContent')
+
+            qResList=[inlineRadioOptionsDimension,inlineRadioOptionsQuality,inlineRadioOptionsContent]
+
+
+
+
+            Qlist=list(filter(None,Qlist))
+            btn=request.POST.get('btn')
+            
+            qResList=list(filter(None,qResList))
+            
+            Total=qResList.count("Yes")
+
+            
+            if Total == len(qResList):  
+                cursor1=connection.cursor()
+                cursor1.execute("select VideoPath,VideoTranscription,VideoName,Platform from CampaignVideo cv inner join tb_Video v on v.VideoID=cv.VideoID AND cv.CampaignVideoID='{val}'".format(val=id))
+                VideoDeatails=cursor1.fetchall()
+                vP='/'+VideoDeatails[0][0]
+                vN=VideoDeatails[0][2]
+                pN=VideoDeatails[0][3]
+
+                getApproverName=connection.cursor()
+                getApproverName.execute("select UserName from tb_User  WHERE UserID='{value}';".format(value=uid) )
+                getApproverName=getApproverName.fetchall() 
+                print(getApproverName[0][0])
+
+                getuid=connection.cursor()
+                getuid.execute("select UserName from tb_User u inner join CampaignQuestionResponse cqr on cqr.userID=u.userID inner join tb_CampaignQuestion cq on cq.CampaignQuestionID=cqr.CampaignQuestionID AND cq.CampaignVideoID ='{value}';".format(value=id))  
+                getuid=getuid.fetchall() 
+                getuserid=connection.cursor()
+                getuserid.execute("select UserID from tb_User WHERE UserName='{value}';".format(value=getuid[0][0]))  
+                getuserid=getuserid.fetchall()  
+                print(getuserid[0][0])
+
+                userName=connection.cursor()
+                userName.execute("select UserName from tb_User where UserID='{val}'".format(val=getuserid[0][0]))
+                userName=userName.fetchall()
+                UN=userName[0][0]
+                
+                approve = TbApprove(userid=TbUser.objects.get(userid=getuserid[0][0]),videoid=id,videotitle=vN,videopath=vP,uploadername=UN)
+                approve.save()
+                # deletestatus=connection.cursor()
+                # deletestatus.execute("DELETE FROM tb_Status WHERE videoID='{value}';".format(value=id))
+
+                # video = TbStatus(userid=TbUser.objects.get(userid=getuserid[0][0]),videoid=id,status='Approved',reason='Video is Correct',videoname=vN,approver=getApproverName[0][0],uploadername=UN,platform=pN)   
+                # video.save() 
+
+                video = TbStatus.objects.get(videoid=id)
+                video.status='Approved'
+                video.reason="Video is Correct"
+                video.approver=getApproverName[0][0]
+                video.MainReason=tb
+                video.save()
+
+
+
+                deleteQuestionsres=connection.cursor()
+                deleteQuestionsres.execute("DELETE CampaignQuestionResponse FROM CampaignQuestionResponse inner join tb_CampaignQuestion on CampaignQuestionResponse.CampaignQuestionID = tb_CampaignQuestion.CampaignQuestionID WHERE tb_CampaignQuestion.CampaignVideoID='{value}';".format(value=id))
+                messages.success(request, 'Approved succesfully')
+                return redirect('/dm/approver/'+str(uid))
+            else:
+                # NO NEED THIS CODE /25/6/23
+                # deletestatus=connection.cursor()
+                # deletestatus.execute("DELETE FROM tb_Status WHERE videoID='{value}';".format(value=id))
+                
+                # ___This for get question and responces__
+                cursor=connection.cursor()
+                cursor.execute("select QuestionText,Response from CampaignQuestionResponse cqr inner join tb_CampaignQuestion cquestion on cqr.CampaignQuestionID = cquestion.CampaignQuestionID AND cquestion.CampaignVideoID ='{value}' inner join tb_Question question on cquestion.QuestionID = question.QuestionID;".format(value=id))
+                result=cursor.fetchall()
+                print(result)
+                l=[]
+                res = {}
+                for key in result:
+                    for value in Qlist:
+                        res[key[0]] = value
+                        Qlist.remove(value)
+                        break       
+                l.append(res)
+                l.append(tb)
+                l.append(DimensionsTextbox)
+                l.append(QualityTextbox)
+                l.append(ContentTextbox)
+                l.append(OthersTextbox)
+                print(l)
+
+                cursor1=connection.cursor()
+                cursor1.execute("select VideoPath,VideoTranscription,VideoName,Platform from CampaignVideo cv inner join tb_Video v on v.VideoID=cv.VideoID AND cv.CampaignVideoID='{val}'".format(val=id))
+                VideoDeatails=cursor1.fetchall()
+                vP='/'+VideoDeatails[0][0]
+                vN=VideoDeatails[0][2]
+                pN=VideoDeatails[0][3]
+
+                getuid=connection.cursor()
+                getuid.execute("select UserName from tb_User u inner join CampaignQuestionResponse cqr on cqr.userID=u.userID inner join tb_CampaignQuestion cq on cq.CampaignQuestionID=cqr.CampaignQuestionID AND cq.CampaignVideoID ='{value}';".format(value=id))  
+                getuid=getuid.fetchall() 
+                getuserid=connection.cursor()
+                getuserid.execute("select UserID from tb_User WHERE UserName='{value}';".format(value=getuid[0][0]))  
+                getuserid=getuserid.fetchall() 
+
+                getApproverName=connection.cursor()
+                getApproverName.execute("select UserName from tb_User  WHERE UserID='{value}';".format(value=uid) )
+                getApproverName=getApproverName.fetchall() 
+                print(getApproverName)
+
+
+                userName=connection.cursor()
+                userName.execute("select UserName from tb_User where UserID='{val}'".format(val=getuserid[0][0]))
+                userName=userName.fetchall()
+                UN=userName[0][0]
+
+                # HERE INCLUDE UPDATE
+                # NO NEED THIS CODE /25/6/23
+                # video = TbStatus(userid=TbUser.objects.get(userid=getuserid[0][0]),videoid=id,status='Rejected',reason=l,videoname=vN,approver=getApproverName[0][0],uploadername=UN,platform=pN)   
+                # video.save() 
+
+                video = TbStatus.objects.get(videoid=id)
+                video.status='Rejected'
+                video.reason=l
+                video.approver=getApproverName[0][0]
+                video.MainReason=tb
+                video.save()
+
+
+
+                # ____new Delete lines added here__
+                deleteQuestionsres=connection.cursor()
+                deleteQuestionsres.execute("DELETE CampaignQuestionResponse FROM CampaignQuestionResponse inner join tb_CampaignQuestion on CampaignQuestionResponse.CampaignQuestionID = tb_CampaignQuestion.CampaignQuestionID WHERE tb_CampaignQuestion.CampaignVideoID='{value}';".format(value=id))
+                # deleteQuestions.execute("DELETE FROM CampaignQuestionResponse CQR inner join tb_CampaignQuestion CQ on CQ.CampaignQuestionID = CQR.CampaignQuestionID WHERE CQ.CampaignVideoID='{value}';".format(value=id))
+                
+                
+                # This for deleting videoID
+                # deleteQuestions=connection.cursor()
+                # deleteQuestions.execute("DELETE tb_CampaignQuestion WHERE CampaignVideoID='{value}';".format(value=id))
+
+                # deleteCampVideo=connection.cursor()
+                # deleteCampVideo.execute("DELETE tb_CampaignVideo WHERE CampaignVideoID='{value}';".format(value=id))
+                messages.error(request, 'rejected succesfully')
+                return redirect('/dm/approver/'+str(uid))
+        # return render(request,'tc_DigitalMarketing/approverview.html',{})
+    else:
+        CVID=id
+        dataQ = TbCampaignquestion.objects.filter(campaignvideoid=CVID)
+        listOfDataQ=[]
+        for i in dataQ:
+            output=i.questionid
+            listOfDataQ.append(output)
+        lenOfList=len(listOfDataQ)
+
+        listOfQuestion=[]
+        for i in listOfDataQ:
+            output=i.questiontext
+            listOfQuestion.append(output)
+        questionsText = {}
+        for i in range(0,lenOfList):
+            QT=listOfQuestion[i]
+            questionsText["q"+str(i)] = QT
+
+
+        listOfQuestionResponse=[]
+        for i in listOfDataQ:
+            output=i.questionresponse.split("|")
+            listOfQuestionResponse.append(output)
+
+        QuestionResponse = {}
+        for i in range(0,lenOfList):
+            lQR=listOfQuestionResponse[i]
+            QuestionResponse["k"+str(i)] = lQR
+
+        # ___This for get question and responces__
+        cursor=connection.cursor()
+        cursor.execute("select QuestionText,Response from CampaignQuestionResponse cqr inner join tb_CampaignQuestion cquestion on cqr.CampaignQuestionID = cquestion.CampaignQuestionID AND cquestion.CampaignVideoID ='{value}' inner join tb_Question question on cquestion.QuestionID = question.QuestionID;".format(value=CVID))
+        result=cursor.fetchall()
+        print(result)
+
+        cursor1=connection.cursor()
+        cursor1.execute("select VideoPath,VideoTranscription,VideoName,VideoPath1,VideoTranscribeOne,Vendor,LOB,Creative,Platform from CampaignVideo cv inner join tb_Video v on v.VideoID=cv.VideoID AND cv.CampaignVideoID='{val}'".format(val=CVID))
+        VideoDeatails=cursor1.fetchall()
+        vP='/'+VideoDeatails[0][0]
+        vT=VideoDeatails[0][1]
+        vN=VideoDeatails[0][2]
+        vP1=VideoDeatails[0][3]
+        vT1=VideoDeatails[0][4]
+        Vendor=VideoDeatails[0][5]
+        LOB=VideoDeatails[0][6]
+        Creative=VideoDeatails[0][7]
+        Platform=VideoDeatails[0][8]
+        return render(request,'tc_DigitalMarketing/approverviewnew.html',{'qT':questionsText,'qR':QuestionResponse,'R':result,'video':vP,'Transcribe':vT,'vname':vN,'id':uid,'video1':vP1,'Transcribe1':vT1,'Vendor':Vendor,'LOB':LOB,'Creative':Creative,'Platform':Platform})
+  
+
+
+
+
+
+def approver_viewOLD(request,id,uid):
     if request.method == "POST":
             q0 = request.POST.get('q0')
             q1 = request.POST.get('q1')

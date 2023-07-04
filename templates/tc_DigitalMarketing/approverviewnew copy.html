@@ -61,50 +61,16 @@
     <div class="aprove-panel">
       <div class="creative-panel">
           <div class="main-creative-box">
-
-            <nav class="navbar navbar-expand-lg bg-body-tertiary">
-              <div class="container-fluid">
-                <a class="navbar-brand d-inline-flex align-items-center" href="#">
-                    <!-- <img src="{% static 'images/logo_icon.png' %}" alt="" class="img-fluid"> -->
-                    <h2><span>{{ vname }}</span></h2>
-                  </a>
-                <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                  <span class="navbar-toggler-icon"></span>
-                </button> -->
-                <div class="collapse navbar-collapse" id="navbarNav">
-                  <ul class="navbar-nav ms-auto align-items-center">
-                    <li class="nav-item">
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="#">
-                        <img src="{% static './images/facebook_1.svg'%}" />
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="#">
-                        <div class="creative-box">
-                          <img src=" {% static './images/video_1.svg'%}" />
-                        </div>
-                      </a>
-                    </li>
-
-                  </ul>
-                </div>
-              </div>
-            </nav> 
-
-              <video width="100%" height="300" controls="">
+              <video width="100%" height="340" controls="">
                   <source src="{{video}}" type="video/mp4">
                   <source src="{{video}}" type="video/ogg">
               Your browser does not support the video tag.
               </video>
-            </div>
-
-
+          </div>
           <div class="sub-creative-box">
               <div class="thumbnails">
                   <!-- <img src="./images/video-placeholder-gray.png"> -->
-                  <video width="100%" height="100%" controls="">
+                  <video width="100%" height="120" controls="">
                     <source src="{{video1}}" type="video/mp4">
                     <source src="{{video1}}" type="video/ogg">
                 Your browser does not support the video tag.
@@ -121,36 +87,18 @@
               </div>
 
           </div>
-
-          <div class="transcription-panel mbottom">
-            <h2>Transcription</h2>
-            <div class="transcription-box1">
-            {% if Transcribe != '--' %}
-              <p>{{ Transcribe }}</p>
-            {% endif %}
-            {% if Transcribe1 != '--' %}
-            <h2>Other Creative's Transcription</h2>
-              <p>{{ Transcribe1 }}</p>
-            {% endif %}
-            </div>
-          </div>
-          
           
       </div>
-      
       <div class="aproval-panel">
-        <div class="overflow-auto" style="max-width:100%; max-height:80vh"> 
           <h2>Presets</h2>
-          <form action="" method="post"enctype="multipart/form-data">
-          {% csrf_token %}  
-          <!-- <div class="ap-box">
+          <div class="ap-box">
               <label>Creative</label>
               <input text="" placeholder="Video" value="{{ Creative }}" readonly>
           </div>
           <div class="ap-box">
               <label>Platform</label>
               <input text="" placeholder="Youtubr" value="{{ Platform }}" readonly>
-          </div> -->
+          </div>
           {% if qT.q0 %}
           <section>
               <p>{{qT.q0}}</p>
@@ -161,87 +109,15 @@
           <input text="" placeholder="Youtubr" value="{{R.0.1}}" readonly>
           </div>
           {% endif %}
-
-          <div>
-            <section>
-              <p>Video Dimensions are good?</p>
-            </section>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="inlineRadioOptionsDimension" id="inlineRadio1" value='Yes' checked>
-              <label class="form-check-label" for="inlineRadio1">Yes</label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="inlineRadioOptionsDimension" id="inlineRadio2" value='No'>
-              <label class="form-check-label" for="inlineRadio2">No</label>
-            </div>
-            <div class="form-group">
-              <textarea class="form-control" id="exampleFormControlTextarea1" rows="1"></textarea>
-            </div>
-          </div>
-
-          <div>
-            <section>
-              <p>Video Quality are good?</p>
-            </section>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="inlineRadioOptionsQuality" id="inlineRadio1" value='Yes' checked>
-              <label class="form-check-label" for="inlineRadio1">Yes</label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="inlineRadioOptionsQuality" id="inlineRadio2" value='No'>
-              <label class="form-check-label" for="inlineRadio2">No</label>
-            </div>
-            <div class="form-group">
-              <textarea class="form-control" id="exampleFormControlTextarea1" rows="1"></textarea>
-            </div>
-          </div>
-
-          <div>
-            <section>
-              <p>Video Content are good?</p>
-            </section>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="inlineRadioOptionsContent" id="inlineRadio1" value="Yes" checked>
-              <label class="form-check-label" for="inlineRadio1">Yes</label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="inlineRadioOptionsContent" id="inlineRadio2" value="No">
-              <label class="form-check-label" for="inlineRadio2">No</label>
-            </div>
-            <div class="form-group">
-              <textarea class="form-control" id="exampleFormControlTextarea1" rows="1"></textarea>
-            </div>
-
-        </div>
-        <br>
-        <div>
-          <div class="form-group">
-            <textarea style="display:none;" class="form-control" name="Reason" id="Reason" rows="3"></textarea>
-          </div>
-        </div>
-
-        <div class="approval-button">
-        <!-- <button class="approval" data-bs-toggle="modal" data-bs-target="">Submit</button> -->
-        <button type="submit" name="btn" value=""class="approval">Submit</button>
-        </div>
-
-
-
-
-
           
 
 
-          <!-- <div class="approval-button">
+          <div class="approval-button">
               <button class="approval" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">Approve</button>
               <button class="reject" data-bs-toggle="modal" data-bs-target="#exampleModalCenter1">Reject</button>
-          </div> -->
-        </form>
+          </div>
       </div>
     </div>
-    </div>
-
-
 
 
 <!-- Modal -->
@@ -333,7 +209,7 @@
     </div>
   </div>
 </div>
-<!-- <div class="transcription-panel mbottom">
+<div class="transcription-panel mbottom">
   <h2>Transcription</h2>
   <div class="transcription-box1">
   {% if Transcribe != '--' %}
@@ -344,7 +220,7 @@
     <p>{{ Transcribe1 }}</p>
   {% endif %}
   </div>
-</div> -->
+</div>
 
   </div>
 
