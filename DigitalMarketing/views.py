@@ -471,17 +471,18 @@ def approver_view(request,id,uid):
             q4 = request.POST.get('q4')
             q5 = request.POST.get('q5')
             q6 = request.POST.get('q6')
-            tb = request.POST.get('ReasonTextbox')
-            DimensionsTextbox = request.POST.get('DimensionsTextbox')
-            QualityTextbox = request.POST.get('QualityTextbox')
-            ContentTextbox = request.POST.get('ContentTextbox')
-            OthersTextbox = request.POST.get('OthersTextbox')
             Qlist=[q0,q1,q2,q3,q4,q5,q6]
+            tb = request.POST.get('ReasonTextbox')
+
+            command1 = request.POST.get('command1')
+            command2 = request.POST.get('command2')
+            command3 = request.POST.get('command3')
+            commandlist=[command1,command2,command3]
+            
 
             inlineRadioOptions1= request.POST.get('inlineRadioOptions1')
             inlineRadioOptions2= request.POST.get('inlineRadioOptions2')
             inlineRadioOptions3= request.POST.get('inlineRadioOptions3')
-
             qResList=[inlineRadioOptions1,inlineRadioOptions2,inlineRadioOptions3]
 
 
@@ -555,13 +556,17 @@ def approver_view(request,id,uid):
                     for value in qResList:
                         res[key.questiontext] = value
                         qResList.remove(value)
-                        break       
+                        break   
+
+                res_command = {}
+                for key in Question:
+                    for value in commandlist:
+                        res_command[key.questiontext] = value
+                        commandlist.remove(value)
+                        break    
                 l.append(res)
+                l.append(res_command)
                 l.append(tb)
-                l.append(DimensionsTextbox)
-                l.append(QualityTextbox)
-                l.append(ContentTextbox)
-                l.append(OthersTextbox)
                 print(l)
 
                 # ___This for get question and responces__
@@ -921,8 +926,9 @@ def status_view(request,id,id1):
 
         import ast
         res = ast.literal_eval(response[0][0])
+
         print(res)
-        return render(request,'tc_DigitalMarketing/statusview.html',{'approverres':res[0],'reason':res[1],'Dimension':res[2],'Quality':res[3],'Content':res[4],'Others':res[5],'id':id,'video':vP,'vname':vName,'vid':id1,})
+        return render(request,'tc_DigitalMarketing/statusview.html',{'approverres':res[0],'approvercmd':res[1],'reason':res[2],'id':id,'video':vP,'vname':vName,'vid':id1,})
    
 
 def download(request):

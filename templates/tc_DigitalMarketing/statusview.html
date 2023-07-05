@@ -81,14 +81,14 @@
 
 
 
-
-
+<div class="container">  
+  <div class="row">
 <div class="col-md-5">  
 <table class="table">
   <thead>
     <tr>
       <th scope="col">Question</th>
-      <th scope="col">Reasons</th>
+      <th scope="col">Responses</th>
     </tr>
   </thead>
   <tbody>
@@ -96,7 +96,7 @@
     <tr>
       <th scope="row">{{ key }}</th>
       <td>{{ value }}</td>
-  </tr>
+    </tr>
   {% endfor %}
 
 </tbody>
@@ -105,6 +105,26 @@
 </div>
 
 <div class="col-md-2">
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Commands</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for key, value in approvercmd.items %}
+      <tr>
+        {% if value == ''%}
+        <td>---</td>
+        {% endif %}
+        <td>{{ value }}</td>
+    </tr>
+    {% endfor %}
+  
+  </tbody>
+  </table>
+
 </div>
 <div class="col-md-5">
     <label><h5>{{ vname }}</h5> </label>
