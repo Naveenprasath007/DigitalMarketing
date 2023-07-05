@@ -65,8 +65,8 @@
                             <div class="welcome-box d-flex">
                                 <div class="left-contents">
                                     <h3>Welcome {{ UserName }}!</h3>
-                                <p>Approved videos</p>
-                                <h2>0</h2>
+                                <p>Approved Assets</p>
+                                <h2>{{ Approved }}</h2>
                                 <button class="view-btn btn btn-primary">View Detailed Report</button>
                                 </div>
                                 <div class="image-man">
@@ -228,7 +228,7 @@
                                         ---
                                         {% endif %}
                                         {% if i.status == 'Pending' %}
-                                        <a href="/dm/approverview/{{i.videoid}}/{{id}}">view</a>
+                                        <a style="text-decoration:none" href="/dm/approverview/{{i.videoid}}/{{id}}">view</a>
                                         {% endif %}
                                         </div>
 
@@ -295,11 +295,14 @@
                             </td>
                             <td>
                                 <span class="upload-info">
-                                {% if i.status != 'Pending' %}
+                                {% if i.status == 'Rejected' %}
                                 ---
                                 {% endif %}
+                                {% if i.status == 'Approved' %}
+                                <a style="text-decoration:none" href="/dm/Download">view</a>
+                                {% endif %}
                                 {% if i.status == 'Pending' %}
-                                <a href="/dm/approverview/{{i.videoid}}/{{id}}">view</a>
+                                <a style="text-decoration:none" href="/dm/approverview/{{i.videoid}}/{{id}}">view</a>
                                 {% endif %}
                             </span>
                             </td>

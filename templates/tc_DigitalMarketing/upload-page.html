@@ -73,6 +73,12 @@
       {% csrf_token %}
       
     <div class="upload-page">
+      <div id="loading">
+        <img id="loading-image" src="{% static 'images/Hourglass.gif'%}" alt="Loading..." />
+      </div>
+
+
+
       <div class="upload-panel mbottom">
         <div class="upwrap">
           {%if video %}
@@ -128,10 +134,6 @@
 
           </div>
 
-
-          <!-- <div class="progress-bar">
-            <div id="progress"></div>
-          </div> -->
           {% endif %}
           <div class="videotitle">
             
@@ -251,10 +253,14 @@
               </div>
             </div>
           </div>
-          <button class="submit" name='Upload' value="Upload">Upload</button>
+          <button class="submit" name='Upload' value="Upload" >Upload</button>
           <!-- <button class="submit">Submit</button> -->
         </div>
         {% endif %}
+
+
+
+      
       </div>
     </form>
 

@@ -4,7 +4,7 @@
 {% block content %}
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container-fluid">
-    <a class="navbar-brand d-inline-flex align-items-center" href="/dm/UserIndexpage">
+    <a class="navbar-brand d-inline-flex align-items-center" href="#">
         <!-- <img src="{% static 'images/logo_icon.png' %}" alt="" class="img-fluid"> -->
         <h2>true<span>coverage</span></h2>
       </a>
@@ -46,8 +46,8 @@
           <div class="dropdown-panel">
             <ul>
                 <li>Account</li>
-                <li>Logout</li>
-            </ul>
+                <a style="text-decoration: none;color: inherit;" href="/dm/UserIndexpage" rel="noopener noreferrer"><li>Logout</li></a>
+              </ul>
           </div>
         </li>
       </ul>
@@ -58,19 +58,21 @@
 <div class="container-fluid" >
   <div class="innersearch" style="height: 100px;">
     <div class="col-md-12">
-        <input type="search" placeholder="search here">
-   
-    <div class="searchbox">
-        <div class="sortby">
-            
-               <img src="{% static 'images/menu.png'%}">
+        <input type="search" id='search-input' placeholder="search here" onkeyup="filterDivisions()"/>
 
+    <div class="searchbox">
+        <div>
+          <button id="show"class="sortby"><img src="{% static 'images/menu.png'%}"></button>
+          <button id="hide"class="sortby"><img src="{% static 'images/layout.png'%}"></button>
         </div>
+
+
         
     </div>
 </div>
     </div>
 
+<div id="Listview" class="division">
 {% if status %}
 {% for i in status %}
 <div class="list-panel">
@@ -148,10 +150,10 @@
 </div>
 {% endfor %}
 {% endif %}
+</div>
 
 
-
-
+<div id="Gridview" style="display:none;" class="division">
   <div class="grid-panel">
     {% if status %}
     {% for i in status %}
@@ -160,7 +162,7 @@
       <div class="gridbox">
         <div class="thumbnail-bg">
             <!-- <img src="{% static './images/grid-thumbnail.png'%}"> -->
-            <video width="100%" height="350" poster="{% static 'images/grid-thumbnail.png'%}"  controls="">
+            <video width="100%" height="350"  controls="">
               <source src="{{video}}" type="video/mp4">
               <source src="{{video}}" type="video/ogg">
           Your browser does not support the video tag.
@@ -215,7 +217,7 @@
       <div class="gridbox">
         <div class="thumbnail-bg">
             <!-- <img src="{% static './images/grid-thumbnail.png'%}"> -->
-            <video width="100%" height="350" poster="{% static 'images/grid-thumbnail.png'%}"  controls="">
+            <video width="100%" height="350"   controls="">
               <source src="{{video}}" type="video/mp4">
               <source src="{{video}}" type="video/ogg">
           Your browser does not support the video tag.
@@ -261,6 +263,7 @@
   {% endfor %}
   {% endif %}
   </div>
+</div>
 
 
 </div>

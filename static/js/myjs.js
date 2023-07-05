@@ -62,4 +62,50 @@ function myFunction() {
         
     });
 
+// list and grid view
+    $(document).ready(function(){
+        $("#hide").click(function(){
+          $("#Listview").hide();
+        });
+        $("#hide").click(function(){
+          $("#Gridview").show();
+        });
+      });
+
+      $(document).ready(function(){
+        $("#show").click(function(){
+          $("#Gridview").hide();
+        });
+        $("#show").click(function(){
+          $("#Listview").show();
+        });
+      });
+
+// File Search
+      function filterDivisions() {
+        var input, filter, divisions, division, i, txtValue;
+        input = document.getElementById("search-input");
+        filter = input.value.toUpperCase();
+        divisions = document.getElementById("Listview");
+        division = divisions.getElementsByClassName("list-panel");
+
+        for (i = 0; i < division.length; i++) {
+          txtValue = division[i].textContent || division[i].innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            division[i].style.display = "";
+          } else {
+            division[i].style.display = "none";
+          }
+        }
+      }
+
+
+// Load spinner
+
+  $(window).on('load', function () {
+    $('#loading').hide();
+  }) 
+
+
+
 

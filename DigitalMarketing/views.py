@@ -22,7 +22,7 @@ def uploaderdashboard(request,id):
         userName=userName.fetchall()
         UN=userName[0][0]
         status=TbStatus.objects.filter(userid=id).order_by('-createddate').values()
-        recent=TbStatus.objects.filter(userid=id).order_by('-createddate').values()[:3]
+        recent=TbStatus.objects.filter(userid=id,status="Rejected").order_by('-createddate').values()[:3]
         q = status.values()
         df = pd.DataFrame.from_records(q)
         if len(df) == 0:
@@ -371,7 +371,7 @@ def approver(request,id):
         userName=userName.fetchall()
         UN=userName[0][0]
         status=TbStatus.objects.all().order_by('-createddate').values()
-        recent=TbStatus.objects.all().order_by('-createddate').values()[:4]
+        recent=TbStatus.objects.filter(status = 'Pending' ).order_by('-createddate').values()[:4]
         user_status=TbStatus.objects.filter(approver = UN)
         q = user_status.values()
         # q = status.values()
@@ -675,6 +675,11 @@ def approver_view(request,id,uid):
             lQR=listOfQuestionResponse[i]
             QuestionResponse["k"+str(i)] = lQR
 
+        uploaderName=connection.cursor()
+        uploaderName.execute("select UploaderName from tb_Status where VideoID='{val}'".format(val=id))
+        uploaderName=uploaderName.fetchall()
+        uploaderName=uploaderName[0][0]
+
 
         
         Question = TbapproverQuestion.objects.all()
@@ -699,7 +704,7 @@ def approver_view(request,id,uid):
         LOB=VideoDeatails[0][6]
         Creative=VideoDeatails[0][7]
         Platform=VideoDeatails[0][8]
-        return render(request,'tc_DigitalMarketing/approverviewnew.html',{'qT':questionsText,'qR':QuestionResponse,'R':result,'video':vP,'Transcribe':vT,'vname':vN,'id':uid,'video1':vP1,'Transcribe1':vT1,'Vendor':Vendor,'LOB':LOB,'Creative':Creative,'Platform':Platform,'Questions':Question})
+        return render(request,'tc_DigitalMarketing/approverviewnew.html',{'qT':questionsText,'qR':QuestionResponse,'uploaderName':uploaderName,'R':result,'video':vP,'Transcribe':vT,'vname':vN,'id':uid,'video1':vP1,'Transcribe1':vT1,'Vendor':Vendor,'LOB':LOB,'Creative':Creative,'Platform':Platform,'Questions':Question})
   
 
 

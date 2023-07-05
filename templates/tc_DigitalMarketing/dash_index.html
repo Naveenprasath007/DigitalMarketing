@@ -68,7 +68,7 @@
                             <div class="welcome-box d-flex">
                                 <div class="left-contents">
                                     <h3>Congratulations {{UserName}}!</h3>
-                                <p>Approved videos level go up</p>
+                                <p>Approved Assets level go up</p>
                                 <h2>{{ Approved }}</h2>
                                 <button class="view-btn btn btn-primary">View Detailed Report</button>
                                 </div>
@@ -378,8 +378,11 @@
                                         </span>
                                     </td>
                                     <td>
-                                        {% if i.status != 'Rejected' %}
+                                        {% if i.status == 'Pending' %}
                                         ---
+                                        {% endif %}
+                                        {% if i.status == 'Approved' %}
+                                        <a style="text-decoration:none" href="/dm/Download"> View </a>
                                         {% endif %}
                                         {% if i.status == 'Rejected' %}
                                         <a style="text-decoration:none" href="/dm/statusview/{{id}}/{{i.videoid}}"> View </a>
