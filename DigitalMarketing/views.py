@@ -109,7 +109,7 @@ def creater_upload(request,id):
                     Gif_url=''
                     url=''
                     url1=''
-                    Title1=request.POST.get('Videotitle')
+                    Title1=request.POST.get('Videotitle').capitalize()
                     myfile = request.FILES['myfile']
                     fs = FileSystemStorage()
                     filename = fs.save(myfile.name, myfile)

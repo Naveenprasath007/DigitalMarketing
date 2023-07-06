@@ -129,7 +129,7 @@
           </div>
 
           <div class="transcription-panel mbottom">
-            <h2>Transcription</h2>
+            <!-- <h2>Transcription</h2>
             <div class="transcription-box1">
             {% if Transcribe != '--' %}
               <p>{{ Transcribe }}</p>
@@ -138,7 +138,18 @@
             <h2>Other Creative's Transcription</h2>
               <p>{{ Transcribe1 }}</p>
             {% endif %}
-            </div>
+            </div> -->
+            {% if Transcribe != '--' %}
+            <br>
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3">{{ Transcribe }}</textarea>
+            {% endif %}
+            {% if Transcribe1 != '--' %}
+            <br>
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3">{{ Transcribe1 }}</textarea>
+            {% endif %}
+
+
+
           </div>
           
           
