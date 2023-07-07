@@ -4,13 +4,13 @@ body {
 }
 
 
-.center-items, .upload-page .upload-panel .presets-box .platform-box, .upload-page .upload-panel .presets-box .creative-box,.titlebox-img, .upload-page .upload-panel .upload-box .file-icon-box .icon-box, .upload-page .upload-panel .upload-box, nav .navbar-nav .nav-link.active {
+.center-items, .upload-page .upload-panel .presets-box .platform-box,.aprove-panel .platform-box, .upload-page .upload-panel .presets-box .creative-box,.titlebox-img, .upload-page .upload-panel .upload-box .file-icon-box .icon-box, .upload-page .upload-panel .upload-box, nav .navbar-nav .nav-link.active {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.grid-panel .grid-top .downloadIcon {
+.grid-panel .grid-top .downloadIcon, .titlebox .titlebox-img{
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -691,7 +691,7 @@ video {
 
 
 
-.aprove-panel {
+/* .aprove-panel {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -701,7 +701,79 @@ video {
 }
 .aprove-panel .creative-panel {
   width: 70%;
+} */
+
+.aprove-panel {
+display: -webkit-box;
+display: -ms-flexbox;
+display: flex;
+background-color: #FFFFFF;
+padding: 20px 17px;
+border-radius: 15px;
 }
+.aprove-panel .creative-panel {
+width: 70%;
+}
+.aprove-panel .creative-panel .videotitle {
+display: -webkit-box;
+display: -ms-flexbox;
+display: flex;
+width: 100%;
+-webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+        justify-content: space-between;
+margin-top: 18px;
+-webkit-box-orient: vertical;
+-webkit-box-direction: normal;
+    -ms-flex-direction: column;
+        flex-direction: column;
+}
+@media (min-width: 768px) {
+.aprove-panel .creative-panel .videotitle {
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+}
+.aprove-panel .creative-panel .videotitle .titlebox {
+display: -webkit-box;
+display: -ms-flexbox;
+display: flex;
+grid-gap: 13px;
+}
+.aprove-panel .creative-panel .videotitle .titlebox .titlebox-img {
+background: #bfe5fc;
+width: 59px;
+height: 59px;
+border-radius: 8px;
+}
+.aprove-panel .creative-panel .videotitle .titlebox .titlebox-img img {
+width: 30px;
+}
+.aprove-panel .creative-panel .videotitle .titlebox .titlebox-content label {
+font-size: 14px;
+color: rgba(0, 0, 0, 0.5803921569);
+}
+.aprove-panel .creative-panel .videotitle .titlebox .titlebox-content p {
+font-size: 18px;
+color: #000000;
+font-weight: 600;
+margin: 0;
+}
+.aprove-panel .creative-panel .videotitle .icon-box-align {
+display: -webkit-box;
+display: -ms-flexbox;
+display: flex;
+grid-gap: 15px;
+}
+.aprove-panel .creative-panel .videotitle .icon-box-align .platform-box {
+width: 39px;
+height: 39px;
+border-radius: 6px;
+}
+
+
 .aprove-panel .creative-panel .sub-creative-box {
   width: 100%;
   display: -webkit-box;
@@ -776,7 +848,7 @@ video {
   font-size: 15px;
 }
 .aprove-panel .aproval-panel .approval-button .reject {
-  width: 50%;
+  width: 100%;
   border-radius: 12px;
   background-color: #ce094f;
   border: none;
@@ -1097,4 +1169,62 @@ p.listinner img {
   z-index: 100;
 }
 
-
+/* creative panel */
+.creative-panel {
+  width: 70%;
+}
+.creative-panel .main-creative-box {
+  position: relative;
+  height: 400px;
+}
+.creative-panel .main-creative-box .thumbnails {
+  position: absolute;
+  top: 0;
+  width: 170px;
+  height: 69px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 5px;
+  right: 30px;
+  top: 11px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 0px 10px;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+.creative-panel .main-creative-box .thumbnails .videocircle {
+  width: 57px;
+  height: 58px;
+  background: #7e7e7e;
+  border-radius: 30px;
+}
+.creative-panel .main-creative-box .thumbnails .videocircle img {
+  border-radius: 30px;
+}
+.creative-panel .main-creative-box .thumbnails .btnview {
+  width: 87px;
+  height: 26px;
+  background: #0278bd;
+  border-radius: 4px;
+  font-size: 13px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  color: #fff;
+  font-weight: 600;
+}
+.creative-panel .main-creative-box .thumbnails img {
+  width: 100%;
+  height: 100%;
+}

@@ -49,18 +49,49 @@ function myFunction() {
 
 
 
+
+
+
+
   $("input[type='radio']").change(function(){
    
     if($(this).val()=="No")
     {
-        $("#Reason").show();
+        $("#btncolor").hide();
+        $("#btncolor1").show();
     }
     else
     {
-           $("#Reason").hide(); 
+           $("#btncolor").show();
+           $("#btncolor1").hide();
+
     }
         
     });
+
+
+    
+
+    // color changing
+    // $("input[type='radio']").change(function(){
+   
+    //   if($(this).val()=="No")
+    //   {
+    //     var element = document.getElementById("btncolor");
+    //     element.classList.toggle("approval");;
+    //   }
+    //   else
+    //   {
+    //     var element = document.getElementById("btncolor");
+    //     element.classList.toggle("rejected");;
+    //   }
+          
+    //   });
+
+
+
+
+
 
 // list and grid view
     $(document).ready(function(){
