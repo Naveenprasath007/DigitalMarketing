@@ -2,6 +2,11 @@ from django.db import models
 from .validators import file_size
 from datetime import datetime
 
+#django authentication
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
 
 class cVideoId(models.Model):
     VideoID = models.CharField(db_column='videoID', max_length=250, db_collation='SQL_Latin1_General_CP1_CI_AS') 
@@ -146,3 +151,24 @@ class TbapproverQuestion(models.Model):
     class Meta:
         managed = False
         db_table = 'tb_ApproverQuestion'
+
+
+
+#extend django user class
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    userid = models.CharField(db_column='UserID', blank=True, max_length=255)  # Field name made lowercase.
+    username = models.CharField(db_column='UserName', blank=True,max_length=255)  # Field name made lowercase.
+    userroleid = models.CharField(db_column='UserRoleId', blank=True,max_length=255)  # Field name made lowercase.
+    vendor=models.CharField(db_column='Vendor', max_length=255, blank=True, null=True)
+
+    
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()

@@ -32,6 +32,11 @@ urlpatterns = [
     path("Download", views.download),
     path("Downloadvideo/<str:id>", views.download_video),
     path("DeleteVideo/<str:id>/<str:id1>", views.delete_video),
-    path("uploadagain/<str:id>/<str:id1>", views.upload_again),   
+    path("uploadagain/<str:id>/<str:id1>", views.upload_again),  
+
+    # Login
+    path('login/', views.login_view, name="login"),
+    path('register/', views.register_view, name="register"),
+    path('logout/', views.logout_view,  name="logout") 
 ]
 

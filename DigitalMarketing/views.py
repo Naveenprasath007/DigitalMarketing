@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect,HttpResponse
 from django.core.files.storage import FileSystemStorage
-from .forms import Question,userRole
+from .forms import *
 from .models import TbVideo,Campaignvideo,TbCampaignquestion,TbQuestion,Campaignquestionresponse,TbUserrole,cVideoId,TbStatus,TbUser,TbApprove,video_Details,TbapproverQuestion
 import pandas as pd
 
@@ -12,8 +12,13 @@ from django.db import connection
 import os
 from datetime import datetime
 
+#login
+from django.contrib.auth import authenticate,get_user_model,login,logout
+from django.contrib.auth.decorators import login_required
 
 
+
+@login_required(login_url='/dm/login/')
 def uploaderdashboard(request,id):
         if request.method == "POST":
             return render(request,'tc_DigitalMarketing/dash_index.html',{})
@@ -56,7 +61,7 @@ def uploaderdashboard(request,id):
                                                                      'DateValue':DateValue,"videoC":videoC,'upload_img_gif_count':upload_img_gif_count,'File_Type':File_Type,
                                                                      'File_TypeC':File_TypeC,'recent':recent,
                                                                      })
-
+@login_required(login_url='/dm/login/')
 def filterpage(request,id,id1,id2):
         if request.method == "POST":
              return render(request,'tc_DigitalMarketing/filterpage.html',{'id':id,'status':status,})
@@ -78,13 +83,14 @@ def filterpage(request,id,id1,id2):
             user_status=TbStatus.objects.filter(status=id1)
         return render(request,'tc_DigitalMarketing/filterpage.html',{'id':id,'status':status,'user_status':user_status})
 
+@login_required(login_url='/dm/login/')
 def myvideos(request,id):
         if request.method == "POST":
              return render(request,'tc_DigitalMarketing/myvideos.html',{'id':id})
         videodetails=video_Details.objects.filter(userid=id)
         return render(request,'tc_DigitalMarketing/myvideos.html',{'id':id,'videodetails':videodetails})
 
-
+@login_required(login_url='/dm/login/')
 def creater_upload(request,id):
         if request.method == "POST":
             q0 = request.POST.get('q0')
@@ -336,7 +342,7 @@ def unique_numbers(numbers):
     # this will take only unique numbers from the tuple
     return tuple(set(numbers))
 
-
+# THIS is no needed Rechecking is pending
 def user_indexpage(request):
         if request.method == 'POST':
             userName = request.POST.get('username')
@@ -361,7 +367,7 @@ def user_indexpage(request):
         else:
             return render(request, 'tc_DigitalMarketing/UserindexPage.html')
 
-
+@login_required(login_url='/dm/login/')
 def approver(request,id):
     if request.method == "POST":
         return render(request,'tc_DigitalMarketing/createrupload.html')
@@ -462,6 +468,7 @@ def approver(request,id):
 #         # return render(request,'tc_DigitalMarketing/approver.html',{'status':status,'id':id})
 #         return render(request,'tc_DigitalMarketing/approver_index.html',{'status':status,'id':id})
 
+@login_required(login_url='/dm/login/')
 def approver_view(request,id,uid):
     if request.method == "POST":
             q0 = request.POST.get('q0')
@@ -904,7 +911,7 @@ def approver_viewOLD(request,id,uid):
         Creative=VideoDeatails[0][7]
         Platform=VideoDeatails[0][8]
         return render(request,'tc_DigitalMarketing/approverviewnew.html',{'qT':questionsText,'qR':QuestionResponse,'R':result,'video':vP,'Transcribe':vT,'vname':vN,'id':uid,'video1':vP1,'Transcribe1':vT1,'Vendor':Vendor,'LOB':LOB,'Creative':Creative,'Platform':Platform})
-    
+
 
 def status(request,id):
     if request.method == "POST":
@@ -912,7 +919,8 @@ def status(request,id):
     else:
         status=TbStatus.objects.filter(userid=id)
         return render(request,'tc_DigitalMarketing/status.html',{'status':status,'id':id})
-    
+
+@login_required(login_url='/dm/login/')
 def status_view(request,id,id1):
     if request.method == "POST":
         return render(request,'tc_DigitalMarketing/createrupload.html')
@@ -935,7 +943,6 @@ def status_view(request,id,id1):
         print(res)
         return render(request,'tc_DigitalMarketing/statusview.html',{'approverres':res[0],'approvercmd':res[1],'reason':res[2],'id':id,'video':vP,'vname':vName,'vid':id1,})
    
-
 def download(request):
     if request.method == "POST":
         return render(request,'tc_DigitalMarketing/Download.html',{'approvedvid':approvedvid,})
@@ -1016,7 +1023,7 @@ def delete_video(request,id,id1):
 #         return render(request,'tc_DigitalMarketing/uploadagainnew.html',{'videodetails':videodetails,'status':status})
     
 
-
+@login_required(login_url='/dm/login/')
 def upload_again(request,id,id1):
     Creative=request.POST.get('Creative')
     upload=request.POST.get('Upload')
@@ -1081,4 +1088,63 @@ def upload_again(request,id,id1):
         status='Waiting'
         videodetails=video_Details.objects.filter(userid=id1)
         return render(request,'tc_DigitalMarketing/uploadagainnew.html',{'videodetails':videodetails,'status':status,'id':id1,})
+    
+
+def login_view(request):
+    next = request.GET.get('next')
+    print(next)
+    form = UserLoginForm(request.POST or None)
+    if form.is_valid():
+        username = form.cleaned_data.get('username')
+        password = form.cleaned_data.get('password')
+        user = authenticate(username=username, password=password)
+        login(request, user)
+        if next:
+        #customized redirect i need to check this
+        #     return redirect(next)
+             if user.profile.userroleid == "U1":
+                    
+                    return redirect('/dm/uploaderdashboard/'+str(user.profile.userid)) 
+             if user.profile.userroleid == "R1":
+
+                    return redirect('/dm/approver/'+str(user.profile.userid))   
+                       
+        if user.profile.userroleid == "U1":
+            
+            return redirect('/dm/uploaderdashboard/'+str(user.profile.userid)) 
+        if user.profile.userroleid == "R1":
+
+            return redirect('/dm/approver/'+str(user.profile.userid))
+
+
+    context = {
+        'form': form,
+    }
+    return render(request, "tc_DigitalMarketing/login.html", context)
+
+
+def register_view(request):
+    next = request.GET.get('next')
+    form = UserRegisterForm(request.POST or None)
+    if form.is_valid():
+        user = form.save(commit=False)
+        password = form.cleaned_data.get('password')
+        user.set_password(password)
+        user.save()
+        new_user = authenticate(username=user.username, password=password)
+        login(request, new_user)
+        if next:
+            return redirect(next)
+        return redirect('/dm/login')
+
+    context = {
+        'form': form,
+    }
+    return render(request, "tc_DigitalMarketing/signup.html", context)
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('/dm/login')
+
     
