@@ -1120,7 +1120,7 @@ def login_view(request):
     context = {
         'form': form,
     }
-    return render(request, "tc_DigitalMarketing/login.html", context)
+    return render(request, "tc_DigitalMarketing/Login.html", context)
 
 
 def register_view(request):
