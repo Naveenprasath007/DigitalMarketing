@@ -942,6 +942,33 @@ def status_view(request,id,id1):
 
         print(res)
         return render(request,'tc_DigitalMarketing/statusview.html',{'approverres':res[0],'approvercmd':res[1],'reason':res[2],'id':id,'video':vP,'vname':vName,'vid':id1,})
+
+@login_required(login_url='/dm/login/')
+def download_view(request,id,id1):
+    if request.method == "POST":
+        return render(request,'tc_DigitalMarketing/downloadview.html')
+    else:
+        # status=Status.objects.filter(userid=id)
+        print(id1)
+        status=connection.cursor()
+        status.execute("select reason FROM tb_Status WHERE userid='{value}' AND VideoID='{value1}';".format(value=id,value1=id1))
+        response=status.fetchall()
+
+        approvedvideos=connection.cursor()
+        approvedvideos.execute("select reason FROM tb_Approve WHERE userid='{value}' AND VideoID='{value1}';".format(value=id,value1=id1))
+        response=approvedvideos.fetchall()
+
+        cursor1=connection.cursor()
+        cursor1.execute("select VideoPath,VideoName from CampaignVideo cv inner join tb_Video v on v.VideoID=cv.VideoID AND cv.CampaignVideoID='{val}'".format(val=id1))
+        VideoDeatails=cursor1.fetchall()
+        vP='/'+VideoDeatails[0][0]
+        vName=VideoDeatails[0][1]
+
+        import ast
+        res = ast.literal_eval(response[0][0])
+
+        print(res)
+        return render(request,'tc_DigitalMarketing/downloadview.html',{'approverres':res[0],'approvercmd':res[1],'reason':res[2],'id':id,'video':vP,'vname':vName,'vid':id1,})
    
 def download(request):
     if request.method == "POST":
