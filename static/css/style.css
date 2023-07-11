@@ -934,6 +934,42 @@ p.listinner img {
           align-items: center;
 }
 
+.vstatusapprove span {
+  border: 1px solid rgb(94, 255, 0);
+  font-size: 14px;
+  padding: 5px 20px;
+  border-radius: 39px;
+  color: #013220;
+}
+
+.vstatusapprove {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+
+
+.vstatuspending span {
+  border: 1px solid rgb(255, 217, 0);
+  font-size: 14px;
+  padding: 5px 20px;
+  border-radius: 39px;
+  color: #8B8000;
+}
+
+.vstatuspending {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
 .vview a {
   border: 1px solid #00ffba;
   font-size: 14px;

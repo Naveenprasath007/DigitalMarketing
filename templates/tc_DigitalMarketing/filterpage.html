@@ -98,13 +98,34 @@
       <span class="minhead">Reviewed by</span>
       <p class="listinner"> {{i.approver}}</p>
   </div>
+  {% if i.status == 'Rejected' %}
   <div class="vstatus"><span>{{i.status}}</span></div>
-  {% if i.status != 'Rejected' %}
+  {% endif %}
+  {% if i.status == 'Approved' %}
+  <div class="vstatusapprove"><span>{{i.status}}</span></div>
+  {% endif %}
+  {% if i.status == 'Pending' %}
+  <div class="vstatuspending"><span>{{i.status}}</span></div>
+  {% endif %}
+
+
+  {% if i.status == 'Pending' %}
+  <div class="vview"><a style="text-decoration:none" href="/dm/updateview/{{id}}/{{i.videoid}}"> View </a></div>
+  {% endif %}
+  {% if i.status == 'Approved' %}
+  <div class="vview"><a style="text-decoration:none" href="/dm/statusview/{{id}}/{{i.videoid}}"> View </a></div>
+  {% endif %}
+  {% if i.status == 'Rejected' %}
+  <div class="vview"><a style="text-decoration:none" href="/dm/statusview/{{id}}/{{i.videoid}}"> View </a></div>
+  {% endif %}
+
+
+  <!-- {% if i.status != 'Rejected' %}
   <div class="vview"><a style="text-decoration:none" href="">---</a></div>
   {% endif %}
   {% if i.status == 'Rejected' %}
   <div class="vview"><a style="text-decoration:none" href="/dm/statusview/{{id}}/{{i.videoid}}">View</a></div>
-  {% endif %}
+  {% endif %} -->
 </div>
 {% endfor %}
 {% endif %}
@@ -137,7 +158,15 @@
       <span class="minhead">Reviewed by</span>
       <p class="listinner"> {{i.approver}}</p>
   </div>
+  {% if i.status == 'Rejected' %}
   <div class="vstatus"><span>{{i.status}}</span></div>
+  {% endif %}
+  {% if i.status == 'Approved' %}
+  <div class="vstatusapprove"><span>{{i.status}}</span></div>
+  {% endif %}
+  {% if i.status == 'Pending' %}
+  <div class="vstatuspending"><span>{{i.status}}</span></div>
+  {% endif %}
 
   {% if i.status != 'Pending' %}
   <div class="vview"><a style="text-decoration:none" href="">---</a></div>
@@ -172,11 +201,21 @@
             </div>
             <div class="col-md-6 alincol    ">
                 <div class="downloadIcon">
-                    {% if i.status != 'Rejected' %}
+                    <!-- {% if i.status != 'Rejected' %}
                   <a style="text-decoration:none" href="">---</a>
                     {% endif %}
                     {% if i.status == 'Rejected' %}
                     <a style="text-decoration:none" href="/dm/statusview/{{id}}/{{i.videoid}}"> <img src="{% static 'images/view.svg'%}"> </a>
+                    {% endif %} -->
+
+                    {% if i.status == 'Pending' %}
+                    <div class="vview"><a style="text-decoration:none" href="/dm/updateview/{{id}}/{{i.videoid}}"> View </a></div>
+                    {% endif %}
+                    {% if i.status == 'Approved' %}
+                    <div class="vview"><a style="text-decoration:none" href="/dm/statusview/{{id}}/{{i.videoid}}"> View </a></div>
+                    {% endif %}
+                    {% if i.status == 'Rejected' %}
+                    <div class="vview"><a style="text-decoration:none" href="/dm/statusview/{{id}}/{{i.videoid}}"> View </a></div>
                     {% endif %}
                 </div>
             </div>

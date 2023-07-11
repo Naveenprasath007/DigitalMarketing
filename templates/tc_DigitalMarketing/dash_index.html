@@ -361,7 +361,7 @@
                                     <th>Date & Time</th>
                                     <th>Uploaded By</th>
                                     <th>Status</th>
-                                    <th>Reason</th>
+                                    <th>Video Details</th>
                                     <th>Reviewer Name</th>                                    
                                 </tr>
                             </thead>
@@ -379,10 +379,10 @@
                                     </td>
                                     <td>
                                         {% if i.status == 'Pending' %}
-                                        ---
+                                        <a style="text-decoration:none" href="/dm/updateview/{{id}}/{{i.videoid}}"> View </a>
                                         {% endif %}
                                         {% if i.status == 'Approved' %}
-                                        <a style="text-decoration:none" href="/dm/Download"> View </a>
+                                        <a style="text-decoration:none" href="/dm/statusview/{{id}}/{{i.videoid}}"> View </a>
                                         {% endif %}
                                         {% if i.status == 'Rejected' %}
                                         <a style="text-decoration:none" href="/dm/statusview/{{id}}/{{i.videoid}}"> View </a>
@@ -391,7 +391,7 @@
                                     <td>
                                         <span class="upload-info">
                                             {% if i.approver == '---' %}
-                                            {{i.approver}} 
+                                            Waiting for Review
                                             {% endif %}
                                             {% if i.approver != '---' %}
                                             <img src="{% static 'images/av_5.png'%}" alt="">

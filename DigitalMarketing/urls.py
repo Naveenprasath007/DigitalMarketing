@@ -32,7 +32,11 @@ urlpatterns = [
     path("Download", views.download),
     path("Downloadvideo/<str:id>", views.download_video),
     path("DeleteVideo/<str:id>/<str:id1>", views.delete_video),
-    path("uploadagain/<str:id>/<str:id1>", views.upload_again),  
+    path("uploadagain/<str:id>/<str:id1>", views.upload_again), 
+    path("updateview/<str:id>/<str:id1>", views.update_view), 
+    path("update/<str:id>/<str:id1>", views.creater_update_video), 
+
+     
 
     # Login
     path('login/', views.login_view, name="login"),

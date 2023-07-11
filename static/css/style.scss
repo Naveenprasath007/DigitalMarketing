@@ -462,13 +462,43 @@ p.listinner{
   font-size: 14px;
   padding: 5px 20px;
   border-radius: 39px;
-  color: #ff0000;
+  color: #8B0000;
 }
 
 .vstatus {
   display: flex;
   align-items: center;
 }
+
+.vstatusapprove span {
+  border: 1px solid rgb(0, 255, 106);
+  font-size: 14px;
+  padding: 5px 20px;
+  border-radius: 39px;
+  color: #013220;
+}
+
+.vstatusapprove {
+  display: flex;
+  align-items: center;
+}
+
+
+
+
+.vstatuspending span {
+  border: 1px solid rgb(255, 217, 0);
+  font-size: 14px;
+  padding: 5px 20px;
+  border-radius: 39px;
+  color: #8B8000;
+}
+
+.vstatuspending {
+  display: flex;
+  align-items: center;
+}
+
 
 .vview a {
   border: 1px solid #00ffba;
