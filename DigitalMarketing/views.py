@@ -80,7 +80,7 @@ def filterpage(request,id,id1,id2):
             user_status=TbStatus.objects.filter(approver=UN,status=id1).order_by('-createddate').values()
         
         elif id1 == 'Pending': 
-            user_status=TbStatus.objects.filter(status=id1)
+            user_status=TbStatus.objects.filter(status=id1).order_by('-createddate').values()
         return render(request,'tc_DigitalMarketing/filterpage.html',{'id':id,'status':status,'user_status':user_status})
 
 @login_required(login_url='/dm/login/')
