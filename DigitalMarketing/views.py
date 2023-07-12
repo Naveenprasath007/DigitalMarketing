@@ -70,14 +70,14 @@ def filterpage(request,id,id1,id2):
         status=""
         videodetails=""
         if id2 == 'User':
-            status=TbStatus.objects.filter(userid=id,status=id1)
+            status=TbStatus.objects.filter(userid=id,status=id1).order_by('-createddate').values()
 
         elif id2 == 'Apporver':
             userName=connection.cursor()
             userName.execute("select UserName from tb_User where UserID='{val}';".format(val=id))
             userName=userName.fetchall()
             UN=userName[0][0]
-            user_status=TbStatus.objects.filter(approver=UN,status=id1)
+            user_status=TbStatus.objects.filter(approver=UN,status=id1).order_by('-createddate').values()
         
         elif id1 == 'Pending': 
             user_status=TbStatus.objects.filter(status=id1)
@@ -480,6 +480,10 @@ def approver_view(request,id,uid):
             q6 = request.POST.get('q6')
             Qlist=[q0,q1,q2,q3,q4,q5,q6]
             tb = request.POST.get('ReasonTextbox')
+            transcription = request.POST.get('cmdtranscript')
+            transcription1 = request.POST.get('cmdtranscript1')
+            print(transcription1)
+            print(transcription)
 
             command1 = request.POST.get('command1')
             command2 = request.POST.get('command2')
@@ -565,6 +569,12 @@ def approver_view(request,id,uid):
                 video.MainReason=tb
                 video.save()
 
+                videodetails=TbVideo.objects.get(videoid=id)
+                if transcription != None:
+                    videodetails.videotranscription=transcription
+                if transcription1 != None:
+                    videodetails.videotranscription1=transcription1
+                videodetails.save()
 
 
                 deleteQuestionsres=connection.cursor()
@@ -655,6 +665,13 @@ def approver_view(request,id,uid):
                 video.MainReason=tb
                 video.save()
 
+                videodetails=TbVideo.objects.get(videoid=id)
+                if transcription != None:
+                    videodetails.videotranscription=transcription
+                if transcription != None:
+                    videodetails.videotranscription1=transcription1
+                videodetails.save()
+
 
 
                 # ____new Delete lines added here__
@@ -720,7 +737,7 @@ def approver_view(request,id,uid):
         print(result)
 
         cursor1=connection.cursor()
-        cursor1.execute("select VideoPath,VideoTranscription,VideoName,VideoPath1,VideoTranscribeOne,Vendor,LOB,Creative,Platform from CampaignVideo cv inner join tb_Video v on v.VideoID=cv.VideoID AND cv.CampaignVideoID='{val}'".format(val=CVID))
+        cursor1.execute("select VideoPath,VideoTranscription,VideoName,VideoPath1,VideoTranscribeOne,Vendor,LOB,Creative,Platform,imageurl,gifurl from CampaignVideo cv inner join tb_Video v on v.VideoID=cv.VideoID AND cv.CampaignVideoID='{val}'".format(val=CVID))
         VideoDeatails=cursor1.fetchall()
         vP='/'+VideoDeatails[0][0]
         vT=VideoDeatails[0][1]
@@ -731,7 +748,9 @@ def approver_view(request,id,uid):
         LOB=VideoDeatails[0][6]
         Creative=VideoDeatails[0][7]
         Platform=VideoDeatails[0][8]
-        return render(request,'tc_DigitalMarketing/approverviewnew.html',{'qT':questionsText,'qR':QuestionResponse,'uploaderName':uploaderName,'R':result,'video':vP,'Transcribe':vT,'vname':vN,'id':uid,'video1':vP1,'Transcribe1':vT1,'Vendor':Vendor,'LOB':LOB,'Creative':Creative,'Platform':Platform,'Questions':Question})
+        imgUrl=VideoDeatails[0][9]
+        gifUrl=VideoDeatails[0][10]
+        return render(request,'tc_DigitalMarketing/approverviewnew.html',{'qT':questionsText,'qR':QuestionResponse,'uploaderName':uploaderName,'R':result,'video':vP,'Transcribe':vT,'vname':vN,'id':uid,'video1':vP1,'Transcribe1':vT1,'Vendor':Vendor,'LOB':LOB,'Creative':Creative,'Platform':Platform,'Questions':Question,'imgUrl':imgUrl,'gifUrl':gifUrl})
   
 
 
@@ -1457,3 +1476,15 @@ def update_view(request,id,id1):
         return render(request,'tc_DigitalMarketing/update.html',{'id':id,'video':vP,'vname':vName,'vid':id1,'status':status})
 
      
+
+def detailed_view(request,id):
+     
+        status=TbStatus.objects.filter(userid=id).order_by('-createddate').values()
+        return render(request,'tc_DigitalMarketing/filterpage.html',{'status':status})
+
+def approverdetail_view(request,id):
+     user_status=TbStatus.objects.all().order_by('-createddate').values()
+     return render(request,'tc_DigitalMarketing/filterpage.html',{'user_status':user_status,'id':id})
+
+     
+

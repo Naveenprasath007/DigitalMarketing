@@ -35,6 +35,9 @@ urlpatterns = [
     path("uploadagain/<str:id>/<str:id1>", views.upload_again), 
     path("updateview/<str:id>/<str:id1>", views.update_view), 
     path("update/<str:id>/<str:id1>", views.creater_update_video), 
+    path("detailedview/<str:id>", views.detailed_view), 
+    path("approverdetail_view/<str:id>", views.approverdetail_view), 
+
 
      
 

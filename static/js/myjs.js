@@ -59,11 +59,15 @@ function myFunction() {
     {
         $("#btncolor").hide();
         $("#btncolor1").show();
+        $("#Reason").attr('required', '');
+        
     }
     else
     {
            $("#btncolor").show();
            $("#btncolor1").hide();
+           $("#Reason").removeAttr('required', '');
+
 
     }
         

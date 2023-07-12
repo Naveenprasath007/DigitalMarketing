@@ -56,66 +56,146 @@
   </div>
 </nav> 
 <div class="upload-page">
-   
 
     <div class="aprove-panel">
+
       <div class="creative-panel">
-          
-        
+        <div class="overflow-auto" style="max-width:100%; max-height:80vh"> 
+
         <div class="main-creative-box">
-            <video width="100%" height="400" controls="">
-                <source src="images/dummy.mp4" type="video/mp4">
+            <video width="100%" height="300" controls="">
+                <source src="{{video}}" type="video/mp4">
             Your browser does not support the video tag.
             </video>
+            {% if video1 != '--' %}
             <div class="thumbnails">
               <!-- <video width="100%" height="100%" controls="">
                 <source src="images/dummy.mp4" type="video/mp4">
               </video> -->
-              <!-- <img src="images/pexels.jpg"> -->
+              {% if Creative == 'image' %}
+              <img src="{{ image }}">
+              {% endif %}
+
+              {% if Creative == 'image' %}
               <div class="videocircle">
-                <img src="{% static 'images/avatar.png'%}">
+                <!-- <img src="{% static 'images/avatar.png'%}"> -->
+                <video width="100%" height="100%" controls="">
+                  <source src="{{video}}" type="video/mp4">
+              Your browser does not support the video tag.
+              </video>
               </div>
               <div class="btnview">Watch Video</div>
+              {% endif %}
+
             </div>
+            {% endif %}
               
           
-        </div>
-  
+        <!-- </div> -->
+        
+
         <div class="videotitle">
           <div class="titlebox">
             
             <div class="titlebox-content">
-              <label>uploaded by <b>Naveen</b></label>
-              <p>Add your Video Title Here</p>
+              <label>uploaded by <b>{{uploaderName}}</b></label>
+              <p>{{vname}}</p>
             </div>
           </div>
           <div class="titlebox">
            
             <div class="icon-box-align">
+
+
+              {% if Platform == 'Facebook' %}
               <div class="platform-box" style="background-color: #3b5998">
                 <img src="{% static './images/facebook.svg'%}">
               </div>
+              {% endif %}
+
+              {% if Platform == 'Youtube' %}
               <div class="platform-box" style="background-color: #ee3b3b">
                 <img src="{% static './images/youtube.svg'%}">
               </div>
+              {% endif  %}
+
+              {% if Platform == 'GDN' %}
+              <div class="platform-box" style="background-color: #c9e8f9">
+                <img src="{% static './images/cdn.png '%}" />
+              </div>
+              {% endif %}
+
+              {% if Platform == 'TikTok' %}
+              <div class="platform-box" style="background-color: #d8d5d5">
+                <img src="{% static './images/tiktok.svg '%}" />
+              </div>
+              {% endif %}
+
+              {% if Platform == 'Native' %}
+              <div class="platform-box" style="background-color: #69c0e9">
+                <img src="{% static './images/native.svg'%}" />
+              </div>
+              {% endif %}
+
+
+              
+              {% if  Creative == 'image' %}
+              <div class="creative-box">
+                <img src=" {% static './images/picture.svg'%}" />
+              </div>
+              {% endif %}
+
+              {% if Creative == 'Video' %}
+              <div class="creative-box">
+                <img src=" {% static './images/video_ico.svg'%}" />
+              </div>
+              {% endif %}
+
+              {% if Creative == 'GIF' %}
+              <div class="creative-box">
+                <img src=" {% static './images/Gif.svg'%}" />
+              </div>
+              {% endif %}
+
+
+
+
             </div>
           </div>
         </div>
+        <br>
+        <div class="transcription-panel mbottom">
+          <h5>Transcription</h5>
+          <div class="transcription-box1">
+            <p>{{ Transcribe }}</p>
+          </div>
+        </div>
+        <!-- This can be help for sperate div -->
+      </div>
     </div>
+
+    <form action="" method="post"enctype="multipart/form-data">
+    <div class="overflow-auto" style="max-width:100%; max-height:10vh"> 
+    {%if Transcribe != '--'%}
+    <div class="mb-3">
+      <textarea class="form-control"  name="cmdtranscript" rows="3">{{Transcribe}}</textarea>
+    </div>
+    {% endif %}
+    {%if Transcribe1 != '--'%}
+    <div class="mb-3">
+     <textarea class="form-control"  name="cmdtranscript1" rows="3">{{Transcribe1}}</textarea>
+    </div>
+    {% endif %}
+    </div>
+      </div>
+
+
       
       <div class="aproval-panel">
         <div class="overflow-auto" style="max-width:100%; max-height:80vh"> 
           <h2>Presets</h2>
-          <form action="" method="post"enctype="multipart/form-data">
+          <!-- <form action="" method="post"enctype="multipart/form-data"> -->
           {% csrf_token %}  
-          <!-- <div class="ap-box">
-              <label>Creative</label>
-              <input text="" placeholder="Video" value="{{ Creative }}" readonly>
-          </div>
-          <div class="ap-box">
-              <label>Platform</label>
-              <input text="" placeholder="Youtubr" value="{{ Platform }}" readonly>
-          </div> -->
           {% if qT.q0 %}
           <section>
               <p>{{qT.q0}}</p>
@@ -150,7 +230,7 @@
         <br>
         <div>
           <div class="form-group">
-            <textarea style="display:none;" class="form-control" name="Reason" id="Reason" rows="3"></textarea>
+            <textarea class="form-control" name="Reason" id="Reason" rows="3"></textarea>
           </div>
         </div>
 

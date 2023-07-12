@@ -70,7 +70,7 @@
                                     <h3>Congratulations {{UserName}}!</h3>
                                 <p>Approved Assets level go up</p>
                                 <h2>{{ Approved }}</h2>
-                                <button class="view-btn btn btn-primary">View Detailed Report</button>
+                                <a style="text-decoration: none;color: inherit;"href='/dm/detailedview/{{ id }}' rel="noopener noreferrer"><button class="view-btn btn btn-primary">View Detailed Report</button></a>
                                 </div>
                                 <div class="image-man">
                                     <img src="{% static 'images/user_welcome.png'%}" alt=""> 

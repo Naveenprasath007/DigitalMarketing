@@ -83,7 +83,7 @@
     </video>
   </div>
   <div class="dname">
-      <span class="minhead">19-5-2023</span>
+      <span class="minhead">{{i.createddate}}</span>
       <p>{{i.videoname}}</p>
   </div>
   <div class="uploader">
@@ -143,7 +143,7 @@
     </video>
   </div>
   <div class="dname">
-      <span class="minhead">19-5-2023</span>
+      <span class="minhead">{{i.createddate}}</span>
       <p>{{i.videoname}}</p>
   </div>
   <div class="uploader">
@@ -168,8 +168,13 @@
   <div class="vstatuspending"><span>{{i.status}}</span></div>
   {% endif %}
 
-  {% if i.status != 'Pending' %}
-  <div class="vview"><a style="text-decoration:none" href="">---</a></div>
+
+
+  
+  {% if i.status == 'Approved' %}
+  <div class="vview"><a style="text-decoration:none" href=""><img src="{% static 'images/download.png'%}"> </a></div>
+  {% endif %}
+  {% if i.status == 'Rejected' %}
   {% endif %}
   {% if i.status == 'Pending' %}
   <div class="vview"><a style="text-decoration:none" href="/dm/approverview/{{i.videoid}}/{{id}}">View</a></div>
@@ -209,20 +214,20 @@
                     {% endif %} -->
 
                     {% if i.status == 'Pending' %}
-                    <div class="vview"><a style="text-decoration:none" href="/dm/updateview/{{id}}/{{i.videoid}}"> View </a></div>
+                    <a style="text-decoration:none" href="/dm/updateview/{{id}}/{{i.videoid}}"> <img src="{% static 'images/view.svg'%}"> </a>
                     {% endif %}
                     {% if i.status == 'Approved' %}
-                    <div class="vview"><a style="text-decoration:none" href="/dm/statusview/{{id}}/{{i.videoid}}"> View </a></div>
+                    <a style="text-decoration:none" href="/dm/statusview/{{id}}/{{i.videoid}}"> <img src="{% static 'images/view.svg'%}"> </a>
                     {% endif %}
                     {% if i.status == 'Rejected' %}
-                    <div class="vview"><a style="text-decoration:none" href="/dm/statusview/{{id}}/{{i.videoid}}"> View </a></div>
+                    <a style="text-decoration:none" href="/dm/statusview/{{id}}/{{i.videoid}}"> <img src="{% static 'images/view.svg'%}"> </a>
                     {% endif %}
                 </div>
             </div>
            
         </div>
         <div class="grid-bottom">
-            <span class="grid-video-date">19-5-2023</span>
+            <span class="grid-video-date">{{i.createddate}}</span>
             <h2 class="grid-video-title">{{i.videoname}}</h2>
             <p>Platform<b> {{i.platform}}</b></p>
             <div class="approver-section">
@@ -266,9 +271,12 @@
             </div>
             <div class="col-md-6 alincol    ">
                 <div class="downloadIcon">
-                  {% if i.status != 'Pending' %}
-                  <a style="text-decoration:none" href="">---</a>
+                  {% if i.status == 'Rejected' %}
+                  <a style="text-decoration:none" href=""></a>
                     {% endif %}
+                    {% if i.status == 'Approved' %}
+                    <a style="text-decoration:none" href=""><img src="{% static 'images/download.png'%}"> </a>
+                      {% endif %}
                     {% if i.status == 'Pending' %}
                     <a style="text-decoration:none" href="/dm/approverview/{{i.videoid}}/{{id}}"> <img src="{% static 'images/view.svg'%}"> </a>
                     {% endif %}
@@ -277,7 +285,7 @@
            
         </div>
         <div class="grid-bottom">
-            <span class="grid-video-date">19-5-2023</span>
+            <span class="grid-video-date">{{i.createddate}}</span>
             <h2 class="grid-video-title">{{i.videoname}}</h2>
             <p>Platform<b> {{i.platform}}</b></p>
             <div class="approver-section">
