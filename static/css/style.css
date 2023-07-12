@@ -1342,3 +1342,19 @@ p.listinner img {
 .login-card a.text-primary.ms-2 {
   text-decoration: none;
 }
+
+
+/* ICON SELECTION  */
+.selected {
+  border: 2px solid black;
+}
+img
+{
+  cursor: pointer;
+  outline: none;
+
+}
+
+.selected1 {
+  border: 2px solid black;
+}

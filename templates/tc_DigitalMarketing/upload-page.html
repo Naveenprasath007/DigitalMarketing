@@ -212,44 +212,28 @@
           </div>
           <div class="preset-icon-box">
             <div class="icon-box-align">
-              <!-- <input type="checkbox" value="image" name="Creative" /> -->
-              <input type="radio" name="Creative" value="image">
+              <input type="hidden" name="Creative" id="selectedImage1" value="">
               <div class="creative-box">
-                <img src=" {% static './images/picture.svg'%}" />
+                <img src="{% static './images/picture.svg'%}" onclick="selectImage1(this, 'image')"style="border-radius: 10px; padding: 10px; background-color: #c9e8f9; width: 100px; height: 50px;"/>
               </div>
-              <input type="radio" name="Creative" value="Video">
               <div class="creative-box">
-                <img src=" {% static './images/video_ico.svg'%}" />
+              <img src="{% static './images/video_ico.svg'%} "onclick="selectImage1(this, 'Video')"style="border-radius: 10px; padding: 10px; background-color: #c9e8f9; width: 100px; height: 50px;"/>
               </div>
-              <input type="radio" name="Creative" value="GIF">
               <div class="creative-box">
-                <img src=" {% static './images/Gif.svg'%}" />
+              <img src="{% static './images/Gif.svg'%}"onclick="selectImage1(this, 'GIF')"style="border-radius: 10px; padding: 10px; background-color: #c9e8f9; width: 100px; height: 50px;" />
               </div>
+
             </div>
           </div>
           <div class="preset-icon-box">
             <label>Which Platform is this Creative for?</label>
             <div class="icon-box-align">
-              <input type="radio" name="Platform" value="Facebook">
-              <div class="platform-box" style="background-color: #3b5998">
-                <img src="{% static './images/facebook.svg'%}" />
-              </div>
-              <input type="radio" name="Platform" value="Youtube">
-              <div class="platform-box" style="background-color: #ee3b3b">
-                <img src="{% static './images/youtube.svg'%} "/>
-              </div>
-              <input type="radio" name="Platform" value="GDN">
-              <div class="platform-box" style="background-color: #c9e8f9">
-                <img src="{% static './images/cdn.png '%}" />
-              </div>
-              <input type="radio" name="Platform" value="TikTok">
-              <div class="platform-box" style="background-color: #d8d5d5">
-                <img src="{% static './images/tiktok.svg '%}" />
-              </div>
-              <input type="radio" name="Platform" value="Native">
-              <div class="platform-box" style="background-color: #69c0e9">
-                <img src="{% static './images/native.svg'%}" />
-              </div>
+              <input type="hidden" name="Platform" id="selectedImage" value="Facebook">
+                <img src="{% static './images/facebook.svg'%}" onclick="selectImage(this, 'Facebook')"style="border-radius: 10px; padding: 10px; background-color: #3b5998; width: 39px; height: 39px;"/>
+                <img src="{% static './images/youtube.svg'%} "onclick="selectImage(this, 'Youtube')"style="border-radius: 10px; padding: 10px; background-color: #ee3b3b; width: 39px; height: 39px;"/>
+                <img src="{% static './images/cdn.png '%}"onclick="selectImage(this, 'GDN')"style="border-radius: 10px; padding: 10px; background-color: #c9e8f9; width: 39px; height: 39px;" />
+                <img src="{% static './images/tiktok.svg '%}" onclick="selectImage(this, 'TikTok')"style="border-radius: 10px; padding: 10px; background-color: #d8d5d5; width: 39px; height: 39px;"/>
+                <img src="{% static './images/native.svg'%}" onclick="selectImage(this, 'Native')"style="border-radius: 10px; padding: 10px; background-color: #69c0e9; width: 39px; height: 39px;" />
             </div>
           </div>
           <button class="submit" name='Upload' value="Upload" >Upload</button>

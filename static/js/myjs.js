@@ -141,3 +141,18 @@ function myFunction() {
     $('#loading').hide();
   }) 
 
+function selectImage(element, imageId) {
+    const selectedImageInput = document.getElementById('selectedImage');
+    const selectedImages = document.getElementsByClassName('selected');
+    Array.from(selectedImages).forEach(img => img.classList.remove('selected'));
+    element.classList.add('selected');
+    selectedImageInput.value = imageId;
+  }
+
+function selectImage1(element, imageId) {
+    const selectedImageInput = document.getElementById('selectedImage1');
+    const selectedImages = document.getElementsByClassName('selected1');
+    Array.from(selectedImages).forEach(img => img.classList.remove('selected1'));
+    element.classList.add('selected1');
+    selectedImageInput.value = imageId;
+  }
