@@ -1264,3 +1264,81 @@ p.listinner img {
   width: 100%;
   height: 100%;
 }
+
+
+
+
+.logwrap {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  height: 100vh;
+  -ms-flex-line-pack: center;
+      align-content: center;
+}
+
+.login-card {
+  width: 450px;
+  background: white;
+  padding: 24px 40px;
+  border-radius: 10px;
+  -webkit-box-shadow: -7px 12px 24px rgba(191, 206, 223, 0.2784313725);
+          box-shadow: -7px 12px 24px rgba(191, 206, 223, 0.2784313725);
+}
+.login-card .form-text-field {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+.login-card .form-text-field p {
+  margin-bottom: 0;
+}
+.login-card .login-card-form .col-12 {
+  padding: 12px 0px;
+}
+.login-card .form-text-field {
+  width: 100%;
+}
+.login-card .form-text-field label {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.25rem;
+  letter-spacing: normal !important;
+  color: #7c7979;
+}
+.login-card .form-text-field input {
+  height: 40px;
+  border: 1px solid #dbdbdb;
+  border-radius: 9px;
+  margin-top: 7px;
+  padding: 0px 15px;
+  font-size: 14px;
+}
+.login-card .login-button {
+  width: 100%;
+  margin-top: 40px;
+}
+.login-card .login-button button {
+  width: 100%;
+  border: none;
+  height: 40px;
+  border-radius: 9px;
+  background: #0278bd;
+  color: #fff;
+  font-size: 14px;
+  -webkit-box-shadow: -7px 12px 24px rgba(191, 206, 223, 0.2784313725);
+          box-shadow: -7px 12px 24px rgba(191, 206, 223, 0.2784313725);
+}
+.login-card a.text-primary.ms-2 {
+  text-decoration: none;
+}

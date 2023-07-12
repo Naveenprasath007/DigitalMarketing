@@ -134,13 +134,10 @@ function myFunction() {
         }
       }
 
-
+    
 // Load spinner
 
   $(window).on('load', function () {
     $('#loading').hide();
   }) 
-
-
-
 
